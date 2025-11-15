@@ -1,4 +1,4 @@
-import { API_BASE_URL } from "../config";
+import { API_URL } from "../config";
 
 // Strongly typed API helpers + mock fallbacks.
 export interface SpaceResult {
@@ -77,7 +77,7 @@ export const searchTargets = async (
   page = 1,
 ): Promise<{ success: boolean; query: string; results: SpaceResult[]; hasMore: boolean }> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/search?target=${encodeURIComponent(query)}&page=${page}`);
+    const response = await fetch(`${API_URL}/search?target=${encodeURIComponent(query)}&page=${page}`);
     if (!response.ok) {
       throw new Error("Search failed");
     }
@@ -103,7 +103,7 @@ export const searchTargets = async (
 
 export const fetchImage = async (id: string): Promise<ImageResult> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/image/${id}`);
+    const response = await fetch(`${API_URL}/image/${id}`);
     if (!response.ok) {
       throw new Error("Image fetch failed");
     }
@@ -118,7 +118,7 @@ export const fetchImage = async (id: string): Promise<ImageResult> => {
 
 export const runAnalysis = async (id: string): Promise<AnalysisData> => {
   try {
-    const response = await fetch(`${API_BASE_URL}/analyze/${id}`, {
+    const response = await fetch(`${API_URL}/analyze/${id}`, {
       method: "POST",
     });
     if (!response.ok) throw new Error("Analysis failed");
