@@ -1,0 +1,12 @@
+/* Theme tokens for SpaceViewer's refined dark UI. */
+:root {
+  --sv-bg: #040612;
+  --sv-bg-elevated: rgba(13, 20, 38, 0.8);
+  --sv-border-subtle: rgba(255, 255, 255, 0.08);
+  --sv-text-primary: #f5f7ff;
+  --sv-text-secondary: rgba(245, 247, 255, 0.7);
+  --sv-accent: #4ce4ff;
+  --sv-radius-md: 16px;
+  --sv-radius-lg: 24px;
+  --sv-shadow-soft: 0 20px 45px rgba(0, 0, 0, 0.45);
+}
