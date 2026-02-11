@@ -7,7 +7,9 @@ interface ControlBarProps {
   archiveUrl?: string;
   analysisLoading: boolean;
   analysisActive: boolean;
+  analysisDisabled?: boolean;
   nasaId?: string;
+  onDownload?: () => void;
 }
 
 const ControlBar: FC<ControlBarProps> = ({
@@ -17,9 +19,12 @@ const ControlBar: FC<ControlBarProps> = ({
   archiveUrl,
   analysisLoading,
   analysisActive,
+  analysisDisabled,
   nasaId,
+  onDownload,
 }) => {
   const handleDownload = async () => {
+    onDownload?.();
     if (!fullResUrl) {
       window.open(imageUrl, "_blank");
       return;
@@ -53,7 +58,12 @@ const ControlBar: FC<ControlBarProps> = ({
 
   return (
     <div className="control-bar">
-      <button type="button" onClick={onHighlight} disabled={analysisLoading} className={analysisActive ? "active" : ""}>
+      <button
+        type="button"
+        onClick={onHighlight}
+        disabled={analysisLoading || analysisDisabled}
+        className={analysisActive ? "active" : ""}
+      >
         Highlight Objects
       </button>
       <button type="button" className="ghost" onClick={handleDownload}>

@@ -10,9 +10,10 @@ interface HighlightOverlayProps {
   regions: Region[] | null;
   enabled: boolean;
   imageRef: React.RefObject<HTMLImageElement | null>;
+  transform?: string;
 }
 
-const HighlightOverlay: FC<HighlightOverlayProps> = ({ regions, enabled, imageRef }) => {
+const HighlightOverlay: FC<HighlightOverlayProps> = ({ regions, enabled, imageRef, transform }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -88,6 +89,8 @@ const HighlightOverlay: FC<HighlightOverlayProps> = ({ regions, enabled, imageRe
         pointerEvents: "none",
         opacity: enabled && regions && regions.length ? 1 : 0,
         transition: "opacity 0.25s ease-in-out",
+        transform,
+        transformOrigin: "center center",
       }}
     />
   );

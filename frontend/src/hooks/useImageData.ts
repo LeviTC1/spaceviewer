@@ -1,5 +1,4 @@
-import { useState } from "react";
-import { useState, useCallback } from "react";
+import { useCallback, useState } from "react";
 import { fetchImage, type ImageResult } from "../utils/api";
 
 const useImageData = () => {
@@ -7,7 +6,13 @@ const useImageData = () => {
   const [error, setError] = useState<string | null>(null);
   const [imageData, setImageData] = useState<ImageResult | null>(null);
 
-  const loadImage = useCallback(async (id: string) => {
+  const loadImage = useCallback(async (id: string, enabled = true) => {
+    if (!enabled || !id) {
+      setImageData(null);
+      setError(null);
+      setLoading(false);
+      return null;
+    }
     setLoading(true);
     setError(null);
     try {

@@ -1,5 +1,5 @@
-export const API_URL = import.meta.env.VITE_API_URL;
+export const API_URL = import.meta.env.VITE_API_URL ?? "/api";
 
-if (!API_URL) {
-  throw new Error("VITE_API_URL is not defined. Please set it in your environment.");
+if (!import.meta.env.VITE_API_URL) {
+  console.warn("VITE_API_URL is not defined. Falling back to /api.");
 }

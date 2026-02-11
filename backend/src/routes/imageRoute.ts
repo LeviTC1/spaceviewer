@@ -25,6 +25,7 @@ router.get("/:id", async (req: Request<{ id: string }>, res: Response) => {
       success: true,
       id: data.id,
       imageUrl: data.imageUrl,
+      fullRes: data.fullRes,
       metadata: data.metadata,
     });
   } catch (error) {

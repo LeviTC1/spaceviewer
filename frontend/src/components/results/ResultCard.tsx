@@ -1,26 +1,45 @@
 import type { FC } from "react";
-import type { SpaceResult } from "../../utils/api";
+import type { SpaceImage } from "../../models/SpaceImage";
 
 interface ResultCardProps {
-  item: SpaceResult;
-  onClick: (item: SpaceResult) => void;
+  item: SpaceImage;
+  onClick: (item: SpaceImage) => void;
+  contextBadges?: string[];
 }
 
-const ResultCard: FC<ResultCardProps> = ({ item, onClick }) => {
+const ResultCard: FC<ResultCardProps> = ({ item, onClick, contextBadges }) => {
   const handleClick = () => {
-    console.log("ResultCard clicked", { id: item.id, title: item.title });
     onClick(item);
   };
+
+  const thumbnail = item.thumbnailUrl || item.imageUrl || "https://images-assets.nasa.gov/image/PIA12235/PIA12235~thumb.jpg";
+  const instrumentLabel = item.instrument || item.mission || item.center || "NASA Image Library";
+  const dateLabel = item.date || "Unknown";
+  const sourceKey = item.source ?? "nasa";
+  const sourceLabel =
+    sourceKey === "sdss" ? "SDSS" : sourceKey === "ps1" ? "Pan-STARRS" : sourceKey === "nasa" ? "NASA" : sourceKey;
 
   return (
     <article className="result-card" onClick={handleClick}>
       <div className="result-card__thumb">
-        <img src={item.thumbnailUrl} alt={item.title} loading="lazy" />
+        <img src={thumbnail} alt={item.title} loading="lazy" />
       </div>
       <div className="result-card__meta">
-        <p className="result-card__instrument">{item.instrument}</p>
+        <div className="result-card__badges">
+          <span className={`result-card__badge result-card__badge--${sourceKey}`}>{sourceLabel}</span>
+        </div>
+        <p className="result-card__instrument">{instrumentLabel}</p>
         <h3>{item.title}</h3>
-        <p className="result-card__date">Observed {item.date}</p>
+        {contextBadges && contextBadges.length > 0 && (
+          <div className="result-card__context">
+            {contextBadges.map((badge) => (
+              <span key={badge} className="result-card__context-badge">
+                {badge}
+              </span>
+            ))}
+          </div>
+        )}
+        <p className="result-card__date">Observed {dateLabel}</p>
       </div>
     </article>
   );

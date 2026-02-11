@@ -1,18 +1,11 @@
 import { API_URL } from "../config";
-
-// Strongly typed API helpers + mock fallbacks.
-export interface SpaceResult {
-  id: string;
-  title: string;
-  instrument: string;
-  date: string;
-  thumbnailUrl: string;
-}
+import type { SearchResult } from "./mapSearchItem";
 
 export interface ImageResult {
   success: boolean;
   id: string;
   imageUrl: string;
+  fullRes?: string;
   metadata: unknown;
 }
 
@@ -30,33 +23,9 @@ export interface AnalysisData {
 interface SearchResponse {
   success?: boolean;
   query?: string;
-  results?: SpaceResult[] | { results?: SpaceResult[]; hasMore?: boolean };
+  results?: SearchResult[] | { results?: SearchResult[]; hasMore?: boolean };
   hasMore?: boolean;
 }
-
-const mockResults: SpaceResult[] = [
-  {
-    id: "jwst-demo-1",
-    title: "Carina Nebula, deep field",
-    instrument: "NIRCam",
-    date: "2025-05-01",
-    thumbnailUrl: "https://images-assets.nasa.gov/image/PIA25581/PIA25581~orig.jpg",
-  },
-  {
-    id: "jwst-demo-2",
-    title: "Pillars of Creation, infrared",
-    instrument: "MIRI",
-    date: "2025-03-22",
-    thumbnailUrl: "https://images-assets.nasa.gov/image/PIA25574/PIA25574~orig.jpg",
-  },
-  {
-    id: "jwst-demo-3",
-    title: "Compact galaxy cluster",
-    instrument: "NIRSpec",
-    date: "2025-02-11",
-    thumbnailUrl: "https://images-assets.nasa.gov/image/PIA25575/PIA25575~orig.jpg",
-  },
-];
 
 const mockAnalysis: AnalysisData = {
   detectedObjects: 3,
@@ -75,9 +44,12 @@ const safeJson = async <T>(response: Response): Promise<T> => {
 export const searchTargets = async (
   query: string,
   page = 1,
-): Promise<{ success: boolean; query: string; results: SpaceResult[]; hasMore: boolean }> => {
+  source = "all",
+): Promise<{ success: boolean; query: string; results: SearchResult[]; hasMore: boolean }> => {
   try {
-    const response = await fetch(`${API_URL}/search?target=${encodeURIComponent(query)}&page=${page}`);
+    const response = await fetch(
+      `${API_URL}/search?target=${encodeURIComponent(query)}&page=${page}&source=${encodeURIComponent(source)}`,
+    );
     if (!response.ok) {
       throw new Error("Search failed");
     }
@@ -116,10 +88,13 @@ export const fetchImage = async (id: string): Promise<ImageResult> => {
   }
 };
 
-export const runAnalysis = async (id: string): Promise<AnalysisData> => {
+export const runAnalysis = async (id: string, context?: string): Promise<AnalysisData> => {
   try {
+    const payload = context ? { context } : null;
     const response = await fetch(`${API_URL}/analyze/${id}`, {
       method: "POST",
+      headers: payload ? { "Content-Type": "application/json" } : undefined,
+      body: payload ? JSON.stringify(payload) : undefined,
     });
     if (!response.ok) throw new Error("Analysis failed");
     const data = await safeJson<{ analysis?: AnalysisData }>(response);
