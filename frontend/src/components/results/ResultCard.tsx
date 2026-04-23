@@ -1,4 +1,4 @@
-import type { FC } from "react";
+import type { FC, KeyboardEvent } from "react";
 import type { SpaceImage } from "../../models/SpaceImage";
 
 interface ResultCardProps {
@@ -12,6 +12,13 @@ const ResultCard: FC<ResultCardProps> = ({ item, onClick, contextBadges }) => {
     onClick(item);
   };
 
+  const handleKeyDown = (event: KeyboardEvent<HTMLElement>) => {
+    if (event.key === "Enter" || event.key === " ") {
+      event.preventDefault();
+      handleClick();
+    }
+  };
+
   const thumbnail = item.thumbnailUrl || item.imageUrl || "https://images-assets.nasa.gov/image/PIA12235/PIA12235~thumb.jpg";
   const instrumentLabel = item.instrument || item.mission || item.center || "NASA Image Library";
   const dateLabel = item.date || "Unknown";
@@ -20,7 +27,7 @@ const ResultCard: FC<ResultCardProps> = ({ item, onClick, contextBadges }) => {
     sourceKey === "sdss" ? "SDSS" : sourceKey === "ps1" ? "Pan-STARRS" : sourceKey === "nasa" ? "NASA" : sourceKey;
 
   return (
-    <article className="result-card" onClick={handleClick}>
+    <article className="result-card" onClick={handleClick} onKeyDown={handleKeyDown} role="button" tabIndex={0}>
       <div className="result-card__thumb">
         <img src={thumbnail} alt={item.title} loading="lazy" />
       </div>

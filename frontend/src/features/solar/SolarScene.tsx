@@ -7,9 +7,12 @@ import {
   MathUtils,
   Texture,
   Vector3,
+  type Intersection,
   type Mesh,
   type MeshBasicMaterial,
   type MeshStandardMaterial,
+  type Object3D,
+  type Raycaster,
 } from "three";
 import PlanetMesh from "./PlanetMesh";
 import OrbitRing from "./OrbitRing";
@@ -18,13 +21,22 @@ import type { TextureQuality } from "./textures/textureCatalog";
 import { loadSunTextures } from "./textures/loadSunTexture";
 import { MOONS, type MoonVisibilityMode, type MoonDef } from "./moonData";
 import MoonMesh from "./MoonMesh";
-import { scaleDistanceAu, scaleRadiusKm } from "./solarScale";
-import { getMoonWorldPosition } from "./moonMath";
+import { scaleDistanceAu, scaleMoonDistanceKm, scaleRadiusKm } from "./solarScale";
 import AsteroidBelt from "./asteroids/AsteroidBelt";
 import type { AsteroidBeltMode } from "./asteroids/asteroidGenerator";
 import { StarField } from "../starmap/starRenderer";
 import { useNearbyStars } from "../starmap/useNearbyStars";
 import { useStarLOD } from "../starmap/useStarLOD";
+import { useRenderActivity } from "../../lib/rendering/useRenderActivity";
+import {
+  getSolarObjectState,
+  getSolarMoonOrbitScenePoints,
+  getSolarPlanetOrbitScenePoints,
+  projectSolarMoonStateToScenePosition,
+  projectSolarStateToScenePosition,
+  toSceneTuple,
+} from "../../domain/solar";
+import type { SolarNavigationMode } from "./solarNavigation";
 
 interface CameraState {
   position: [number, number, number];
@@ -34,11 +46,12 @@ interface CameraState {
 interface SolarSceneProps {
   timeDays: number;
   timeScale: number;
+  isPlaying: boolean;
   scaleMode: SolarScaleMode;
   performanceMode: boolean;
   textureQuality: TextureQuality;
   moonMode: MoonVisibilityMode;
-  moonVisibilityOverrides: Record<PlanetId, boolean>;
+  moonVisibilityOverrides: Partial<Record<PlanetId, boolean>>;
   asteroidMode: AsteroidBeltMode;
   selectedId: PlanetId | null;
   selectedMoonId: string | null;
@@ -52,6 +65,8 @@ interface SolarSceneProps {
   trackMoonId: string | null;
   bookmarkTarget: CameraState | null;
   bookmarkToken: number;
+  navigationMode: SolarNavigationMode;
+  navigationToken: number;
   onSelectPlanet: (planet: PlanetDef | null) => void;
   onSelectMoon: (moon: MoonDef) => void;
   onSelectSun: (selected: boolean) => void;
@@ -68,36 +83,79 @@ const getRenderRadius = (planet: PlanetDef) => {
 };
 
 const MIN_SUN_ORBIT = 9.6;
+const ignoreRaycast = (_raycaster: Raycaster, _intersects: Intersection<Object3D>[]) => undefined;
 
-const getOrbitRadius = (planet: PlanetDef, scaleMode: SolarScaleMode) => {
-  const base = scaleDistanceAu(planet.semiMajorAxisAU, scaleMode);
-  if (planet.id === "mercury") {
-    return Math.max(base, MIN_SUN_ORBIT);
-  }
-  return base;
+const getPlanetMinSceneDistance = (planet: PlanetDef) => (planet.id === "mercury" ? MIN_SUN_ORBIT : 0);
+
+const getPlanetScenePosition = (planet: PlanetDef, timeDays: number, scaleMode: SolarScaleMode) => {
+  const state = getSolarObjectState(planet.id, timeDays);
+  if (!state) return [0, 0, 0] as [number, number, number];
+  return toSceneTuple(
+    projectSolarStateToScenePosition(state, {
+      scaleDistanceAu: (au) => scaleDistanceAu(au, scaleMode),
+      minSceneDistance: getPlanetMinSceneDistance(planet),
+    }),
+  );
 };
 
-const getPlanetPosition = (planet: PlanetDef, timeDays: number, scaleMode: SolarScaleMode) => {
-  const angle = (timeDays / planet.orbitalPeriodDays) * Math.PI * 2 + (planet.initialOffsetRad ?? 0);
-  const eccentricity = planet.eccentricity ?? 0;
-  const radiusAu =
-    planet.semiMajorAxisAU * ((1 - eccentricity * eccentricity) / (1 + eccentricity * Math.cos(angle)));
-  let distance = scaleDistanceAu(radiusAu, scaleMode);
-  if (planet.id === "mercury") {
-    distance = Math.max(distance, MIN_SUN_ORBIT);
-  }
-  const x = Math.cos(angle) * distance;
-  const z = Math.sin(angle) * distance;
-  const position = new Vector3(x, 0, z);
-  const visualTilt = planet.tiltDeg ?? MathUtils.clamp(planet.inclinationDeg, 1, 3);
-  const tilt = MathUtils.degToRad(visualTilt);
-  position.applyAxisAngle(new Vector3(1, 0, 0), tilt);
-  return [position.x, position.y, position.z] as [number, number, number];
+const getPlanetOrbitScenePoints = (planet: PlanetDef, scaleMode: SolarScaleMode) =>
+  getSolarPlanetOrbitScenePoints(planet.id, {
+    scaleDistanceAu: (au) => scaleDistanceAu(au, scaleMode),
+    minSceneDistance: getPlanetMinSceneDistance(planet),
+    samples: 192,
+  }).map(toSceneTuple);
+
+const getMoonScenePosition = (
+  moon: MoonDef,
+  parentPosition: [number, number, number],
+  parentRadius: number,
+  timeDays: number,
+  scaleMode: SolarScaleMode,
+) => {
+  const state = getSolarObjectState(moon.id, timeDays);
+  if (!state) return null;
+  return toSceneTuple(
+    projectSolarMoonStateToScenePosition(state, {
+      parentScenePosition: parentPosition,
+      parentRadiusSceneUnits: parentRadius,
+      scaleMoonDistanceKm: (km) => scaleMoonDistanceKm(km, scaleMode),
+    }),
+  );
+};
+
+const getMoonOrbitScenePoints = (
+  moon: MoonDef,
+  parentPosition: [number, number, number],
+  parentRadius: number,
+  scaleMode: SolarScaleMode,
+) =>
+  getSolarMoonOrbitScenePoints(moon.id, {
+    parentScenePosition: parentPosition,
+    parentRadiusSceneUnits: parentRadius,
+    scaleMoonDistanceKm: (km) => scaleMoonDistanceKm(km, scaleMode),
+    samples: 96,
+  }).map(toSceneTuple);
+
+const getPlanetarySystemDistance = (
+  planet: PlanetDef,
+  parentPosition: [number, number, number],
+  parentRadius: number,
+  scaleMode: SolarScaleMode,
+) => {
+  const moonDistances = MOONS.filter((moon) => moon.parentPlanet === planet.id && moon.class === "major")
+    .map((moon) => getMoonOrbitScenePoints(moon, parentPosition, parentRadius, scaleMode))
+    .flat()
+    .map((point) =>
+      Math.hypot(point[0] - parentPosition[0], point[1] - parentPosition[1], point[2] - parentPosition[2]),
+    );
+  const outerMoonDistance = moonDistances.length ? Math.max(...moonDistances) : 0;
+  return Math.max(parentRadius * 8, outerMoonDistance * 1.35, 8);
 };
 
 const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { performanceMode: boolean }> = ({
   timeDays,
   timeScale,
+  isPlaying,
   scaleMode,
   performanceMode,
   textureQuality,
@@ -116,6 +174,8 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
   trackMoonId,
   bookmarkTarget,
   bookmarkToken,
+  navigationMode,
+  navigationToken,
   onSelectPlanet,
   onSelectMoon,
   onSelectSun,
@@ -155,11 +215,21 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
   const stars = useNearbyStars();
   const starLod = useStarLOD(stars, starDistance);
 
+  const orbitPathMap = useMemo(() => {
+    const entries: Partial<Record<PlanetId, { points: Array<[number, number, number]>; radius: number }>> = {};
+    PLANETS.forEach((planet) => {
+      const points = getPlanetOrbitScenePoints(planet, scaleMode);
+      const radius = points.reduce((max, point) => Math.max(max, Math.hypot(point[0], point[1], point[2])), 0);
+      entries[planet.id] = { points, radius };
+    });
+    return entries as Record<PlanetId, { points: Array<[number, number, number]>; radius: number }>;
+  }, [scaleMode]);
+
   const planetPositions = useMemo(
     () =>
       PLANETS.map((planet) => ({
         planet,
-        position: getPlanetPosition(planet, timeDays, scaleMode),
+        position: getPlanetScenePosition(planet, timeDays, scaleMode),
       })),
     [timeDays, scaleMode],
   );
@@ -183,6 +253,27 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
     });
   }, [moonMode, moonVisibilityOverrides, visibleMoonParents]);
 
+  const renderReasons = useMemo(
+    () =>
+      [
+        isPlaying ? "time-playback" : null,
+        trackTargetId ? "planet-tracking" : null,
+        trackMoonId ? "moon-tracking" : null,
+      ].filter((reason): reason is string => Boolean(reason)),
+    [isPlaying, trackMoonId, trackTargetId],
+  );
+  const { requestRender } = useRenderActivity({
+    label: "solar",
+    active: renderReasons.length > 0,
+    reasons: renderReasons,
+    diagnostics: {
+      visibleMoons: visibleMoons.length,
+      performanceMode,
+      asteroidMode,
+      starLod: starLod.length,
+    },
+  });
+
   useEffect(() => {
     let active = true;
     loadSunTextures(textureQuality).then((textures) => {
@@ -202,12 +293,12 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
     const planet = PLANETS.find((item) => item.id === focusTargetId);
     if (!planet) return;
 
-    const [x, y, z] = getPlanetPosition(planet, timeDays, scaleMode);
+    const [x, y, z] = getPlanetScenePosition(planet, timeDays, scaleMode);
     const target = new Vector3(x, y, z);
     const currentTarget = controlsRef.current.target.clone();
     const currentPos = camera.position.clone();
     const direction = currentPos.clone().sub(currentTarget).normalize();
-    const distance = Math.max(8, getOrbitRadius(planet, scaleMode) * 0.8);
+    const distance = Math.max(8, (orbitPathMap[planet.id]?.radius ?? 0) * 0.8);
     const endPos = target.clone().add(direction.multiplyScalar(distance));
 
     focusRef.current = {
@@ -217,7 +308,8 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
       endTarget: target,
       progress: 0,
     };
-  }, [focusTargetId, focusToken, camera, scaleMode, timeDays]);
+    requestRender(1400, "planet-focus");
+  }, [focusTargetId, focusToken, camera, scaleMode, timeDays, orbitPathMap, requestRender]);
 
   useEffect(() => {
     if (bookmarkTarget && controlsRef.current) {
@@ -230,8 +322,55 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
         endTarget: new Vector3(...bookmarkTarget.target),
         progress: 0,
       };
+      requestRender(1400, "bookmark");
     }
-  }, [bookmarkTarget, bookmarkToken, camera]);
+  }, [bookmarkTarget, bookmarkToken, camera, requestRender]);
+
+  useEffect(() => {
+    if (!controlsRef.current) return;
+    const currentTarget = controlsRef.current.target.clone();
+    const currentPos = camera.position.clone();
+    let endTarget = new Vector3(0, 0, 0);
+    let endPos = new Vector3(0, scaleMode === "educational" ? 96 : 76, scaleMode === "educational" ? 108 : 84);
+
+    if (navigationMode === "ecliptic") {
+      endTarget = new Vector3(0, 0, 0);
+      endPos = new Vector3(0, scaleMode === "educational" ? 150 : 112, 0.01);
+    }
+
+    if (navigationMode === "planetary") {
+      const planet =
+        selectedMoonId
+          ? PLANETS.find((item) => item.id === MOONS.find((moon) => moon.id === selectedMoonId)?.parentPlanet)
+          : selectedId
+            ? PLANETS.find((item) => item.id === selectedId)
+            : null;
+      if (planet) {
+        const parentEntry = planetPositionMap[planet.id];
+        if (parentEntry) {
+          endTarget = new Vector3(...parentEntry.position);
+          const distance = getPlanetarySystemDistance(
+            planet,
+            parentEntry.position,
+            parentEntry.radius,
+            scaleMode,
+          );
+          const direction = currentPos.clone().sub(currentTarget).normalize();
+          const stableDirection = direction.lengthSq() > 0.001 ? direction : new Vector3(0.35, 0.45, 0.82).normalize();
+          endPos = endTarget.clone().add(stableDirection.multiplyScalar(distance));
+        }
+      }
+    }
+
+    focusRef.current = {
+      startPos: currentPos,
+      startTarget: currentTarget,
+      endPos,
+      endTarget,
+      progress: 0,
+    };
+    requestRender(1500, `navigation-${navigationMode}`);
+  }, [navigationMode, navigationToken, camera, scaleMode, selectedId, selectedMoonId, planetPositionMap, requestRender]);
 
   useEffect(() => {
     if (trackTargetId && controlsRef.current) {
@@ -261,13 +400,14 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
       if (!moon) return;
       const parentEntry = planetPositionMap[moon.parentPlanet];
       if (!parentEntry) return;
-      const moonPosition = getMoonWorldPosition(
+      const moonPosition = getMoonScenePosition(
         moon,
         parentEntry.position,
         parentEntry.radius,
         timeDays,
         scaleMode,
       );
+      if (!moonPosition) return;
       controlsRef.current.target.set(...moonPosition);
       controlsRef.current.update();
       return;
@@ -275,7 +415,7 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
     if (selectedId) {
       const planet = PLANETS.find((item) => item.id === selectedId);
       if (!planet) return;
-      const [x, y, z] = getPlanetPosition(planet, timeDays, scaleMode);
+      const [x, y, z] = getPlanetScenePosition(planet, timeDays, scaleMode);
       controlsRef.current.target.set(x, y, z);
       controlsRef.current.update();
     }
@@ -289,26 +429,28 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
     if (!moon) return;
     const parentEntry = planetPositionMap[moon.parentPlanet];
     if (!parentEntry) return;
-    const targetPosition = getMoonWorldPosition(
+    const targetPosition = getMoonScenePosition(
       moon,
       parentEntry.position,
       parentEntry.radius,
       timeDays,
       scaleMode,
     );
+    if (!targetPosition) return;
     const target = new Vector3(...targetPosition);
     const currentTarget = controlsRef.current.target.clone();
     const currentPos = camera.position.clone();
     const direction = currentPos.clone().sub(currentTarget).normalize();
     const distance = Math.max(5, currentPos.distanceTo(currentTarget) * 0.35);
-    focusRef.current = {
+      focusRef.current = {
       startPos: currentPos,
       startTarget: currentTarget,
       endPos: target.clone().add(direction.multiplyScalar(distance)),
       endTarget: target,
       progress: 0,
     };
-  }, [focusMoonId, focusMoonToken, camera, scaleMode, timeDays, planetPositionMap]);
+    requestRender(1200, "moon-focus");
+  }, [focusMoonId, focusMoonToken, camera, scaleMode, timeDays, planetPositionMap, requestRender]);
 
   useEffect(() => {
     if (!focusSunToken || !controlsRef.current) {
@@ -326,7 +468,8 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
       endTarget: target,
       progress: 0,
     };
-  }, [focusSunToken, camera]);
+    requestRender(1200, "sun-focus");
+  }, [focusSunToken, camera, requestRender]);
 
   useFrame((state, delta) => {
     const sunRotationScale = 260;
@@ -386,8 +529,9 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
     if (trackTargetId && controlsRef.current && trackingOffsetRef.current) {
       const planet = PLANETS.find((item) => item.id === trackTargetId);
       if (planet) {
-        const [x, y, z] = getPlanetPosition(planet, timeDays, scaleMode);
-        const target = new Vector3(x, y, z);
+        const entry = planetPositionMap[planet.id];
+        if (!entry) return;
+        const target = new Vector3(...entry.position);
         controlsRef.current.target.lerp(target, 0.1);
         camera.position.lerp(target.clone().add(trackingOffsetRef.current), 0.1);
         controlsRef.current.update();
@@ -399,13 +543,14 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
       if (moon) {
         const parentEntry = planetPositionMap[moon.parentPlanet];
         if (parentEntry) {
-          const moonPosition = getMoonWorldPosition(
+          const moonPosition = getMoonScenePosition(
             moon,
             parentEntry.position,
             parentEntry.radius,
             timeDays,
             scaleMode,
           );
+          if (!moonPosition) return;
           const target = new Vector3(...moonPosition);
           controlsRef.current.target.lerp(target, 0.1);
           camera.position.lerp(target.clone().add(trackingMoonOffsetRef.current), 0.1);
@@ -477,7 +622,7 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
   return (
     <>
       <ambientLight intensity={0.32} />
-      <hemisphereLight skyColor="#ffe7c7" groundColor="#0b111f" intensity={0.28} />
+      <hemisphereLight args={["#ffe7c7", "#0b111f", 0.28]} />
       <pointLight
         position={[0, 0, 0]}
         intensity={3.4}
@@ -487,12 +632,12 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
         shadow-mapSize={[512, 512]}
         shadow-bias={-0.0002}
       />
-      {!performanceMode && starBlend < 0.4 && <Stars radius={120} depth={50} count={2000} factor={3} fade />}
+      {!performanceMode && starBlend < 0.4 && <Stars radius={120} depth={50} count={1200} factor={3} fade />}
 
       <StarField stars={starLod} opacity={starBlend} interactive={false} />
 
       {sunSelected && showSolar && (
-        <mesh pointerEvents="none">
+        <mesh raycast={ignoreRaycast}>
           <sphereGeometry args={[7.4, 32, 32]} />
           <meshBasicMaterial color="#7affd6" transparent opacity={0.2} />
         </mesh>
@@ -525,7 +670,7 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
         </mesh>
       )}
       {showSolar && (
-        <mesh ref={sunOverlayRef} pointerEvents="none">
+        <mesh ref={sunOverlayRef} raycast={ignoreRaycast}>
           <sphereGeometry args={[6.4, 64, 64]} />
           <meshBasicMaterial
             ref={sunOverlayMatRef}
@@ -539,7 +684,7 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
         </mesh>
       )}
       {!performanceMode && sunTextures.noise && showSolar && (
-        <mesh pointerEvents="none">
+        <mesh raycast={ignoreRaycast}>
           <sphereGeometry args={[6.55, 64, 64]} />
           <meshBasicMaterial
             ref={sunNoiseMatRef}
@@ -553,7 +698,7 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
         </mesh>
       )}
       {showSolar && (
-        <mesh ref={sunCoronaRef} pointerEvents="none">
+        <mesh ref={sunCoronaRef} raycast={ignoreRaycast}>
           <sphereGeometry args={[9.2, 48, 48]} />
           <meshBasicMaterial
             ref={sunCoronaMatRef}
@@ -566,7 +711,7 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
         </mesh>
       )}
       {showSolar && (
-        <mesh pointerEvents="none">
+        <mesh raycast={ignoreRaycast}>
           <sphereGeometry args={[10.8, 48, 48]} />
           <meshBasicMaterial
             color="#ff9f3a"
@@ -582,12 +727,48 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
         PLANETS.map((planet) => (
           <OrbitRing
             key={`orbit-${planet.id}`}
-            radius={getOrbitRadius(planet, scaleMode)}
+            radius={orbitPathMap[planet.id]?.radius ?? 0}
             inclinationDeg={planet.tiltDeg ?? planet.inclinationDeg}
             highlighted={planet.id === selectedId}
             planetId={planet.id}
+            points={orbitPathMap[planet.id]?.points}
+            currentPosition={planetPositionMap[planet.id]?.position}
           />
         ))}
+
+      {showSolar &&
+        visibleMoons.map((moon) => {
+          const parentEntry = planetPositionMap[moon.parentPlanet];
+          if (!parentEntry) return null;
+          const shouldShowOrbit =
+            selectedId === moon.parentPlanet || selectedMoonId === moon.id;
+          if (!shouldShowOrbit) return null;
+          const points = getMoonOrbitScenePoints(
+            moon,
+            parentEntry.position,
+            parentEntry.radius,
+            scaleMode,
+          );
+          const currentPosition = getMoonScenePosition(
+            moon,
+            parentEntry.position,
+            parentEntry.radius,
+            timeDays,
+            scaleMode,
+          );
+          return (
+            <OrbitRing
+              key={`moon-orbit-${moon.id}`}
+              radius={0}
+              inclinationDeg={moon.inclinationDeg ?? 0}
+              highlighted={selectedMoonId === moon.id}
+              planetId="moon"
+              points={points}
+              currentPosition={currentPosition ?? undefined}
+              variant="moon"
+            />
+          );
+        })}
 
       {showSolar &&
         planetPositions.map(({ planet, position }) => (
@@ -610,14 +791,19 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
         const parentEntry = planetPositionMap[moon.parentPlanet];
         const parentPosition = parentEntry?.position;
         if (!parentPosition) return null;
+        const moonPosition = getMoonScenePosition(
+          moon,
+          parentPosition,
+          parentEntry.radius,
+          timeDays,
+          scaleMode,
+        );
+        if (!moonPosition) return null;
         return (
           <MoonMesh
             key={moon.id}
             moon={moon}
-            parentPosition={parentPosition}
-            parentRadius={parentEntry.radius}
-            timeDays={timeDays}
-            scaleMode={scaleMode}
+            position={moonPosition}
             textureQuality={textureQuality}
             selected={selectedMoonId === moon.id}
             onSelect={onSelectMoon}
@@ -640,7 +826,7 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
         );
       })}
 
-      {showSolar && (
+      {showSolar && asteroidMode !== "off" && (
         <AsteroidBelt
           timeDays={timeDays}
           scaleMode={scaleMode}
@@ -659,6 +845,9 @@ const SolarSceneContent: FC<Omit<SolarSceneProps, "performanceMode"> & { perform
         panSpeed={0.6}
         minDistance={6}
         maxDistance={scaleMode === "educational" ? 260 : 180}
+        onStart={() => requestRender(1800, "orbit-controls")}
+        onChange={() => requestRender(180, "orbit-controls-change")}
+        onEnd={() => requestRender(360, "orbit-controls-end")}
       />
     </>
   );
@@ -672,10 +861,10 @@ const SolarScene: FC<SolarSceneProps> = ({
     <Canvas
       className="solar-canvas__element"
       camera={{ position: [0, 20, 40], fov: 50 }}
-      dpr={performanceMode ? [1, 1.2] : [1, 2]}
+      dpr={performanceMode ? [1, 1] : [1, 1.75]}
       gl={{ antialias: !performanceMode }}
       shadows={!performanceMode}
-      frameloop="always"
+      frameloop="demand"
       onPointerMissed={() => {
         props.onSelectPlanet(null);
         props.onSelectSun(false);

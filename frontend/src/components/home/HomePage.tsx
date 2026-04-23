@@ -7,6 +7,7 @@ import { mapSearchItem, type SearchResult } from "../../utils/mapSearchItem";
 import { filterSearchResults, isLikelyNonSpaceImage } from "../../utils/spaceFilter";
 import { getSessionMemory, getTopItems } from "../../utils/sessionMemory";
 import type { SpaceImage } from "../../models/SpaceImage";
+import { readCameraBookmarks, type CameraBookmark } from "../../features/solar/cameraBookmarks";
 
 interface HomePageProps {
   query: string;
@@ -18,17 +19,19 @@ interface HomePageProps {
   onSearch: (value?: string) => void;
   onStartDiscovery: () => void;
   discoveryLoading?: boolean;
-  onExploreSolar: () => void;
+  onExploreSolar: (bookmark?: CameraBookmark) => void;
+  onOpenSkyMap: () => void;
   onSelectFeatured: (item: SpaceImage, sourceItems: SearchResult[]) => void;
   error?: string | null;
   loading: boolean;
 }
 
-type HomeTab = "explore" | "skymap" | "live" | "gallery" | "discover" | "foryou";
+type HomeTab = "explore" | "skymap" | "solar" | "live" | "gallery" | "discover" | "foryou";
 
 const HOME_TABS: Array<{ id: HomeTab; label: string; badge?: string }> = [
   { id: "explore", label: "Explore" },
-  { id: "skymap", label: "SkyMap", badge: "NEW" },
+  { id: "skymap", label: "SkyMap", badge: "ALPHA" },
+  { id: "solar", label: "Solar Explorer", badge: "NEW" },
   { id: "live", label: "Live Feed From Space", badge: "LIVE" },
   { id: "gallery", label: "Gallery" },
   { id: "discover", label: "Discover" },
@@ -39,8 +42,12 @@ const NASA_LIVE_EMBED_URL = "https://www.youtube.com/embed/FV4Q9DryTG8?rel=0";
 const NASA_LIVE_YOUTUBE_URL = "https://www.youtube.com/live/FV4Q9DryTG8?si=vo3qTulNSztqA6HL";
 
 const HOME_TAB_STORAGE_KEY = "spaceviewer.home.tab";
+const SOLAR_HINT_DISMISSED_KEY = "spaceviewer.solar.hintDismissed";
+const LEGACY_SKYMAP_HINT_DISMISSED_KEY = "spaceviewer.skymap.hintDismissed";
 
-const isHomeTab = (value: string): value is HomeTab => HOME_TABS.some((tab) => tab.id === value);
+const normalizeHomeTab = (value: string): HomeTab | null => {
+  return HOME_TABS.some((tab) => tab.id === value) ? (value as HomeTab) : null;
+};
 
 const categories = [
   { label: "Nebulae", query: "nebula" },
@@ -173,6 +180,7 @@ const HomePage: FC<HomePageProps> = ({
   onStartDiscovery,
   discoveryLoading,
   onExploreSolar,
+  onOpenSkyMap,
   onSelectFeatured,
   error,
   loading,
@@ -181,13 +189,14 @@ const HomePage: FC<HomePageProps> = ({
   const [openedTabs, setOpenedTabs] = useState<Record<HomeTab, boolean>>({
     explore: true,
     skymap: false,
+    solar: false,
     live: false,
     gallery: false,
     discover: false,
     foryou: false,
   });
   const [reduceMotion, setReduceMotion] = useState(false);
-  const [showSkymapHint, setShowSkymapHint] = useState(false);
+  const [showSolarHint, setShowSolarHint] = useState(false);
   const [featuredRaw, setFeaturedRaw] = useState<SearchResult[]>([]);
   const [featuredImages, setFeaturedImages] = useState<SpaceImage[]>([]);
   const [featuredIndex, setFeaturedIndex] = useState(0);
@@ -196,7 +205,7 @@ const HomePage: FC<HomePageProps> = ({
   const [featuredLoaded, setFeaturedLoaded] = useState(false);
   const [personalized, setPersonalized] = useState<Array<{ title: string; label: string; query: string }>>([]);
   const [recentSearches, setRecentSearches] = useState<string[]>([]);
-  const [solarBookmarks, setSolarBookmarks] = useState<Array<{ id: string; name: string }>>([]);
+  const [solarBookmarks, setSolarBookmarks] = useState<CameraBookmark[]>([]);
 
   const categoryLookup = useMemo(() => new Map(categories.map((category) => [category.label, category.query])), []);
   const suggestions = useMemo(() => categories.map((category) => category.label), []);
@@ -246,10 +255,10 @@ const HomePage: FC<HomePageProps> = ({
     }
   };
 
-  const dismissSkymapHint = () => {
-    setShowSkymapHint(false);
+  const dismissSolarHint = () => {
+    setShowSolarHint(false);
     if (typeof window !== "undefined") {
-      window.localStorage.setItem("spaceviewer.skymap.hintDismissed", "true");
+      window.localStorage.setItem(SOLAR_HINT_DISMISSED_KEY, "true");
     }
   };
 
@@ -263,16 +272,19 @@ const HomePage: FC<HomePageProps> = ({
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    const dismissed = window.localStorage.getItem("spaceviewer.skymap.hintDismissed") === "true";
-    setShowSkymapHint(!dismissed);
+    const dismissed =
+      window.localStorage.getItem(SOLAR_HINT_DISMISSED_KEY) === "true" ||
+      window.localStorage.getItem(LEGACY_SKYMAP_HINT_DISMISSED_KEY) === "true";
+    setShowSolarHint(!dismissed);
   }, []);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
     const stored = window.localStorage.getItem(HOME_TAB_STORAGE_KEY);
-    if (stored && isHomeTab(stored)) {
-      setActiveTab(stored);
-      setOpenedTabs((prev) => ({ ...prev, [stored]: true }));
+    const normalized = stored ? normalizeHomeTab(stored) : null;
+    if (normalized) {
+      setActiveTab(normalized);
+      setOpenedTabs((prev) => ({ ...prev, [normalized]: true }));
     }
   }, []);
 
@@ -397,30 +409,11 @@ const HomePage: FC<HomePageProps> = ({
   }, [openedTabs.foryou]);
 
   useEffect(() => {
-    if (!openedTabs.skymap || typeof window === "undefined") {
+    if (!openedTabs.solar || typeof window === "undefined") {
       return;
     }
-    try {
-      const raw = window.localStorage.getItem("spaceviewer.solar.bookmarks");
-      if (!raw) {
-        setSolarBookmarks([]);
-        return;
-      }
-      const parsed = JSON.parse(raw) as Array<{ id?: string; name?: string }>;
-      if (!Array.isArray(parsed)) {
-        setSolarBookmarks([]);
-        return;
-      }
-      const next = parsed
-        .filter((item) => typeof item?.id === "string" && typeof item?.name === "string")
-        .slice(0, 4)
-        .map((item) => ({ id: item.id as string, name: item.name as string }));
-      setSolarBookmarks(next);
-    } catch (error) {
-      console.warn("Unable to load solar bookmarks", error);
-      setSolarBookmarks([]);
-    }
-  }, [openedTabs.skymap]);
+    setSolarBookmarks(readCameraBookmarks().slice(0, 4));
+  }, [openedTabs.solar]);
 
   const featuredSlides = useMemo(() => {
     if (!featuredImages.length) {
@@ -491,8 +484,11 @@ const HomePage: FC<HomePageProps> = ({
               <button type="button" className="home__cta" onClick={onStartDiscovery} disabled={discoveryLoading}>
                 {discoveryLoading ? "Exploring..." : "Explore Random Universe"}
               </button>
-              <button type="button" className="ghost" onClick={onExploreSolar}>
-                Launch SkyMap
+              <button type="button" className="ghost" onClick={onOpenSkyMap}>
+                Open SkyMap
+              </button>
+              <button type="button" className="ghost" onClick={() => onExploreSolar()}>
+                Launch Solar Explorer
               </button>
             </div>
             <div className="home__intensity">
@@ -535,18 +531,65 @@ const HomePage: FC<HomePageProps> = ({
 
         {activeTab === "skymap" && (
           <div className="home__tab-panel" role="tabpanel" id="home-panel-skymap" aria-labelledby="home-tab-skymap">
+            <div className="home__skymap-banner home__skymap-banner--universe">
+              <div>
+                <p className="eyebrow">NEW PRODUCT SURFACE</p>
+                <h2>SkyMap</h2>
+                <p className="subtitle">
+                  The broader universe-navigation workspace. It starts with a real local-star preview and a clean
+                  foundation for future search, layers, scale, and time systems.
+                </p>
+              </div>
+              <span className="home__skymap-badge">ALPHA</span>
+            </div>
+            <div className="home__skymap-grid">
+              <div className="home__skymap-launch home__skymap-launch--universe">
+                <p className="eyebrow">UNIVERSE NAVIGATOR</p>
+                <h3>Open SkyMap</h3>
+                <p className="subtitle">
+                  Enter the dedicated map surface for local stars now, with room for galaxy-scale navigation later.
+                </p>
+                <div className="home__skymap-actions">
+                  <button type="button" className="home__cta" onClick={onOpenSkyMap}>
+                    Open SkyMap
+                  </button>
+                </div>
+                <p className="home__cta-note">
+                  SkyMap is intentionally separate from the Solar Explorer so the larger map architecture can grow cleanly.
+                </p>
+              </div>
+              <div className="home__skymap-saved">
+                <p className="eyebrow">FOUNDATION SCOPE</p>
+                <div className="home__skymap-bookmarks" aria-label="SkyMap foundation scope">
+                  <span className="home__skymap-bookmark home__skymap-bookmark--static">Local star preview active</span>
+                  <span className="home__skymap-bookmark home__skymap-bookmark--static">Search index pending</span>
+                  <span className="home__skymap-bookmark home__skymap-bookmark--static">Layer controls staged</span>
+                </div>
+              </div>
+            </div>
+            <div className="home__skymap-features">
+              <div className="home__skymap-feature">Local stars</div>
+              <div className="home__skymap-feature">Viewport shell</div>
+              <div className="home__skymap-feature">Future layers</div>
+              <div className="home__skymap-feature">Future search</div>
+            </div>
+          </div>
+        )}
+
+        {activeTab === "solar" && (
+          <div className="home__tab-panel" role="tabpanel" id="home-panel-solar" aria-labelledby="home-tab-solar">
             <div className="home__skymap-banner">
               <div>
-                <p className="eyebrow">FLAGSHIP EXPERIENCE</p>
-                <h2>SkyMap</h2>
-                <p className="subtitle">A navigable map of our solar system.</p>
+                <p className="eyebrow">CURRENT 3D EXPERIENCE</p>
+                <h2>Solar Explorer</h2>
+                <p className="subtitle">An interactive 3D view of the solar system.</p>
               </div>
               <span className="home__skymap-badge">NEW</span>
             </div>
-            {showSkymapHint && (
+            {showSolarHint && (
               <div className="home__skymap-hint">
                 <span>Quick tip: drag to orbit, scroll to zoom, double click to focus.</span>
-                <button type="button" className="ghost button--small" onClick={dismissSkymapHint}>
+                <button type="button" className="ghost button--small" onClick={dismissSolarHint}>
                   Got it
                 </button>
               </div>
@@ -557,11 +600,11 @@ const HomePage: FC<HomePageProps> = ({
                 <h3>Launch Solar Explorer</h3>
                 <p className="subtitle">Navigate planets, scrub time, track orbits, and jump to imagery in one place.</p>
                 <div className="home__skymap-actions">
-                  <button type="button" className="home__cta" onClick={onExploreSolar}>
+                  <button type="button" className="home__cta" onClick={() => onExploreSolar()}>
                     Launch Explorer
                   </button>
                 </div>
-                <p className="home__cta-note">Navigate the solar system like Google Maps.</p>
+                <p className="home__cta-note">Use 3D orbit controls to inspect the current solar-system view.</p>
               </div>
               <div className="home__skymap-saved">
                 <p className="eyebrow">RECENT SAVED VIEWS</p>
@@ -572,14 +615,14 @@ const HomePage: FC<HomePageProps> = ({
                         key={bookmark.id}
                         type="button"
                         className="home__skymap-bookmark"
-                        onClick={onExploreSolar}
+                        onClick={() => onExploreSolar(bookmark)}
                       >
                         {bookmark.name}
                       </button>
                     ))}
                   </div>
                 ) : (
-                  <p className="subtitle">No saved views yet. Save a bookmark inside SkyMap to see it here.</p>
+                  <p className="subtitle">No saved views yet. Save a view inside Solar Explorer to see it here.</p>
                 )}
               </div>
             </div>

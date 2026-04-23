@@ -1,12 +1,24 @@
-/* Theme tokens for SpaceViewer's refined dark UI. */
+/* Linear-inspired system tokens for the SpaceViewer workspace. */
 :root {
-  --sv-bg: #05070b;
-  --sv-bg-elevated: rgba(15, 19, 27, 0.86);
-  --sv-border-subtle: rgba(122, 255, 214, 0.12);
-  --sv-text-primary: #f3f5f7;
-  --sv-text-secondary: rgba(243, 245, 247, 0.62);
-  --sv-accent: #64f0ff;
-  --sv-radius-md: 14px;
-  --sv-radius-lg: 22px;
-  --sv-shadow-soft: 0 24px 60px rgba(0, 0, 0, 0.55);
+  --sv-bg: #090a0d;
+  --sv-surface-0: #0f1013;
+  --sv-surface-1: #14161b;
+  --sv-surface-2: #191c22;
+  --sv-surface-3: #21252d;
+  --sv-bg-elevated: rgba(20, 22, 27, 0.94);
+  --sv-border-subtle: rgba(255, 255, 255, 0.08);
+  --sv-border-strong: rgba(255, 255, 255, 0.14);
+  --sv-text-primary: #f3f4f6;
+  --sv-text-secondary: rgba(243, 244, 246, 0.72);
+  --sv-text-tertiary: rgba(243, 244, 246, 0.42);
+  --sv-accent: #6a7cff;
+  --sv-accent-soft: rgba(106, 124, 255, 0.16);
+  --sv-accent-strong: rgba(106, 124, 255, 0.75);
+  --sv-radius-sm: 8px;
+  --sv-radius-md: 12px;
+  --sv-radius-lg: 16px;
+  --sv-shadow-soft: 0 18px 40px rgba(0, 0, 0, 0.32);
+  --sv-shadow-panel: 0 14px 30px rgba(0, 0, 0, 0.24);
+  --sv-sidebar-width: 264px;
+  --sv-page-gutter: 32px;
 }

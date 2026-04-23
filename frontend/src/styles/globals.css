@@ -242,6 +242,7 @@ body.reduce-motion * {
   color: var(--sv-text-secondary);
   line-height: 1.65;
   max-width: 68ch;
+  overflow-wrap: anywhere;
 }
 
 .status {
@@ -586,6 +587,31 @@ button:disabled {
   transform: translateY(-3px);
 }
 
+.home__skymap-bookmark--static {
+  display: block;
+  cursor: default;
+}
+
+.home__skymap-bookmark--static:hover {
+  transform: none;
+  box-shadow: none;
+  border-color: rgba(122, 255, 214, 0.2);
+}
+
+.home__skymap-banner--universe {
+  border-color: rgba(142, 165, 255, 0.28);
+  background:
+    linear-gradient(120deg, rgba(106, 124, 255, 0.14), rgba(122, 255, 214, 0.06)),
+    rgba(10, 14, 22, 0.7);
+}
+
+.home__skymap-launch--universe {
+  border-color: rgba(142, 165, 255, 0.3);
+  background:
+    radial-gradient(circle at 84% 20%, rgba(255, 211, 138, 0.12), transparent 34%),
+    linear-gradient(140deg, rgba(12, 18, 36, 0.94), rgba(9, 28, 32, 0.88));
+}
+
 .home__skymap-features {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -871,6 +897,14 @@ button:disabled {
     grid-template-columns: 1fr;
   }
 
+  .skymap-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .skymap-status-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .home__discover-card {
     align-items: flex-start;
   }
@@ -967,6 +1001,51 @@ button:disabled {
   }
 
   .home__skymap-features {
+    grid-template-columns: 1fr;
+  }
+
+  .skymap-topbar {
+    grid-template-columns: 1fr;
+    align-items: start;
+  }
+
+  .skymap-topbar__actions {
+    justify-content: flex-start;
+  }
+
+  .skymap-viewport {
+    min-height: 56svh;
+  }
+
+  .skymap-page {
+    gap: 14px;
+  }
+
+  .skymap-topbar,
+  .skymap-panel {
+    padding: 14px;
+  }
+
+  .skymap-topbar h1 {
+    font-size: clamp(30px, 12vw, 44px);
+  }
+
+  .skymap-status-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .skymap-viewport__hud {
+    flex-direction: column;
+    align-items: flex-start;
+    letter-spacing: 0.04em;
+  }
+
+  .skymap-object-stats > div {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .skymap-layer-row {
     grid-template-columns: 1fr;
   }
 
@@ -1146,27 +1225,6 @@ button:disabled {
     position: static;
   }
 
-  .starmap-header {
-    position: static;
-    border-radius: 0;
-    background: transparent;
-    border: none;
-    box-shadow: none;
-    padding: 0;
-  }
-
-  .starmap-header__meta {
-    align-items: flex-start;
-  }
-
-  .starmap-panel {
-    position: static;
-    width: 100%;
-    max-height: none;
-    padding: 12px;
-    margin-top: 12px;
-  }
-
   .solar-timeline {
     position: fixed;
     left: 8px;
@@ -1209,10 +1267,10 @@ button:disabled {
   .solar-features {
     display: none;
     position: fixed;
-    top: calc(56px + env(safe-area-inset-top));
+    top: calc(148px + env(safe-area-inset-top));
     right: 10px;
     bottom: calc(76px + env(safe-area-inset-bottom));
-    width: min(200px, 64vw);
+    width: min(320px, calc(100vw - 28px));
     flex-direction: column;
     gap: 8px;
     padding: 8px;
@@ -1231,7 +1289,7 @@ button:disabled {
   .solar-tray__toggle {
     position: fixed;
     right: 10px;
-    top: calc(86px + env(safe-area-inset-top));
+    top: calc(150px + env(safe-area-inset-top));
     padding: 8px 12px;
     border-radius: 999px;
     border: 1px solid rgba(122, 255, 214, 0.4);
@@ -1245,7 +1303,17 @@ button:disabled {
   }
 
   .solar-tray__toggle.is-open {
-    right: calc(min(200px, 64vw) + 18px);
+    left: 14px;
+    right: auto;
+  }
+
+  .solar-page .experience-tour {
+    bottom: calc(112px + env(safe-area-inset-bottom) + var(--sv-urlbar, 0px) + var(--sv-dvh, 0px));
+  }
+
+  .solar-page.is-presentation .solar-timeline {
+    opacity: 0;
+    pointer-events: none;
   }
 }
 
@@ -2099,6 +2167,113 @@ button:disabled {
   gap: 10px;
 }
 
+.solar-search {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: min(300px, 34vw);
+}
+
+.solar-search label {
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sv-text-secondary);
+}
+
+.solar-search input {
+  width: 100%;
+  appearance: none;
+  border: 1px solid rgba(122, 255, 214, 0.2);
+  border-radius: 999px;
+  background:
+    linear-gradient(135deg, rgba(122, 255, 214, 0.08), rgba(76, 143, 255, 0.04)),
+    rgba(255, 255, 255, 0.045);
+  color: var(--sv-text-primary);
+  padding: 9px 14px;
+  font-size: 13px;
+  box-shadow: inset 0 0 0 1px rgba(122, 255, 214, 0.08);
+}
+
+.solar-search input:focus {
+  outline: none;
+  border-color: rgba(122, 255, 214, 0.62);
+  box-shadow:
+    0 0 0 2px rgba(122, 255, 214, 0.14),
+    0 0 22px rgba(122, 255, 214, 0.12);
+}
+
+.solar-search__results {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: min(360px, 78vw);
+  padding: 8px;
+  border-radius: 14px;
+  border: 1px solid rgba(122, 255, 214, 0.22);
+  background: rgba(8, 12, 20, 0.94);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 22px 50px rgba(0, 0, 0, 0.48);
+  z-index: 8;
+  display: grid;
+  gap: 6px;
+}
+
+.solar-search__result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--sv-text-primary);
+  text-align: left;
+  cursor: pointer;
+}
+
+.solar-search__result span {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.solar-search__result strong {
+  font-size: 13px;
+}
+
+.solar-search__result small {
+  color: var(--sv-text-secondary);
+  font-size: 11px;
+}
+
+.solar-search__result em {
+  flex: 0 0 auto;
+  font-style: normal;
+  padding: 3px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(122, 255, 214, 0.18);
+  color: rgba(207, 248, 238, 0.88);
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+
+.solar-search__result:hover,
+.solar-search__result.is-active {
+  border-color: rgba(122, 255, 214, 0.36);
+  background: rgba(122, 255, 214, 0.08);
+}
+
+.solar-search__empty {
+  padding: 10px;
+  color: var(--sv-text-secondary);
+  font-size: 12px;
+}
+
 .solar-date {
   display: flex;
   flex-direction: column;
@@ -2217,6 +2392,11 @@ button:disabled {
 
 .solar-tools {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .solar-tools__menu {
@@ -2448,6 +2628,42 @@ button:disabled {
   gap: 6px;
 }
 
+.solar-panel__section {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.solar-panel__note {
+  margin: 0;
+  color: var(--sv-text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.solar-related-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.solar-related-list button,
+.solar-related-button {
+  border: 1px solid rgba(122, 255, 214, 0.22);
+  border-radius: 999px;
+  background: rgba(122, 255, 214, 0.07);
+  color: var(--sv-text-primary);
+  padding: 7px 10px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.solar-related-list button:hover,
+.solar-related-button:hover {
+  border-color: rgba(122, 255, 214, 0.48);
+  background: rgba(122, 255, 214, 0.13);
+}
+
 .solar-panel__actions {
   display: flex;
   flex-wrap: wrap;
@@ -2517,6 +2733,74 @@ button:disabled {
     var(--sv-shadow-soft);
 }
 
+.solar-scale-legend {
+  position: fixed;
+  left: 24px;
+  top: 170px;
+  width: min(300px, calc(100vw - 48px));
+  padding: 14px;
+  border-radius: var(--sv-radius-lg);
+  border: 1px solid rgba(122, 255, 214, 0.18);
+  background: rgba(8, 12, 20, 0.68);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.32);
+  display: grid;
+  gap: 10px;
+  color: var(--sv-text-secondary);
+  font-size: 12px;
+}
+
+.solar-scale-legend strong {
+  display: block;
+  color: var(--sv-text-primary);
+  margin-top: 2px;
+}
+
+.solar-scale-legend p,
+.solar-scale-legend small {
+  margin: 0;
+  line-height: 1.45;
+}
+
+.solar-scale-legend small {
+  color: rgba(198, 213, 230, 0.72);
+}
+
+.solar-scale-legend__bar {
+  position: relative;
+  height: 6px;
+  border-radius: 999px;
+  overflow: hidden;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.solar-scale-legend__bar span {
+  display: block;
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, rgba(122, 255, 214, 0.85), rgba(95, 169, 255, 0.78));
+}
+
+.solar-scale-legend dl {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin: 0;
+}
+
+.solar-scale-legend dt {
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--sv-text-tertiary);
+}
+
+.solar-scale-legend dd {
+  margin: 0;
+  color: var(--sv-text-primary);
+  font-size: 12px;
+}
+
 .solar-howto {
   position: fixed;
   inset: 0;
@@ -2547,123 +2831,951 @@ button:disabled {
   color: var(--sv-text-secondary);
 }
 
-.starmap-page {
-  position: relative;
-  min-height: calc(100vh - 120px);
-}
-
-.starmap-canvas {
+.experience-intro {
   position: fixed;
   inset: 0;
-  z-index: 0;
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  background:
+    radial-gradient(circle at 50% 42%, rgba(122, 255, 214, 0.12), transparent 32%),
+    rgba(3, 6, 12, 0.76);
+  backdrop-filter: blur(12px);
 }
 
-.starmap-canvas__element {
+.experience-intro__card {
+  width: min(620px, 100%);
+  padding: 24px;
+  border-radius: 22px;
+  border: 1px solid rgba(122, 255, 214, 0.22);
+  background:
+    radial-gradient(circle at 16% 0%, rgba(122, 255, 214, 0.12), transparent 34%),
+    radial-gradient(circle at 90% 18%, rgba(142, 165, 255, 0.13), transparent 34%),
+    rgba(10, 14, 23, 0.92);
+  box-shadow:
+    0 32px 90px rgba(0, 0, 0, 0.56),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  display: grid;
+  gap: 18px;
+}
+
+.experience-intro__copy {
+  display: grid;
+  gap: 10px;
+}
+
+.experience-intro__copy h2,
+.experience-tour__copy h2,
+.experience-presentation-hud h2 {
+  letter-spacing: 0;
+}
+
+.experience-intro__copy h2 {
+  font-size: clamp(28px, 6vw, 46px);
+  line-height: 1.05;
+}
+
+.experience-intro__copy p,
+.experience-tour__copy p,
+.experience-presentation-hud p {
+  color: var(--sv-text-secondary);
+  line-height: 1.6;
+}
+
+.experience-intro__highlights {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.experience-intro__highlights span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 32px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(142, 165, 255, 0.18);
+  background: rgba(142, 165, 255, 0.07);
+  color: var(--sv-text-secondary);
+  font-size: 12px;
+}
+
+.experience-intro__actions,
+.experience-tour__actions,
+.experience-presentation-hud > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(96px, 1fr));
+  gap: 8px;
+  align-items: center;
+}
+
+.experience-presentation-hud > div button {
+  width: 100%;
+  padding-inline: 10px;
+}
+
+.experience-tour {
+  position: fixed;
+  left: 50%;
+  bottom: calc(28px + env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  z-index: 36;
+  width: min(580px, calc(100vw - 48px));
+  padding: 16px;
+  border-radius: 18px;
+  border: 1px solid rgba(122, 255, 214, 0.26);
+  background:
+    radial-gradient(circle at 12% 0%, rgba(122, 255, 214, 0.12), transparent 38%),
+    rgba(8, 12, 20, 0.9);
+  backdrop-filter: blur(20px);
+  box-shadow: 0 26px 70px rgba(0, 0, 0, 0.5);
+  display: grid;
+  gap: 12px;
+}
+
+.solar-page .experience-tour {
+  bottom: calc(148px + env(safe-area-inset-bottom));
+}
+
+.experience-tour__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  color: var(--sv-text-tertiary);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.experience-tour__copy {
+  display: grid;
+  gap: 6px;
+}
+
+.experience-tour__copy h2 {
+  font-size: 21px;
+}
+
+.experience-tour__copy strong {
+  color: rgba(122, 255, 214, 0.92);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.experience-tour__progress {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(28px, 1fr));
+  gap: 5px;
+}
+
+.experience-tour__progress span {
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.experience-tour__progress span.is-active {
+  background: linear-gradient(90deg, rgba(122, 255, 214, 0.95), rgba(142, 165, 255, 0.82));
+}
+
+.experience-presentation-hud {
+  position: fixed;
+  right: 20px;
+  top: 112px;
+  z-index: 34;
+  width: min(330px, calc(100vw - 40px));
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(122, 255, 214, 0.22);
+  background: rgba(8, 12, 20, 0.72);
+  backdrop-filter: blur(18px);
+  box-shadow: 0 20px 52px rgba(0, 0, 0, 0.42);
+  display: grid;
+  gap: 8px;
+}
+
+.experience-presentation-hud h2 {
+  font-size: 20px;
+}
+
+.experience-presentation-hud p {
+  font-size: 13px;
+}
+
+.solar-page.is-presentation .solar-topbar,
+.solar-page.is-presentation .solar-panel,
+.solar-page.is-presentation .solar-scale-legend,
+.solar-page.is-presentation .solar-tray__toggle {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.solar-page.is-presentation .solar-timeline {
+  opacity: 0.24;
+  transition: opacity 0.24s ease;
+}
+
+.solar-page.is-presentation .solar-timeline:hover,
+.solar-page.is-presentation .solar-timeline:focus-within {
+  opacity: 1;
+}
+
+.skymap-page.is-presentation .skymap-topbar,
+.skymap-page.is-presentation .skymap-rail,
+.skymap-page.is-presentation .skymap-status-strip {
+  display: none;
+}
+
+.skymap-page.is-presentation .skymap-workspace {
+  grid-template-columns: 1fr;
+}
+
+.skymap-page.is-presentation .skymap-viewport {
+  min-height: calc(100vh - 150px);
+}
+
+.skymap-page {
+  min-height: calc(100vh - 88px);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.skymap-page h1,
+.skymap-page h2,
+.skymap-page h3 {
+  letter-spacing: 0;
+}
+
+.skymap-topbar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 18px;
+  align-items: end;
+  padding: 20px;
+  border-radius: var(--sv-radius-lg);
+  border: 1px solid rgba(142, 165, 255, 0.24);
+  background:
+    radial-gradient(circle at 8% 0%, rgba(122, 255, 214, 0.1), transparent 38%),
+    radial-gradient(circle at 88% 20%, rgba(255, 211, 138, 0.08), transparent 32%),
+    rgba(12, 15, 23, 0.82);
+  box-shadow: var(--sv-shadow-panel);
+}
+
+.skymap-topbar__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skymap-topbar h1 {
+  font-size: clamp(34px, 5vw, 56px);
+  line-height: 1.02;
+}
+
+.skymap-topbar__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.skymap-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 34px;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid var(--sv-border-subtle);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--sv-text-secondary);
+  font-size: 12px;
+  white-space: nowrap;
+}
+
+.skymap-pill--active {
+  border-color: rgba(122, 255, 214, 0.32);
+  background: rgba(122, 255, 214, 0.1);
+  color: var(--sv-text-primary);
+}
+
+.skymap-workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 360px);
+  gap: 18px;
+  align-items: stretch;
+}
+
+.skymap-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skymap-viewport {
+  position: relative;
+  min-height: min(680px, calc(100vh - 260px));
+  border-radius: var(--sv-radius-lg);
+  border: 1px solid rgba(142, 165, 255, 0.24);
+  background:
+    radial-gradient(circle at 50% 52%, rgba(122, 255, 214, 0.08), transparent 25%),
+    linear-gradient(180deg, rgba(7, 10, 18, 0.96), rgba(5, 8, 14, 0.98));
+  overflow: hidden;
+  box-shadow: var(--sv-shadow-panel);
+}
+
+.skymap-viewport::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 72px 72px;
+  mask-image: radial-gradient(circle at center, black 0%, transparent 70%);
+  opacity: 0.32;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.skymap-viewport__canvas {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
 }
 
-.starmap-ui {
-  position: relative;
+.skymap-viewport__hud {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  top: 14px;
   z-index: 2;
-  pointer-events: none;
-}
-
-.starmap-ui > * {
-  pointer-events: auto;
-}
-
-.starmap-header {
-  position: sticky;
-  top: 92px;
   display: flex;
-  align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
-  padding: 12px 16px;
-  border-radius: var(--sv-radius-lg);
-  border: 1px solid var(--sv-border-subtle);
-  background: rgba(8, 12, 20, 0.72);
-  backdrop-filter: blur(18px);
-  box-shadow: var(--sv-shadow-soft);
-  margin-bottom: 16px;
-}
-
-.starmap-header__meta {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
-  flex-wrap: wrap;
-  gap: 8px 10px;
-  color: var(--sv-text-secondary);
-}
-
-.starmap-header__label {
-  font-size: 10px;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-}
-
-.starmap-header__meta .info-panel__mode-toggle {
-  padding: 2px;
-}
-
-.starmap-header__meta .mode-button {
-  padding: 4px 10px;
-  font-size: 10px;
-}
-
-.starmap-header__meta .ghost.button--small {
-  padding: 4px 10px;
-}
-
-.starmap-panel {
-  position: fixed;
-  right: 32px;
-  top: 220px;
-  width: min(320px, 88vw);
-  max-height: calc(100vh - 280px);
-  overflow: auto;
-  padding: 18px;
-  border-radius: var(--sv-radius-lg);
-  border: 1px solid var(--sv-border-subtle);
-  background: rgba(8, 12, 20, 0.82);
-  backdrop-filter: blur(18px);
-  box-shadow: var(--sv-shadow-soft);
-}
-
-.starmap-panel__stats {
-  display: grid;
   gap: 10px;
-  margin: 12px 0 0;
-}
-
-.starmap-panel__stats dt {
+  color: var(--sv-text-tertiary);
   font-size: 11px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--sv-text-secondary);
+  pointer-events: none;
 }
 
-.starmap-panel__stats dd {
-  font-size: 16px;
-}
-
-.starmap-label {
-  padding: 3px 8px;
+.skymap-viewport__empty {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  padding: 8px 12px;
   border-radius: 999px;
-  border: 1px solid rgba(122, 255, 214, 0.25);
-  background: rgba(6, 10, 18, 0.7);
-  color: rgba(236, 247, 255, 0.9);
-  font-size: 10px;
+  border: 1px solid rgba(142, 165, 255, 0.24);
+  background: rgba(7, 10, 18, 0.72);
+  color: var(--sv-text-secondary);
+  font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  box-shadow: 0 8px 20px rgba(2, 6, 12, 0.45);
-  transform-origin: center;
-  transition: opacity 0.25s ease, transform 0.25s ease;
+  pointer-events: none;
+}
+
+.skymap-viewport__origin {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: 112px;
+  height: 112px;
+  border-radius: 999px;
+  border: 1px solid rgba(122, 255, 214, 0.12);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+}
+
+.skymap-viewport__origin span {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 18px rgba(122, 255, 214, 0.45);
+}
+
+.skymap-star-label {
+  padding: 4px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(142, 165, 255, 0.28);
+  background: rgba(7, 10, 18, 0.76);
+  color: rgba(243, 244, 246, 0.9);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
   white-space: nowrap;
   pointer-events: none;
+}
+
+.skymap-star-label.is-selected {
+  border-color: rgba(122, 255, 214, 0.48);
+  color: var(--sv-text-primary);
+}
+
+.skymap-status-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 10px;
+}
+
+.skymap-status-strip > div {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid var(--sv-border-subtle);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.skymap-status-strip span,
+.skymap-object-stats dt,
+.skymap-search span,
+.skymap-navigation-grid span {
+  display: block;
+  color: var(--sv-text-tertiary);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.skymap-status-strip strong,
+.skymap-object-stats dd,
+.skymap-navigation-grid strong {
+  display: block;
+  margin-top: 4px;
+  color: var(--sv-text-primary);
+  font-size: 14px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.skymap-rail {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+.skymap-panel {
+  padding: 16px;
+  border-radius: var(--sv-radius-lg);
+  border: 1px solid var(--sv-border-subtle);
+  background: rgba(14, 17, 24, 0.82);
+  box-shadow: var(--sv-shadow-panel);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.skymap-panel h2 {
+  font-size: 18px;
+}
+
+.skymap-search {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skymap-search input {
+  width: 100%;
+  min-height: 42px;
+  border-radius: 10px;
+  border: 1px solid var(--sv-border-subtle);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--sv-text-primary);
+  padding: 0 12px;
+}
+
+.skymap-search input:focus {
+  outline: none;
+  border-color: rgba(122, 255, 214, 0.42);
+  box-shadow: 0 0 0 3px rgba(122, 255, 214, 0.08);
+}
+
+.skymap-panel--time {
+  border-color: rgba(122, 255, 214, 0.18);
+  background:
+    radial-gradient(circle at top right, rgba(122, 255, 214, 0.08), transparent 44%),
+    rgba(14, 17, 24, 0.82);
+}
+
+.skymap-time-actions,
+.skymap-time-grid {
+  display: grid;
+  gap: 8px;
+}
+
+.skymap-time-actions {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.skymap-time-grid {
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+}
+
+.skymap-time-field {
+  display: grid;
+  gap: 7px;
+}
+
+.skymap-time-field span {
+  display: block;
+  color: var(--sv-text-tertiary);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.skymap-time-field input,
+.skymap-time-field select {
+  width: 100%;
+  min-height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--sv-border-subtle);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--sv-text-primary);
+  padding: 0 10px;
+}
+
+.skymap-time-field input:focus,
+.skymap-time-field select:focus {
+  outline: none;
+  border-color: rgba(122, 255, 214, 0.42);
+  box-shadow: 0 0 0 3px rgba(122, 255, 214, 0.08);
+}
+
+.skymap-panel--navigation {
+  border-color: rgba(142, 165, 255, 0.2);
+  background:
+    radial-gradient(circle at top right, rgba(142, 165, 255, 0.08), transparent 42%),
+    rgba(14, 17, 24, 0.82);
+}
+
+.skymap-panel--discovery {
+  border-color: rgba(255, 211, 138, 0.2);
+  background:
+    radial-gradient(circle at top right, rgba(255, 211, 138, 0.08), transparent 42%),
+    rgba(14, 17, 24, 0.82);
+}
+
+.skymap-discovery-actions,
+.skymap-filter-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  color: var(--sv-text-tertiary);
+  font-size: 12px;
+}
+
+.skymap-discovery-list {
+  display: grid;
+  gap: 8px;
+}
+
+.skymap-discovery-card {
+  appearance: none;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 10px;
+  align-items: start;
+  padding: 11px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 211, 138, 0.14);
+  background: rgba(255, 211, 138, 0.055);
+  color: inherit;
+  text-align: left;
+  box-shadow: none;
+}
+
+.skymap-discovery-card:hover {
+  border-color: rgba(255, 211, 138, 0.28);
+  background: rgba(255, 211, 138, 0.09);
+}
+
+.skymap-discovery-card span {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+}
+
+.skymap-discovery-card strong {
+  color: var(--sv-text-primary);
+  font-size: 13px;
+}
+
+.skymap-discovery-card small {
+  color: var(--sv-text-secondary);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.skymap-discovery-card em {
+  padding: 4px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 211, 138, 0.18);
+  background: rgba(255, 211, 138, 0.08);
+  color: #ffe1aa;
+  font-size: 10px;
+  font-style: normal;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.skymap-panel--filters {
+  border-color: rgba(155, 122, 255, 0.2);
+  background:
+    radial-gradient(circle at top right, rgba(155, 122, 255, 0.08), transparent 42%),
+    rgba(14, 17, 24, 0.82);
+}
+
+.skymap-filter-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.skymap-filter-grid label {
+  display: grid;
+  gap: 7px;
+}
+
+.skymap-filter-grid span,
+.skymap-filter-toggle span {
+  color: var(--sv-text-tertiary);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.skymap-filter-grid select {
+  width: 100%;
+  min-height: 38px;
+  border-radius: 10px;
+  border: 1px solid var(--sv-border-subtle);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--sv-text-primary);
+  padding: 0 10px;
+}
+
+.skymap-filter-grid select:focus {
+  outline: none;
+  border-color: rgba(122, 255, 214, 0.42);
+  box-shadow: 0 0 0 3px rgba(122, 255, 214, 0.08);
+}
+
+.skymap-filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.skymap-navigation-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.skymap-navigation-grid > div {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.skymap-navigation-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skymap-search-results {
+  display: grid;
+  gap: 8px;
+  max-height: 320px;
+  overflow: auto;
+}
+
+.skymap-search-result {
+  appearance: none;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 8px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.035);
+  color: inherit;
+  text-align: left;
+  box-shadow: none;
+}
+
+.skymap-search-result.is-active,
+.skymap-search-result:hover {
+  border-color: rgba(122, 255, 214, 0.28);
+  background: rgba(122, 255, 214, 0.08);
+}
+
+.skymap-search-result__main {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.skymap-search-result__main strong {
+  color: var(--sv-text-primary);
+  font-size: 13px;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.skymap-search-result__main mark {
+  border-radius: 4px;
+  background: rgba(122, 255, 214, 0.18);
+  color: inherit;
+  padding: 0 1px;
+}
+
+.skymap-search-result__main small {
+  color: var(--sv-text-tertiary);
+  font-size: 12px;
+}
+
+.skymap-search-result__badges {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 5px;
+}
+
+.skymap-search-result__badges em {
+  display: inline-flex;
+  align-items: center;
+  min-height: 22px;
+  padding: 3px 7px;
+  border-radius: 999px;
+  border: 1px solid rgba(142, 165, 255, 0.16);
+  background: rgba(142, 165, 255, 0.08);
+  color: var(--sv-text-secondary);
+  font-size: 10px;
+  font-style: normal;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+}
+
+.skymap-search-result__badges .is-hidden-layer {
+  border-color: rgba(255, 211, 138, 0.2);
+  background: rgba(255, 211, 138, 0.08);
+  color: #ffe1aa;
+}
+
+.skymap-search-empty {
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px dashed rgba(142, 165, 255, 0.2);
+  color: var(--sv-text-secondary);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.skymap-note,
+.skymap-empty,
+.skymap-panel--foundation p {
+  color: var(--sv-text-secondary);
+  font-size: 13px;
+  line-height: 1.6;
+}
+
+.skymap-layer-list,
+.skymap-object-stats {
+  display: grid;
+  gap: 8px;
+}
+
+.skymap-object-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.skymap-imagery-card {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(142, 165, 255, 0.18);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.skymap-imagery-card img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.skymap-imagery-card figcaption {
+  display: grid;
+  gap: 3px;
+  padding: 0 10px 10px;
+}
+
+.skymap-imagery-card figcaption strong {
+  color: var(--sv-text-primary);
+  font-size: 13px;
+}
+
+.skymap-imagery-card figcaption span {
+  color: var(--sv-text-tertiary);
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.skymap-imagery-card__actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.skymap-imagery-card__actions a {
+  color: var(--sv-text-secondary);
+  font-size: 12px;
+  text-decoration: none;
+}
+
+.skymap-imagery-card__actions a:hover {
+  color: var(--sv-text-primary);
+}
+
+.skymap-object-stats > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.035);
+}
+
+.skymap-related {
+  display: grid;
+  gap: 8px;
+}
+
+.skymap-related > span {
+  color: var(--sv-text-tertiary);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.skymap-related > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.skymap-related button {
+  min-height: 30px;
+  padding: 5px 9px;
+  border-radius: 999px;
+  border: 1px solid rgba(142, 165, 255, 0.2);
+  background: rgba(142, 165, 255, 0.08);
+  color: var(--sv-text-secondary);
+  box-shadow: none;
+}
+
+.skymap-related button:hover {
+  border-color: rgba(122, 255, 214, 0.32);
+  color: var(--sv-text-primary);
+}
+
+.skymap-layer-row {
+  appearance: none;
+  width: 100%;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  gap: 4px 12px;
+  padding: 10px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  background: rgba(255, 255, 255, 0.035);
+  color: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.skymap-layer-row.is-active {
+  border-color: rgba(122, 255, 214, 0.24);
+  background: rgba(122, 255, 214, 0.08);
+}
+
+.skymap-layer-row:not(:disabled):hover {
+  border-color: rgba(142, 165, 255, 0.24);
+  background: rgba(142, 165, 255, 0.08);
+}
+
+.skymap-layer-row:disabled {
+  cursor: not-allowed;
+  opacity: 0.72;
+}
+
+.skymap-layer-row span {
+  color: var(--sv-text-primary);
+}
+
+.skymap-layer-row strong {
+  color: var(--sv-text-tertiary);
+  font-size: 12px;
+  font-weight: 500;
+  text-align: right;
+}
+
+.skymap-layer-row small {
+  grid-column: 1 / -1;
+  color: var(--sv-text-tertiary);
+  font-size: 12px;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+}
+
+.skymap-panel--foundation {
+  border-color: rgba(255, 211, 138, 0.18);
+  background:
+    radial-gradient(circle at top right, rgba(255, 211, 138, 0.08), transparent 42%),
+    rgba(14, 17, 24, 0.82);
+}
+
+.skymap-panel--foundation span {
+  align-self: flex-start;
+  padding: 6px 10px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 211, 138, 0.18);
+  background: rgba(255, 211, 138, 0.08);
+  color: #ffe1aa;
+  font-size: 12px;
 }
 
 .solar-planet-label {
@@ -2755,8 +3867,27 @@ button:disabled {
     max-height: none;
   }
 
+  .solar-search {
+    min-width: 100%;
+  }
+
+  .solar-search__results {
+    width: 100%;
+  }
+
+  .solar-features .solar-select select {
+    width: 100%;
+    background-image: none;
+    padding-right: 14px;
+  }
+
   .solar-topbar {
     position: static;
+  }
+
+  .solar-scale-legend {
+    position: static;
+    width: 100%;
   }
 
   .solar-loading {
@@ -3302,10 +4433,10 @@ button:disabled {
   .solar-features {
     display: none !important;
     position: fixed;
-    top: calc(56px + env(safe-area-inset-top));
+    top: calc(148px + env(safe-area-inset-top));
     right: 10px;
     bottom: calc(76px + env(safe-area-inset-bottom));
-    width: min(200px, 64vw);
+    width: min(320px, calc(100vw - 28px));
     flex-direction: column;
     gap: 8px;
     padding: 8px;
@@ -3323,13 +4454,120 @@ button:disabled {
 
   .solar-tray__toggle {
     right: 10px;
-    top: calc(86px + env(safe-area-inset-top));
+    top: calc(150px + env(safe-area-inset-top));
     padding: 8px 12px;
     font-size: 10px;
     letter-spacing: 0.12em;
   }
 
   .solar-tray__toggle.is-open {
-    right: calc(min(200px, 64vw) + 18px);
+    left: 14px;
+    right: auto;
+  }
+}
+
+@media (max-width: 1100px) {
+  .skymap-workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .skymap-status-strip {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .skymap-page {
+    gap: 14px;
+  }
+
+  .skymap-topbar {
+    grid-template-columns: 1fr;
+    align-items: start;
+    padding: 14px;
+  }
+
+  .skymap-topbar h1 {
+    font-size: clamp(30px, 12vw, 44px);
+  }
+
+  .skymap-topbar__actions {
+    justify-content: flex-start;
+  }
+
+  .skymap-status-strip {
+    grid-template-columns: 1fr;
+  }
+
+  .skymap-viewport {
+    min-height: 52svh;
+    border-radius: 14px;
+  }
+
+  .skymap-viewport__hud {
+    flex-direction: column;
+    align-items: flex-start;
+    letter-spacing: 0.04em;
+  }
+
+  .skymap-panel {
+    padding: 14px;
+  }
+
+  .skymap-time-actions,
+  .skymap-time-grid,
+  .skymap-navigation-grid,
+  .skymap-filter-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .skymap-object-stats > div {
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .skymap-layer-row {
+    grid-template-columns: 1fr;
+  }
+
+  .experience-intro {
+    align-items: flex-end;
+    padding: 12px;
+  }
+
+  .experience-intro__card {
+    padding: 18px;
+    border-radius: 18px;
+  }
+
+  .experience-tour {
+    left: 12px;
+    right: 12px;
+    bottom: calc(18px + env(safe-area-inset-bottom));
+    width: auto;
+    transform: none;
+  }
+
+  .experience-tour__actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .experience-tour__actions button {
+    width: 100%;
+  }
+
+  .experience-presentation-hud {
+    top: auto;
+    right: 12px;
+    left: 12px;
+    bottom: calc(18px + env(safe-area-inset-bottom) + var(--sv-urlbar, 0px) + var(--sv-dvh, 0px));
+    width: auto;
+    max-height: calc(100svh - 156px);
+    overflow: auto;
+  }
+
+  .skymap-page.is-presentation .skymap-viewport {
+    min-height: calc(100svh - 118px);
   }
 }

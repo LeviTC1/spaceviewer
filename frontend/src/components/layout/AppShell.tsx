@@ -6,7 +6,8 @@ interface AppShellProps {
   onNavigateHome: () => void;
   onNavigateGallery: () => void;
   onNavigateSolar: () => void;
-  activeNav?: "home" | "gallery" | "solar";
+  onNavigateSkyMap: () => void;
+  activeNav?: "home" | "gallery" | "solar" | "skymap";
 }
 
 // Wraps every view with the premium glass background.
@@ -15,6 +16,7 @@ const AppShell: FC<AppShellProps> = ({
   onNavigateHome,
   onNavigateGallery,
   onNavigateSolar,
+  onNavigateSkyMap,
   activeNav,
 }) => {
   const shellRef = useRef<HTMLDivElement | null>(null);
@@ -71,13 +73,16 @@ const AppShell: FC<AppShellProps> = ({
 
   return (
     <div className="app-shell" ref={shellRef}>
-      <Header
-        onNavigateHome={onNavigateHome}
-        onNavigateGallery={onNavigateGallery}
-        onNavigateSolar={onNavigateSolar}
-        activeNav={activeNav}
-      />
-      <main className="app-shell__content">{children}</main>
+      <div className="app-shell__layout">
+        <Header
+          onNavigateHome={onNavigateHome}
+          onNavigateGallery={onNavigateGallery}
+          onNavigateSolar={onNavigateSolar}
+          onNavigateSkyMap={onNavigateSkyMap}
+          activeNav={activeNav}
+        />
+        <main className="app-shell__content">{children}</main>
+      </div>
     </div>
   );
 };

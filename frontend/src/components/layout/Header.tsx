@@ -4,7 +4,8 @@ interface HeaderProps {
   onNavigateHome: () => void;
   onNavigateGallery: () => void;
   onNavigateSolar: () => void;
-  activeNav?: "home" | "gallery" | "solar";
+  onNavigateSkyMap: () => void;
+  activeNav?: "home" | "gallery" | "solar" | "skymap";
 }
 
 // Header shows the SpaceViewer logo + nav.
@@ -12,46 +13,84 @@ const Header: FC<HeaderProps> = ({
   onNavigateHome,
   onNavigateGallery,
   onNavigateSolar,
+  onNavigateSkyMap,
   activeNav,
-}) => (
-  <header className="sv-header">
-    <div className="sv-header__logo" onClick={onNavigateHome} aria-label="SpaceViewer home">
-      <span className="sv-logo">
-        <svg className="sv-logo__icon" viewBox="0 0 120 48" aria-hidden="true" focusable="false">
-          <circle className="sv-logo__planet" cx="42" cy="24" r="16" />
-          <ellipse className="sv-logo__orbit" cx="42" cy="24" rx="26" ry="11" transform="rotate(-20 42 24)" />
-          <circle className="sv-logo__moon" cx="66" cy="15" r="3.2" />
-        </svg>
-        <span className="sv-logo__text">SpaceViewer</span>
-      </span>
-    </div>
-    <nav className="sv-header__nav">
-      <button
-        type="button"
-        onClick={onNavigateHome}
-        className={activeNav === "home" ? "active" : ""}
-        aria-current={activeNav === "home" ? "page" : undefined}
-      >
-        Home
+}) => {
+  const navItems = [
+    {
+      id: "home" as const,
+      label: "Home",
+      meta: "Search and discovery",
+      shortLabel: "H",
+      onClick: onNavigateHome,
+    },
+    {
+      id: "gallery" as const,
+      label: "Gallery",
+      meta: "Results and viewer",
+      shortLabel: "G",
+      onClick: onNavigateGallery,
+    },
+    {
+      id: "skymap" as const,
+      label: "SkyMap",
+      meta: "Universe navigation",
+      shortLabel: "M",
+      onClick: onNavigateSkyMap,
+    },
+    {
+      id: "solar" as const,
+      label: "Solar Explorer",
+      meta: "3D system workspace",
+      shortLabel: "S",
+      onClick: onNavigateSolar,
+    },
+  ];
+
+  return (
+    <header className="sv-header">
+      <button type="button" className="sv-header__brand" onClick={onNavigateHome} aria-label="SpaceViewer home">
+        <span className="sv-logo-mark" aria-hidden="true">
+          <span className="sv-logo-mark__core" />
+        </span>
+        <span className="sv-header__brand-copy">
+          <span className="sv-header__brand-title">SpaceViewer</span>
+          <span className="sv-header__brand-subtitle">Observation workspace</span>
+        </span>
       </button>
-      <button
-        type="button"
-        onClick={onNavigateGallery}
-        className={activeNav === "gallery" ? "active" : ""}
-        aria-current={activeNav === "gallery" ? "page" : undefined}
-      >
-        Gallery
-      </button>
-      <button
-        type="button"
-        onClick={onNavigateSolar}
-        className={activeNav === "solar" ? "active" : ""}
-        aria-current={activeNav === "solar" ? "page" : undefined}
-      >
-        Explore Solar System
-      </button>
-    </nav>
-  </header>
-);
+
+      <div className="sv-header__section">
+        <span className="sv-header__section-label">Workspace</span>
+        <nav className="sv-header__nav" aria-label="Primary">
+          {navItems.map((item) => {
+            const isActive = activeNav === item.id;
+            return (
+              <button
+                key={item.id}
+                type="button"
+                onClick={item.onClick}
+                className={`sv-nav__item ${isActive ? "active" : ""}`}
+                aria-current={isActive ? "page" : undefined}
+              >
+                <span className="sv-nav__icon" aria-hidden="true">
+                  {item.shortLabel}
+                </span>
+                <span className="sv-nav__copy">
+                  <span className="sv-nav__title">{item.label}</span>
+                  <span className="sv-nav__meta">{item.meta}</span>
+                </span>
+              </button>
+            );
+          })}
+        </nav>
+      </div>
+
+      <div className="sv-header__footer">
+        <span className="sv-header__section-label">Data Sources</span>
+        <p className="sv-header__note">NASA, SDSS, and Pan-STARRS in one calm, dense workspace.</p>
+      </div>
+    </header>
+  );
+};
 
 export default Header;

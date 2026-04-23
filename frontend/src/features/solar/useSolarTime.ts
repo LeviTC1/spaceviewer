@@ -1,11 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-
-const DAY_MS = 86_400_000;
-
-const toUtcDayMs = (date: Date) =>
-  Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
-
-const clamp = (value: number, min: number, max: number) => Math.min(max, Math.max(min, value));
+import { DAY_MS, clampNumber, toUtcDayMs } from "../time/timeUtils";
 
 export const useSolarTime = (minDate: Date, maxDate: Date) => {
   const minMs = useMemo(() => toUtcDayMs(minDate), [minDate]);
@@ -14,7 +8,7 @@ export const useSolarTime = (minDate: Date, maxDate: Date) => {
 
   const [currentMs, setCurrentMs] = useState(() => {
     const todayMs = toUtcDayMs(new Date());
-    return clamp(todayMs, minMs, maxMs);
+    return clampNumber(todayMs, minMs, maxMs);
   });
   const [isPlaying, setIsPlaying] = useState(false);
   const [speed, setSpeed] = useState(1);
@@ -24,12 +18,12 @@ export const useSolarTime = (minDate: Date, maxDate: Date) => {
   const dayIndex = Math.round((currentMs - minMs) / DAY_MS);
 
   const setCurrentDate = (date: Date) => {
-    const nextMs = clamp(toUtcDayMs(date), minMs, maxMs);
+    const nextMs = clampNumber(toUtcDayMs(date), minMs, maxMs);
     setCurrentMs(nextMs);
   };
 
   const setDayIndex = (nextDay: number) => {
-    const clamped = clamp(Math.round(nextDay), 0, maxDays);
+    const clamped = clampNumber(Math.round(nextDay), 0, maxDays);
     setCurrentMs(minMs + clamped * DAY_MS);
   };
 
@@ -49,7 +43,7 @@ export const useSolarTime = (minDate: Date, maxDate: Date) => {
       const deltaDays = (deltaMs / 1000) * speed;
       let shouldStop = false;
       setCurrentMs((prev) => {
-        const next = clamp(prev + deltaDays * DAY_MS, minMs, maxMs);
+        const next = clampNumber(prev + deltaDays * DAY_MS, minMs, maxMs);
         if (next >= maxMs) {
           shouldStop = true;
         }

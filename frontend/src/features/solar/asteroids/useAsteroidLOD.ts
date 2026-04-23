@@ -63,7 +63,17 @@ export const useAsteroidLOD = ({
 
     let targetCount = 0;
     if (mode === "simplified") {
-      targetCount = farView ? 200 : midView ? 600 : 1000;
+      targetCount = performanceMode
+        ? farView
+          ? 120
+          : midView
+            ? 360
+            : 700
+        : farView
+          ? 200
+          : midView
+            ? 600
+            : 1000;
     } else {
       targetCount = farView ? 300 : midView ? 1500 : maxCount;
     }

@@ -34,6 +34,7 @@ const AsteroidBelt: FC<AsteroidBeltProps> = ({ timeDays, scaleMode, mode, textur
   const heroRef = useRef<InstancedMesh | null>(null);
   const tempObject = useMemo(() => new Object3D(), []);
   const tempMatrix = useMemo(() => new Matrix4(), []);
+  const lastMatrixSignatureRef = useRef("");
 
   const lod = useAsteroidLOD({
     mode,
@@ -42,7 +43,10 @@ const AsteroidBelt: FC<AsteroidBeltProps> = ({ timeDays, scaleMode, mode, textur
     highQuality: textureQuality === "high",
   });
 
-  const maxCount = useMemo(() => (textureQuality === "high" && !performanceMode ? 5000 : 2500), [textureQuality, performanceMode]);
+  const maxCount = useMemo(
+    () => (performanceMode ? 1200 : textureQuality === "high" ? 5000 : 2200),
+    [textureQuality, performanceMode],
+  );
 
   const asteroids = useMemo(() => generateAsteroidField(maxCount, 9127), [maxCount]);
   const heroAsteroids = useMemo(() => generateHeroAsteroids(7021), []);
@@ -63,6 +67,12 @@ const AsteroidBelt: FC<AsteroidBeltProps> = ({ timeDays, scaleMode, mode, textur
 
   useEffect(() => {
     let active = true;
+    if (mode === "off") {
+      setTextures([]);
+      return () => {
+        active = false;
+      };
+    }
     const base = `/solar-textures/${textureQuality === "high" ? "high" : "perf"}/`;
     Promise.all(TEXTURE_KEYS.map((key) => loadTexture(`${base}${key}`))).then((loaded) => {
       if (active) setTextures(loaded);
@@ -70,10 +80,21 @@ const AsteroidBelt: FC<AsteroidBeltProps> = ({ timeDays, scaleMode, mode, textur
     return () => {
       active = false;
     };
-  }, [textureQuality]);
+  }, [mode, textureQuality]);
 
   useFrame(() => {
     if (mode === "off") return;
+    const matrixSignature = [
+      timeDays.toFixed(3),
+      scaleMode,
+      lod.count,
+      lod.opacity.toFixed(3),
+      lod.sizeBoost.toFixed(3),
+      lod.nearBelt ? "near" : "far",
+    ].join("|");
+    if (matrixSignature === lastMatrixSignatureRef.current) return;
+    lastMatrixSignatureRef.current = matrixSignature;
+
     asteroidsByTexture.forEach((bucket, index) => {
       const mesh = meshRefs.current[index];
       if (!mesh) return;

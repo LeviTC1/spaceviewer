@@ -3,17 +3,13 @@ import { Html, useCursor } from "@react-three/drei";
 import { type Mesh, type Texture } from "three";
 import { useFrame } from "@react-three/fiber";
 import type { MoonDef } from "./moonData";
-import type { SolarScaleMode } from "./solarData";
 import { loadMoonTexture } from "./textures/loadMoonTexture";
 import type { TextureQuality } from "./textures/textureCatalog";
-import { getMoonRenderRadius, getMoonWorldPosition } from "./moonMath";
+import { getMoonRenderRadius } from "./moonMath";
 
 interface MoonMeshProps {
   moon: MoonDef;
-  parentPosition: [number, number, number];
-  parentRadius: number;
-  timeDays: number;
-  scaleMode: SolarScaleMode;
+  position: [number, number, number];
   textureQuality: TextureQuality;
   selected?: boolean;
   onSelect: (moon: MoonDef) => void;
@@ -22,10 +18,7 @@ interface MoonMeshProps {
 
 const MoonMesh: FC<MoonMeshProps> = ({
   moon,
-  parentPosition,
-  parentRadius,
-  timeDays,
-  scaleMode,
+  position,
   textureQuality,
   selected,
   onSelect,
@@ -38,13 +31,6 @@ const MoonMesh: FC<MoonMeshProps> = ({
   useCursor(hovered);
 
   const renderRadius = getMoonRenderRadius(moon);
-  const worldPosition = getMoonWorldPosition(
-    moon,
-    parentPosition,
-    parentRadius,
-    timeDays,
-    scaleMode,
-  );
 
   useEffect(() => {
     let active = true;
@@ -63,7 +49,7 @@ const MoonMesh: FC<MoonMeshProps> = ({
   });
 
   return (
-    <group position={worldPosition}>
+    <group position={position}>
       {selected && (
         <mesh>
           <sphereGeometry args={[renderRadius * 1.35, 20, 20]} />
@@ -82,7 +68,7 @@ const MoonMesh: FC<MoonMeshProps> = ({
         }}
         onDoubleClick={(event) => {
           event.stopPropagation();
-          onFocus(worldPosition);
+          onFocus(position);
         }}
       >
         <sphereGeometry args={[renderRadius, 24, 24]} />

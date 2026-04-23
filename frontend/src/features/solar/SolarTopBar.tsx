@@ -3,6 +3,8 @@ import type { CameraBookmark } from "./useCameraBookmarks";
 import type { SolarScaleMode } from "./solarData";
 import type { MoonVisibilityMode } from "./moonData";
 import type { AsteroidBeltMode } from "./asteroids/asteroidGenerator";
+import SolarSearch, { type SolarSearchResult } from "./SolarSearch";
+import { SOLAR_NAVIGATION_LABELS, type SolarNavigationMode } from "./solarNavigation";
 
 interface SolarTopBarProps {
   currentDate: Date;
@@ -24,6 +26,12 @@ interface SolarTopBarProps {
   bookmarks: CameraBookmark[];
   onSaveBookmark: () => void;
   onSelectBookmark: (bookmark: CameraBookmark) => void;
+  navigationMode: SolarNavigationMode;
+  onNavigationModeChange: (mode: SolarNavigationMode) => void;
+  onSearchSelect: (result: SolarSearchResult) => void;
+  presentationMode: boolean;
+  onStartTour: () => void;
+  onTogglePresentation: () => void;
 }
 
 const SolarTopBar: FC<SolarTopBarProps> = ({
@@ -46,6 +54,12 @@ const SolarTopBar: FC<SolarTopBarProps> = ({
   bookmarks,
   onSaveBookmark,
   onSelectBookmark,
+  navigationMode,
+  onNavigationModeChange,
+  onSearchSelect,
+  presentationMode,
+  onStartTour,
+  onTogglePresentation,
 }) => {
   const [toolsOpen, setToolsOpen] = useState(false);
   const [birthdayPending, setBirthdayPending] = useState(false);
@@ -127,6 +141,7 @@ const SolarTopBar: FC<SolarTopBarProps> = ({
         </div>
       </div>
       <div className="solar-topbar__controls">
+        <SolarSearch bookmarks={bookmarks} onSelectResult={onSearchSelect} />
         <div className="solar-date solar-date--compact">
           <span className="solar-date__label">
             {birthdayActive ? "Birthday alignment" : "Alignment"}
@@ -190,14 +205,28 @@ const SolarTopBar: FC<SolarTopBarProps> = ({
           </div>
         </div>
         <div className="solar-select">
-          <label htmlFor="solar-scale">Scale</label>
+          <label htmlFor="solar-view-mode">View</label>
+          <select
+            id="solar-view-mode"
+            value={navigationMode}
+            onChange={(event) => onNavigationModeChange(event.target.value as SolarNavigationMode)}
+          >
+            {Object.entries(SOLAR_NAVIGATION_LABELS).map(([mode, label]) => (
+              <option key={mode} value={mode}>
+                {label}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="solar-select">
+          <label htmlFor="solar-scale">Orbit spacing</label>
           <select
             id="solar-scale"
             value={scaleMode}
             onChange={(event) => onScaleModeChange(event.target.value as SolarScaleMode)}
           >
-            <option value="showcase">Showcase</option>
-            <option value="educational">Educational</option>
+            <option value="showcase">Showcase spacing</option>
+            <option value="educational">Educational spacing</option>
           </select>
         </div>
         <div className="solar-select">
@@ -225,6 +254,12 @@ const SolarTopBar: FC<SolarTopBarProps> = ({
           </select>
         </div>
         <div className="solar-tools" ref={wrapperRef}>
+          <button type="button" className="ghost button--small" onClick={onStartTour}>
+            Start Tour
+          </button>
+          <button type="button" className="ghost button--small" onClick={onTogglePresentation}>
+            {presentationMode ? "Exit Present" : "Present"}
+          </button>
           <button
             type="button"
             className={`ghost button--small ${toolsOpen ? "active" : ""}`}
@@ -241,7 +276,7 @@ const SolarTopBar: FC<SolarTopBarProps> = ({
                   className={`ghost button--small ${performanceMode ? "active" : ""}`}
                   onClick={onTogglePerformance}
                 >
-                  {performanceMode ? "Performance Mode" : "Performance Mode"}
+                  {performanceMode ? "Performance Mode On · lighter GPU load" : "Detail Mode On · richer effects"}
                 </button>
               </div>
               <div className="solar-tools__section">

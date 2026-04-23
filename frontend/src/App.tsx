@@ -6,6 +6,7 @@ import HomePage from "./components/home/HomePage";
 import ResultsPage from "./components/results/ResultsPage";
 import ViewerPage from "./components/viewer/ViewerPage";
 import SolarSystemPage from "./features/solar/SolarSystemPage";
+import SkyMapPage from "./features/skymap/SkyMapPage";
 import { runAnalysis, searchTargets, type AnalysisData } from "./utils/api";
 import { filterSearchResults, filterSpaceImages } from "./utils/spaceFilter";
 import { buildAIContext } from "./utils/buildAIContext";
@@ -15,8 +16,9 @@ import useSpaceSearch from "./hooks/useSpaceSearch";
 import { recordSearch, recordView } from "./utils/sessionMemory";
 import { classifyObjectType } from "./ai/classifyObjectType";
 import { estimateRarity } from "./ai/estimateRarity";
+import type { CameraBookmark } from "./features/solar/cameraBookmarks";
 
-type View = "home" | "results" | "viewer" | "solar";
+type View = "home" | "results" | "viewer" | "solar" | "skymap";
 type DiscoveryIntensity = "balanced" | "deep" | "extreme";
 
 const DISCOVERY_BUCKETS = {
@@ -32,6 +34,8 @@ const DISCOVERY_INTENSITY_POOLS: Record<DiscoveryIntensity, string[]> = {
   extreme: ["gravitational lens", "quasar", "black hole", "supernova remnant", "ring galaxy", "collision", "anomaly"],
 };
 
+const PRODUCT_ROUTES = new Set(["/solar", "/skymap"]);
+
 const App = () => {
   const [view, setView] = useState<View>("home");
   const [query, setQuery] = useState("");
@@ -43,30 +47,32 @@ const App = () => {
   const [discoveryMode, setDiscoveryMode] = useState(false);
   const [discoveryLoading, setDiscoveryLoading] = useState(false);
   const [discoveryIntensity, setDiscoveryIntensity] = useState<DiscoveryIntensity>("balanced");
+  const [pendingSolarBookmark, setPendingSolarBookmark] = useState<CameraBookmark | null>(null);
+  const [solarBookmarkToken, setSolarBookmarkToken] = useState(0);
 
   const { loading, error, results: hookResults, performSearch, loadMore, hasMore } = useSpaceSearch();
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.location.pathname === "/solar") {
-      setView("solar");
-    } else if (window.location.pathname === "/starmap") {
-      window.history.replaceState(null, "", "/");
-      setView("home");
-    }
-    const handlePop = () => {
-      if (window.location.pathname === "/solar") {
+    const syncViewWithPath = () => {
+      const path = window.location.pathname;
+      if (path === "/solar") {
         setView("solar");
-      } else if (window.location.pathname === "/starmap") {
-        window.history.replaceState(null, "", "/");
-        setView("home");
-      } else if (view === "solar") {
-        setView("home");
+        return;
       }
+      if (path === "/skymap") {
+        setView("skymap");
+        return;
+      }
+      if (path !== "/") {
+        window.history.replaceState(null, "", "/");
+      }
+      setView("home");
     };
-    window.addEventListener("popstate", handlePop);
-    return () => window.removeEventListener("popstate", handlePop);
-  }, [view]);
+    syncViewWithPath();
+    window.addEventListener("popstate", syncViewWithPath);
+    return () => window.removeEventListener("popstate", syncViewWithPath);
+  }, []);
 
   useEffect(() => {
     if (!discoveryMode && hookResults.length) {
@@ -93,7 +99,7 @@ const App = () => {
     setQuery(activeQuery);
     setSource(activeSource);
     recordSearch(activeQuery);
-    if (typeof window !== "undefined" && window.location.pathname === "/solar") {
+    if (typeof window !== "undefined" && PRODUCT_ROUTES.has(window.location.pathname)) {
       window.history.pushState(null, "", "/");
     }
     const fetchedResults = await performSearch(activeQuery, activeSource);
@@ -127,7 +133,7 @@ const App = () => {
   };
 
   const handleNavigateToResults = () => {
-    if (typeof window !== "undefined" && window.location.pathname === "/solar") {
+    if (typeof window !== "undefined" && PRODUCT_ROUTES.has(window.location.pathname)) {
       window.history.pushState(null, "", "/");
     }
     if (!results.length && !hookResults.length) {
@@ -148,7 +154,7 @@ const App = () => {
     setResults(sourceItems);
     setSelected(item);
     setAnalysis(null);
-    if (typeof window !== "undefined" && window.location.pathname === "/solar") {
+    if (typeof window !== "undefined" && PRODUCT_ROUTES.has(window.location.pathname)) {
       window.history.pushState(null, "", "/");
     }
     setView("viewer");
@@ -221,9 +227,36 @@ const App = () => {
     setResults((prev) => [...prev, ...batch]);
   }, [buildDiscoveryBatch, discoveryLoading]);
 
+  const openSolarExplorer = useCallback((bookmark?: CameraBookmark) => {
+    setPendingSolarBookmark(bookmark ?? null);
+    setSolarBookmarkToken((prev) => prev + 1);
+    setView("solar");
+    if (typeof window !== "undefined" && window.location.pathname !== "/solar") {
+      window.history.pushState(null, "", "/solar");
+    }
+  }, []);
+
+  const openSkyMap = useCallback(() => {
+    setPendingSolarBookmark(null);
+    setView("skymap");
+    if (typeof window !== "undefined" && window.location.pathname !== "/skymap") {
+      window.history.pushState(null, "", "/skymap");
+    }
+  }, []);
+
   const renderCurrentView = () => {
+    if (view === "skymap") {
+      return <SkyMapPage onOpenSolarExplorer={() => openSolarExplorer()} />;
+    }
+
     if (view === "solar") {
-      return <SolarSystemPage onExploreImagery={(queryValue) => handleSearch(queryValue, "all")} />;
+      return (
+        <SolarSystemPage
+          initialBookmark={pendingSolarBookmark}
+          initialBookmarkToken={solarBookmarkToken}
+          onExploreImagery={(queryValue) => handleSearch(queryValue, "all")}
+        />
+      );
     }
 
     if (view === "results") {
@@ -264,12 +297,8 @@ const App = () => {
         onSearch={handleSearch}
         onStartDiscovery={startDiscovery}
         discoveryLoading={discoveryLoading}
-        onExploreSolar={() => {
-          setView("solar");
-          if (typeof window !== "undefined") {
-            window.history.pushState(null, "", "/solar");
-          }
-        }}
+        onExploreSolar={openSolarExplorer}
+        onOpenSkyMap={openSkyMap}
         onSelectFeatured={handleSelectFeatured}
         error={error}
         loading={loading}
@@ -277,24 +306,21 @@ const App = () => {
     );
   };
 
-  const activeNav = view === "solar" ? "solar" : view === "home" ? "home" : "gallery";
+  const activeNav = view === "solar" ? "solar" : view === "skymap" ? "skymap" : view === "home" ? "home" : "gallery";
 
   return (
     <AppShell
       activeNav={activeNav}
       onNavigateHome={() => {
+        setPendingSolarBookmark(null);
         setView("home");
-        if (typeof window !== "undefined" && window.location.pathname === "/solar") {
+        if (typeof window !== "undefined" && PRODUCT_ROUTES.has(window.location.pathname)) {
           window.history.pushState(null, "", "/");
         }
       }}
       onNavigateGallery={handleNavigateToResults}
-      onNavigateSolar={() => {
-        setView("solar");
-        if (typeof window !== "undefined") {
-          window.history.pushState(null, "", "/solar");
-        }
-      }}
+      onNavigateSolar={() => openSolarExplorer()}
+      onNavigateSkyMap={openSkyMap}
     >
       <PageContainer>{renderCurrentView()}</PageContainer>
     </AppShell>

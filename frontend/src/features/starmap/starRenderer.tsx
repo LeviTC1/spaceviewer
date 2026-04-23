@@ -1,15 +1,26 @@
 import { useMemo, useRef } from "react";
 import { useFrame } from "@react-three/fiber";
 import { AdditiveBlending, BufferAttribute, BufferGeometry, Color, MathUtils, ShaderMaterial } from "three";
-import type { NearbyStar } from "../../data/nearbyStars";
 
 export const SPACE_SCALE = 0.8;
 const MIN_CORE_SIZE = 0.72;
 const MIN_GLOW_SIZE = 0.22;
 const MIN_OPACITY = 0.2;
 
-export const getStarRenderPosition = (star: NearbyStar) => {
-  return [star.x * SPACE_SCALE, star.y * SPACE_SCALE, star.z * SPACE_SCALE] as [number, number, number];
+export interface StarRenderDatum {
+  objectId?: string;
+  name: string;
+  x: number;
+  y: number;
+  z: number;
+  distanceLy: number;
+  spectralType: string;
+  luminosity: number;
+  temperature: number;
+}
+
+export const getStarRenderPosition = (star: StarRenderDatum, scale = SPACE_SCALE) => {
+  return [star.x * scale, star.y * scale, star.z * scale] as [number, number, number];
 };
 
 const SPECTRAL_COLOR: Record<string, string> = {
@@ -43,22 +54,23 @@ export const getStarColor = (spectral: string, temperature?: number) => {
   return spectralTint.lerp(colorFromTemperature(temperature), 0.6);
 };
 
-export const getStarBrightness = (star: NearbyStar) => {
+export const getStarBrightness = (star: StarRenderDatum) => {
   const distance = Math.max(0.001, star.distanceLy);
   const apparentFlux = star.luminosity / (distance * distance + 1);
   return MathUtils.clamp(Math.log10(apparentFlux * 2200 + 1) / 2.3, 0.085, 1.0);
 };
 
 interface StarFieldProps {
-  stars: NearbyStar[];
+  stars: StarRenderDatum[];
   opacity?: number;
   cameraDistance?: number;
   performanceMode?: boolean;
   selectedStarName?: string | null;
+  positionScale?: number;
   debugMode?: boolean;
   interactive?: boolean;
-  onSelect?: (star: NearbyStar) => void;
-  onHover?: (star: NearbyStar | null) => void;
+  onSelect?: (star: StarRenderDatum) => void;
+  onHover?: (star: StarRenderDatum | null) => void;
 }
 
 export const StarField = ({
@@ -67,12 +79,14 @@ export const StarField = ({
   cameraDistance = 60,
   performanceMode = false,
   selectedStarName = null,
+  positionScale = SPACE_SCALE,
   debugMode = false,
   interactive = true,
   onSelect,
   onHover,
 }: StarFieldProps) => {
   const materialRef = useRef<ShaderMaterial | null>(null);
+  const visualDistance = Math.round(cameraDistance / 8) * 8;
 
   const geometry = useMemo(() => {
     const next = new BufferGeometry();
@@ -88,12 +102,12 @@ export const StarField = ({
     const phases = new Float32Array(count);
     const freqs = new Float32Array(count);
     const twinkles = new Float32Array(count);
-    const zoomCloseness = MathUtils.clamp((22 - cameraDistance) / 22, 0, 1);
+    const zoomCloseness = MathUtils.clamp((22 - visualDistance) / 22, 0, 1);
     const nearDiscBoost = zoomCloseness * zoomCloseness;
     const detailFactor = performanceMode ? 0 : 1;
 
     stars.forEach((star, index) => {
-      const [x, y, z] = getStarRenderPosition(star);
+      const [x, y, z] = getStarRenderPosition(star, positionScale);
       const baseBrightness = getStarBrightness(star);
       const isSelected = selectedStarName === star.name;
       const distanceFade = MathUtils.clamp(1 - star.distanceLy / 120, 0.68, 1);
@@ -170,7 +184,7 @@ export const StarField = ({
     next.setAttribute("aFreq", new BufferAttribute(freqs, 1));
     next.setAttribute("aTwinkle", new BufferAttribute(twinkles, 1));
     return next;
-  }, [cameraDistance, performanceMode, selectedStarName, stars]);
+  }, [performanceMode, positionScale, selectedStarName, stars, visualDistance]);
 
   const material = useMemo(() => {
     return new ShaderMaterial({

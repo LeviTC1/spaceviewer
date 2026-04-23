@@ -128,6 +128,7 @@ const PlanetMesh: FC<PlanetMeshProps> = ({
   }, [planet.id]);
 
   useEffect(() => {
+    if (desiredQuality !== "high") return;
     let active = true;
     loadPlanetTexture(planet.id, desiredQuality).then((result) => {
       if (active) setTextures(result);
