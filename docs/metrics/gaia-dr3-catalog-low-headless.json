@@ -1,0 +1,771 @@
+{
+  "measuredAt": "2026-09-02T05:07:29.521Z",
+  "environment": "local headless Chromium; frame rate is diagnostic and not representative of a headed GPU session",
+  "url": "http://localhost:5174/skymap",
+  "quality": "low",
+  "catalogueReadyMs": 1952,
+  "document": {
+    "domContentLoadedMs": 126,
+    "loadEventMs": 127,
+    "canvasCount": 1,
+    "viteOverlayCount": 0
+  },
+  "catalogue": {
+    "requests": 99,
+    "binaryChunkRequests": 49,
+    "metadataRequests": 49,
+    "transferBytes": 2499644,
+    "encodedBodyBytes": 2469944,
+    "decodedBodyBytes": 2469944,
+    "resources": [
+      {
+        "name": "manifest.json",
+        "transferBytes": 68531,
+        "encodedBodyBytes": 68231,
+        "decodedBodyBytes": 68231,
+        "durationMs": 11
+      },
+      {
+        "name": "bright-core-g6.svsc",
+        "transferBytes": 302264,
+        "encodedBodyBytes": 301964,
+        "decodedBodyBytes": 301964,
+        "durationMs": 5.7
+      },
+      {
+        "name": "bright-core-g6.meta.json",
+        "transferBytes": 44493,
+        "encodedBodyBytes": 44193,
+        "decodedBodyBytes": 44193,
+        "durationMs": 5.3
+      },
+      {
+        "name": "sky-40.svsc",
+        "transferBytes": 39416,
+        "encodedBodyBytes": 39116,
+        "decodedBodyBytes": 39116,
+        "durationMs": 8
+      },
+      {
+        "name": "sky-40.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 6.2
+      },
+      {
+        "name": "sky-44.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 6.4
+      },
+      {
+        "name": "sky-44.svsc",
+        "transferBytes": 47408,
+        "encodedBodyBytes": 47108,
+        "decodedBodyBytes": 47108,
+        "durationMs": 7.4
+      },
+      {
+        "name": "sky-46.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 7
+      },
+      {
+        "name": "sky-46.svsc",
+        "transferBytes": 51108,
+        "encodedBodyBytes": 50808,
+        "decodedBodyBytes": 50808,
+        "durationMs": 8
+      },
+      {
+        "name": "sky-41.svsc",
+        "transferBytes": 40008,
+        "encodedBodyBytes": 39708,
+        "decodedBodyBytes": 39708,
+        "durationMs": 10.2
+      },
+      {
+        "name": "sky-41.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 10.2
+      },
+      {
+        "name": "sky-36.svsc",
+        "transferBytes": 44004,
+        "encodedBodyBytes": 43704,
+        "decodedBodyBytes": 43704,
+        "durationMs": 6.9
+      },
+      {
+        "name": "sky-36.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 6
+      },
+      {
+        "name": "sky-32.svsc",
+        "transferBytes": 49628,
+        "encodedBodyBytes": 49328,
+        "decodedBodyBytes": 49328,
+        "durationMs": 6.6
+      },
+      {
+        "name": "sky-32.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 6.2
+      },
+      {
+        "name": "sky-42.svsc",
+        "transferBytes": 41784,
+        "encodedBodyBytes": 41484,
+        "decodedBodyBytes": 41484,
+        "durationMs": 6.7
+      },
+      {
+        "name": "sky-42.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 6.3
+      },
+      {
+        "name": "sky-45.svsc",
+        "transferBytes": 36456,
+        "encodedBodyBytes": 36156,
+        "decodedBodyBytes": 36156,
+        "durationMs": 9.9
+      },
+      {
+        "name": "sky-45.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 9.7
+      },
+      {
+        "name": "sky-28.svsc",
+        "transferBytes": 39416,
+        "encodedBodyBytes": 39116,
+        "decodedBodyBytes": 39116,
+        "durationMs": 6.6
+      },
+      {
+        "name": "sky-28.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 5.6
+      },
+      {
+        "name": "sky-34.svsc",
+        "transferBytes": 35568,
+        "encodedBodyBytes": 35268,
+        "decodedBodyBytes": 35268,
+        "durationMs": 6.3
+      },
+      {
+        "name": "sky-34.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 6.1
+      },
+      {
+        "name": "sky-37.svsc",
+        "transferBytes": 34532,
+        "encodedBodyBytes": 34232,
+        "decodedBodyBytes": 34232,
+        "durationMs": 6.7
+      },
+      {
+        "name": "sky-37.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 5.9
+      },
+      {
+        "name": "sky-47.svsc",
+        "transferBytes": 41932,
+        "encodedBodyBytes": 41632,
+        "decodedBodyBytes": 41632,
+        "durationMs": 12.2
+      },
+      {
+        "name": "sky-47.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 11.8
+      },
+      {
+        "name": "sky-43.svsc",
+        "transferBytes": 49480,
+        "encodedBodyBytes": 49180,
+        "decodedBodyBytes": 49180,
+        "durationMs": 6
+      },
+      {
+        "name": "sky-43.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 4.2
+      },
+      {
+        "name": "sky-38.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 4.3
+      },
+      {
+        "name": "sky-33.svsc",
+        "transferBytes": 47556,
+        "encodedBodyBytes": 47256,
+        "decodedBodyBytes": 47256,
+        "durationMs": 7.1
+      },
+      {
+        "name": "sky-38.svsc",
+        "transferBytes": 45484,
+        "encodedBodyBytes": 45184,
+        "decodedBodyBytes": 45184,
+        "durationMs": 7
+      },
+      {
+        "name": "sky-33.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 4.3
+      },
+      {
+        "name": "sky-16.svsc",
+        "transferBytes": 43856,
+        "encodedBodyBytes": 43556,
+        "decodedBodyBytes": 43556,
+        "durationMs": 9
+      },
+      {
+        "name": "sky-16.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 8.8
+      },
+      {
+        "name": "sky-24.svsc",
+        "transferBytes": 41784,
+        "encodedBodyBytes": 41484,
+        "decodedBodyBytes": 41484,
+        "durationMs": 2.8
+      },
+      {
+        "name": "sky-24.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 2.7
+      },
+      {
+        "name": "sky-30.svsc",
+        "transferBytes": 41932,
+        "encodedBodyBytes": 41632,
+        "decodedBodyBytes": 41632,
+        "durationMs": 3.6
+      },
+      {
+        "name": "sky-30.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 3.4
+      },
+      {
+        "name": "sky-29.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 3.7
+      },
+      {
+        "name": "sky-29.svsc",
+        "transferBytes": 44152,
+        "encodedBodyBytes": 43852,
+        "decodedBodyBytes": 43852,
+        "durationMs": 4.4
+      },
+      {
+        "name": "sky-39.svsc",
+        "transferBytes": 30832,
+        "encodedBodyBytes": 30532,
+        "decodedBodyBytes": 30532,
+        "durationMs": 4.9
+      },
+      {
+        "name": "sky-39.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 4.6
+      },
+      {
+        "name": "sky-35.svsc",
+        "transferBytes": 33496,
+        "encodedBodyBytes": 33196,
+        "decodedBodyBytes": 33196,
+        "durationMs": 3.5
+      },
+      {
+        "name": "sky-35.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 2.8
+      },
+      {
+        "name": "sky-25.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 2.8
+      },
+      {
+        "name": "sky-18.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 2.9
+      },
+      {
+        "name": "sky-25.svsc",
+        "transferBytes": 41932,
+        "encodedBodyBytes": 41632,
+        "decodedBodyBytes": 41632,
+        "durationMs": 3.3
+      },
+      {
+        "name": "sky-18.svsc",
+        "transferBytes": 46076,
+        "encodedBodyBytes": 45776,
+        "decodedBodyBytes": 45776,
+        "durationMs": 3.4
+      },
+      {
+        "name": "sky-20.svsc",
+        "transferBytes": 35568,
+        "encodedBodyBytes": 35268,
+        "decodedBodyBytes": 35268,
+        "durationMs": 6.8
+      },
+      {
+        "name": "sky-20.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 6.7
+      },
+      {
+        "name": "sky-31.svsc",
+        "transferBytes": 32312,
+        "encodedBodyBytes": 32012,
+        "decodedBodyBytes": 32012,
+        "durationMs": 6.8
+      },
+      {
+        "name": "sky-31.meta.json",
+        "transferBytes": 1593,
+        "encodedBodyBytes": 1293,
+        "decodedBodyBytes": 1293,
+        "durationMs": 6.2
+      },
+      {
+        "name": "sky-26.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 6.1
+      },
+      {
+        "name": "sky-26.svsc",
+        "transferBytes": 43412,
+        "encodedBodyBytes": 43112,
+        "decodedBodyBytes": 43112,
+        "durationMs": 6.7
+      },
+      {
+        "name": "sky-08.svsc",
+        "transferBytes": 42228,
+        "encodedBodyBytes": 41928,
+        "decodedBodyBytes": 41928,
+        "durationMs": 6.8
+      },
+      {
+        "name": "sky-08.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 6.4
+      },
+      {
+        "name": "sky-17.svsc",
+        "transferBytes": 45188,
+        "encodedBodyBytes": 44888,
+        "decodedBodyBytes": 44888,
+        "durationMs": 10.1
+      },
+      {
+        "name": "sky-17.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 13.1
+      },
+      {
+        "name": "sky-12.svsc",
+        "transferBytes": 31424,
+        "encodedBodyBytes": 31124,
+        "decodedBodyBytes": 31124,
+        "durationMs": 12.7
+      },
+      {
+        "name": "sky-12.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 12
+      },
+      {
+        "name": "sky-21.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 12.2
+      },
+      {
+        "name": "sky-21.svsc",
+        "transferBytes": 41636,
+        "encodedBodyBytes": 41336,
+        "decodedBodyBytes": 41336,
+        "durationMs": 12.7
+      },
+      {
+        "name": "sky-22.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 13
+      },
+      {
+        "name": "sky-22.svsc",
+        "transferBytes": 41784,
+        "encodedBodyBytes": 41484,
+        "decodedBodyBytes": 41484,
+        "durationMs": 13.5
+      },
+      {
+        "name": "sky-27.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 16.8
+      },
+      {
+        "name": "sky-27.svsc",
+        "transferBytes": 51256,
+        "encodedBodyBytes": 50956,
+        "decodedBodyBytes": 50956,
+        "durationMs": 16.9
+      },
+      {
+        "name": "sky-19.svsc",
+        "transferBytes": 38528,
+        "encodedBodyBytes": 38228,
+        "decodedBodyBytes": 38228,
+        "durationMs": 4.6
+      },
+      {
+        "name": "sky-19.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 5.2
+      },
+      {
+        "name": "sky-14.svsc",
+        "transferBytes": 47704,
+        "encodedBodyBytes": 47404,
+        "decodedBodyBytes": 47404,
+        "durationMs": 6.8
+      },
+      {
+        "name": "sky-09.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 5.7
+      },
+      {
+        "name": "sky-14.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 6.1
+      },
+      {
+        "name": "sky-09.svsc",
+        "transferBytes": 44596,
+        "encodedBodyBytes": 44296,
+        "decodedBodyBytes": 44296,
+        "durationMs": 6.5
+      },
+      {
+        "name": "sky-04.svsc",
+        "transferBytes": 41636,
+        "encodedBodyBytes": 41336,
+        "decodedBodyBytes": 41336,
+        "durationMs": 7.7
+      },
+      {
+        "name": "sky-04.meta.json",
+        "transferBytes": 1573,
+        "encodedBodyBytes": 1273,
+        "decodedBodyBytes": 1273,
+        "durationMs": 8.1
+      },
+      {
+        "name": "sky-00.svsc",
+        "transferBytes": 48888,
+        "encodedBodyBytes": 48588,
+        "decodedBodyBytes": 48588,
+        "durationMs": 3.4
+      },
+      {
+        "name": "sky-00.meta.json",
+        "transferBytes": 1557,
+        "encodedBodyBytes": 1257,
+        "decodedBodyBytes": 1257,
+        "durationMs": 2.8
+      },
+      {
+        "name": "sky-10.svsc",
+        "transferBytes": 36012,
+        "encodedBodyBytes": 35712,
+        "decodedBodyBytes": 35712,
+        "durationMs": 3.1
+      },
+      {
+        "name": "sky-10.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 4.7
+      },
+      {
+        "name": "sky-13.svsc",
+        "transferBytes": 35272,
+        "encodedBodyBytes": 34972,
+        "decodedBodyBytes": 34972,
+        "durationMs": 5.6
+      },
+      {
+        "name": "sky-13.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 2.7
+      },
+      {
+        "name": "sky-23.svsc",
+        "transferBytes": 41044,
+        "encodedBodyBytes": 40744,
+        "decodedBodyBytes": 40744,
+        "durationMs": 7
+      },
+      {
+        "name": "sky-23.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 6.9
+      },
+      {
+        "name": "sky-02.svsc",
+        "transferBytes": 42820,
+        "encodedBodyBytes": 42520,
+        "decodedBodyBytes": 42520,
+        "durationMs": 4.8
+      },
+      {
+        "name": "sky-02.meta.json",
+        "transferBytes": 1569,
+        "encodedBodyBytes": 1269,
+        "decodedBodyBytes": 1269,
+        "durationMs": 4.5
+      },
+      {
+        "name": "sky-05.svsc",
+        "transferBytes": 35124,
+        "encodedBodyBytes": 34824,
+        "decodedBodyBytes": 34824,
+        "durationMs": 4.7
+      },
+      {
+        "name": "sky-11.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 4.5
+      },
+      {
+        "name": "sky-05.meta.json",
+        "transferBytes": 1573,
+        "encodedBodyBytes": 1273,
+        "decodedBodyBytes": 1273,
+        "durationMs": 4.9
+      },
+      {
+        "name": "sky-11.svsc",
+        "transferBytes": 46964,
+        "encodedBodyBytes": 46664,
+        "decodedBodyBytes": 46664,
+        "durationMs": 5.2
+      },
+      {
+        "name": "sky-15.svsc",
+        "transferBytes": 47704,
+        "encodedBodyBytes": 47404,
+        "decodedBodyBytes": 47404,
+        "durationMs": 8.8
+      },
+      {
+        "name": "sky-15.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 8.4
+      },
+      {
+        "name": "sky-06.svsc",
+        "transferBytes": 43412,
+        "encodedBodyBytes": 43112,
+        "decodedBodyBytes": 43112,
+        "durationMs": 5
+      },
+      {
+        "name": "sky-06.meta.json",
+        "transferBytes": 1577,
+        "encodedBodyBytes": 1277,
+        "decodedBodyBytes": 1277,
+        "durationMs": 4.9
+      },
+      {
+        "name": "sky-01.svsc",
+        "transferBytes": 41636,
+        "encodedBodyBytes": 41336,
+        "decodedBodyBytes": 41336,
+        "durationMs": 6.5
+      },
+      {
+        "name": "sky-01.meta.json",
+        "transferBytes": 1569,
+        "encodedBodyBytes": 1269,
+        "decodedBodyBytes": 1269,
+        "durationMs": 6.2
+      },
+      {
+        "name": "sky-07.svsc",
+        "transferBytes": 41932,
+        "encodedBodyBytes": 41632,
+        "decodedBodyBytes": 41632,
+        "durationMs": 6.4
+      },
+      {
+        "name": "sky-07.meta.json",
+        "transferBytes": 1589,
+        "encodedBodyBytes": 1289,
+        "decodedBodyBytes": 1289,
+        "durationMs": 6.2
+      },
+      {
+        "name": "sky-03.meta.json",
+        "transferBytes": 1573,
+        "encodedBodyBytes": 1273,
+        "decodedBodyBytes": 1273,
+        "durationMs": 7.5
+      },
+      {
+        "name": "sky-03.svsc",
+        "transferBytes": 42228,
+        "encodedBodyBytes": 41928,
+        "decodedBodyBytes": 41928,
+        "durationMs": 7.7
+      }
+    ]
+  },
+  "catalogueViewFilter": {
+    "totalRecords": 15448,
+    "magnitudeEligibleRecords": 8060,
+    "frustumVisibleRecords": 1695,
+    "renderedRecords": 1695,
+    "magnitudeCulledRecords": 7388,
+    "frustumCulledRecords": 6365,
+    "budgetCulledRecords": 0,
+    "magnitudeLimitG": 8,
+    "pointBudget": 8000,
+    "frustumPadding": 1.08,
+    "status": "ready",
+    "updatedAt": "2026-09-02T05:07:28.228Z"
+  },
+  "renderActivity": {
+    "mode": "idle",
+    "reasons": [],
+    "diagnostics": {
+      "renderables": 223,
+      "points": 169,
+      "meshes": 54,
+      "structures": 0,
+      "lines": 0,
+      "cameraDistance": 79,
+      "qualityTier": "low",
+      "starBudget": 8000,
+      "labelBudget": 8,
+      "backgroundStarBudget": 420,
+      "skyMeshSegments": 20,
+      "galaxyPointBudget": 1200,
+      "cosmicWebNodeBudget": 20
+    },
+    "updatedAt": "2026-09-02T05:07:28.228Z"
+  },
+  "webgl": {
+    "mounted": true,
+    "mounts": 1,
+    "unmounts": 0,
+    "contextLost": 0,
+    "contextRestored": 0,
+    "canvasCount": 1,
+    "lastEvent": "sample",
+    "updatedAt": "2026-09-02T05:07:28.745Z",
+    "rendererInfo": {
+      "geometries": 140,
+      "textures": 0,
+      "calls": 126,
+      "triangles": 40688,
+      "points": 2284,
+      "lines": 0,
+      "fps": 15.715548570959308,
+      "frameMs": 63.63124999962747
+    }
+  },
+  "consoleErrors": []
+}

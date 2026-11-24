@@ -1,0 +1,271 @@
+{
+  "schemaVersion": 1,
+  "catalog": {
+    "id": "openngc-deep-sky",
+    "version": "v20260501",
+    "releaseCommit": "36cb178a0f69dba8bfc03a99c10512831edf1c6b",
+    "title": "OpenNGC NGC/IC objects database",
+    "retrievedAt": "2026-09-02T00:00:00.000Z",
+    "repositoryUrl": "https://github.com/mattiaverga/OpenNGC",
+    "releaseUrl": "https://github.com/mattiaverga/OpenNGC/releases/tag/v20260501",
+    "doi": "10.21938/y.1ejWUD_MQ6b_eDFoVbbw",
+    "creator": "Mattia Verga and OpenNGC contributors",
+    "credit": "OpenNGC by Mattia Verga and contributors",
+    "sourceBoundary": "OpenNGC merges NED, HyperLEDA, SIMBAD, HEASARC and Harold Corwin catalogue material. Per-field source codes remain described by the pinned guide; source precision and availability vary by object."
+  },
+  "licence": {
+    "id": "CC-BY-SA-4.0",
+    "url": "https://creativecommons.org/licenses/by-sa/4.0/",
+    "sourceLicencePath": "catalog-source/openngc-v20260501/CC-BY-SA-4.0.txt",
+    "adaptationNotice": "SpaceViewer filtered, normalized, classified and chunked this OpenNGC-derived dataset. The derived catalogue assets in /catalogs/openngc are offered under CC BY-SA 4.0; SpaceViewer's unrelated source code and assets are not relicensed by that statement."
+  },
+  "selection": {
+    "predicate": "Accepted deep-sky type with finite J2000 RA/Dec and (Messier cross-reference OR preferred V/B apparent magnitude <= 12 OR major axis >= 2 arcmin), excluding galaxies represented by the physical LVDB Local Group layer",
+    "acceptedTypes": [
+      "G",
+      "GPair",
+      "GTrpl",
+      "GGroup",
+      "PN",
+      "HII",
+      "DrkN",
+      "EmN",
+      "Neb",
+      "RfN",
+      "SNR",
+      "OCl",
+      "GCl",
+      "Cl+N"
+    ],
+    "sourceRecordCount": 14033,
+    "acceptedTypeCount": 12095,
+    "coordinateRejectedCount": 0,
+    "thresholdRejectedCount": 9081,
+    "localGroupExcludedCount": 10,
+    "objectCount": 3004,
+    "familyCounts": {
+      "galaxy": 1997,
+      "nebula": 315,
+      "cluster": 692
+    },
+    "typeCounts": {
+      "Cl+N": 58,
+      "DrkN": 1,
+      "EmN": 5,
+      "G": 1968,
+      "GCl": 179,
+      "GGroup": 3,
+      "GPair": 24,
+      "GTrpl": 2,
+      "HII": 45,
+      "Neb": 68,
+      "OCl": 513,
+      "PN": 92,
+      "RfN": 36,
+      "SNR": 10
+    },
+    "boundary": "This is a display-oriented OpenNGC subset, not a complete or statistically uniform deep-sky census. Catalogue field availability, contributing surveys, magnitude bands, angular-size sources and the selection thresholds vary by object."
+  },
+  "coordinates": {
+    "sourceFrame": "J2000 equatorial RA/Dec",
+    "epoch": "J2000",
+    "sceneTransform": "Direction-preserving Cartesian projection on a fixed 108-scene-unit sphere",
+    "angularShellRadiusSceneUnits": 108,
+    "placementBoundary": "OpenNGC supplies authoritative J2000 sky direction but not a homogeneous physical distance for this selection. Objects are therefore placed on a fixed 108-unit angular guide sphere; radial separation is intentionally undefined and must not be interpreted as distance."
+  },
+  "parameters": {
+    "magnitudeRule": "Use V magnitude where present, otherwise B magnitude; the displayed band is preserved per object.",
+    "sourceBoundary": "OpenNGC merges NED, HyperLEDA, SIMBAD, HEASARC and Harold Corwin catalogue material. Per-field source codes remain described by the pinned guide; source precision and availability vary by object."
+  },
+  "chunks": [
+    {
+      "id": "ra-00",
+      "label": "J2000 RA 0–30°",
+      "url": "/catalogs/openngc/ra-00.json",
+      "raMinDeg": 0,
+      "raMaxDeg": 30,
+      "objectCount": 213,
+      "familyCounts": {
+        "galaxy": 151,
+        "nebula": 12,
+        "cluster": 50
+      },
+      "byteLength": 217327,
+      "sha256": "6ce1067a3627eee5f3395ffa716dbb2fa6449b6631322cced26884ffd4cbae39"
+    },
+    {
+      "id": "ra-01",
+      "label": "J2000 RA 30–60°",
+      "url": "/catalogs/openngc/ra-01.json",
+      "raMinDeg": 30,
+      "raMaxDeg": 60,
+      "objectCount": 249,
+      "familyCounts": {
+        "galaxy": 213,
+        "nebula": 18,
+        "cluster": 18
+      },
+      "byteLength": 268962,
+      "sha256": "09d2920d5c39ca90acc41d7c6a234123314af38160d5002f00948b2197a0a5d8"
+    },
+    {
+      "id": "ra-02",
+      "label": "J2000 RA 60–90°",
+      "url": "/catalogs/openngc/ra-02.json",
+      "raMinDeg": 60,
+      "raMaxDeg": 90,
+      "objectCount": 328,
+      "familyCounts": {
+        "galaxy": 90,
+        "nebula": 94,
+        "cluster": 144
+      },
+      "byteLength": 292873,
+      "sha256": "27c3ef4a23a3020f0a7a192b7c792c9a56fa2b533c1ee3ab97dc52a0ec191fc2"
+    },
+    {
+      "id": "ra-03",
+      "label": "J2000 RA 90–120°",
+      "url": "/catalogs/openngc/ra-03.json",
+      "raMinDeg": 90,
+      "raMaxDeg": 120,
+      "objectCount": 214,
+      "familyCounts": {
+        "galaxy": 69,
+        "nebula": 35,
+        "cluster": 110
+      },
+      "byteLength": 193333,
+      "sha256": "44d12fa94d129bb626b10247bfb69eacb374ef8d8f65baaee4e5a84b951e6ad2"
+    },
+    {
+      "id": "ra-04",
+      "label": "J2000 RA 120–150°",
+      "url": "/catalogs/openngc/ra-04.json",
+      "raMinDeg": 120,
+      "raMaxDeg": 150,
+      "objectCount": 202,
+      "familyCounts": {
+        "galaxy": 153,
+        "nebula": 10,
+        "cluster": 39
+      },
+      "byteLength": 215782,
+      "sha256": "22aecd301a70611129f4672e9ce955362d0e37aff47244f418e9253832e52e4f"
+    },
+    {
+      "id": "ra-05",
+      "label": "J2000 RA 150–180°",
+      "url": "/catalogs/openngc/ra-05.json",
+      "raMinDeg": 150,
+      "raMaxDeg": 180,
+      "objectCount": 328,
+      "familyCounts": {
+        "galaxy": 283,
+        "nebula": 23,
+        "cluster": 22
+      },
+      "byteLength": 360884,
+      "sha256": "d14432f911f36ec83d0483c7825a9a4ae0836b9c0d1e66e9c81f04c1e0d936fb"
+    },
+    {
+      "id": "ra-06",
+      "label": "J2000 RA 180–210°",
+      "url": "/catalogs/openngc/ra-06.json",
+      "raMinDeg": 180,
+      "raMaxDeg": 210,
+      "objectCount": 555,
+      "familyCounts": {
+        "galaxy": 515,
+        "nebula": 7,
+        "cluster": 33
+      },
+      "byteLength": 624284,
+      "sha256": "317686296f89f274d4232c0cec142ee4af5d696bb49649597d241a169f642a9f"
+    },
+    {
+      "id": "ra-07",
+      "label": "J2000 RA 210–240°",
+      "url": "/catalogs/openngc/ra-07.json",
+      "raMinDeg": 210,
+      "raMaxDeg": 240,
+      "objectCount": 196,
+      "familyCounts": {
+        "galaxy": 164,
+        "nebula": 4,
+        "cluster": 28
+      },
+      "byteLength": 213913,
+      "sha256": "10305d4caa7cdce398a30cb1ccc018c217bb52be005fd43998511c202cdb0829"
+    },
+    {
+      "id": "ra-08",
+      "label": "J2000 RA 240–270°",
+      "url": "/catalogs/openngc/ra-08.json",
+      "raMinDeg": 240,
+      "raMaxDeg": 270,
+      "objectCount": 150,
+      "familyCounts": {
+        "galaxy": 44,
+        "nebula": 24,
+        "cluster": 82
+      },
+      "byteLength": 140738,
+      "sha256": "5541ff96667b6e4175b056e00a9fea005573feda6391aa4ed1036e59e8b10d1e"
+    },
+    {
+      "id": "ra-09",
+      "label": "J2000 RA 270–300°",
+      "url": "/catalogs/openngc/ra-09.json",
+      "raMinDeg": 270,
+      "raMaxDeg": 300,
+      "objectCount": 215,
+      "familyCounts": {
+        "galaxy": 75,
+        "nebula": 48,
+        "cluster": 92
+      },
+      "byteLength": 196883,
+      "sha256": "7d5f4d54794c3c0a5161141d3562adc8f2342b284cd0d644f7735620c2ab41af"
+    },
+    {
+      "id": "ra-10",
+      "label": "J2000 RA 300–330°",
+      "url": "/catalogs/openngc/ra-10.json",
+      "raMinDeg": 300,
+      "raMaxDeg": 330,
+      "objectCount": 181,
+      "familyCounts": {
+        "galaxy": 100,
+        "nebula": 32,
+        "cluster": 49
+      },
+      "byteLength": 177687,
+      "sha256": "5c3487b5c817be9788ddabf17f02c79be1352e4942ada038d6146b0603919698"
+    },
+    {
+      "id": "ra-11",
+      "label": "J2000 RA 330–360°",
+      "url": "/catalogs/openngc/ra-11.json",
+      "raMinDeg": 330,
+      "raMaxDeg": 360,
+      "objectCount": 173,
+      "familyCounts": {
+        "galaxy": 140,
+        "nebula": 8,
+        "cluster": 25
+      },
+      "byteLength": 181705,
+      "sha256": "684b79557629bc0086f0187c3dba463683d60d4514a7bd7d66a84e7ffb681141"
+    }
+  ],
+  "build": {
+    "scriptVersion": "spaceviewer-openngc-builder-v1",
+    "sourceSha256": {
+      "NGC.csv": "840fe0c9ee1332e551b2e722a0e92726cd7b157914a3d2177602832aadd3aa9e",
+      "addendum.csv": "1d8f0914e643ada325a5a94d88d8fefad6a4937a2f77cc34f21483af22b11983"
+    },
+    "chunking": "12 independent J2000 right-ascension sectors of 30 degrees",
+    "objectCount": 3004
+  }
+}

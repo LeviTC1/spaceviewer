@@ -1,0 +1,46 @@
+/* Cinematic system tokens for the SpaceViewer workspace. */
+:root {
+  --sv-bg: #03060d;
+  --sv-surface-0: #08101a;
+  --sv-surface-1: #0d1724;
+  --sv-surface-2: #121f2e;
+  --sv-surface-3: #192a3c;
+  --sv-bg-elevated: rgba(9, 16, 26, 0.9);
+  --sv-border-subtle: rgba(155, 210, 255, 0.13);
+  --sv-border-strong: rgba(160, 224, 255, 0.28);
+  --sv-text-primary: #f5f8fb;
+  --sv-text-secondary: rgba(225, 239, 251, 0.74);
+  --sv-text-tertiary: rgba(202, 220, 238, 0.48);
+  --sv-accent: #69e6ff;
+  --sv-accent-soft: rgba(105, 230, 255, 0.14);
+  --sv-accent-strong: rgba(105, 230, 255, 0.82);
+  --sv-accent-warm: #ffb35c;
+  --sv-accent-warm-soft: rgba(255, 179, 92, 0.16);
+  --sv-accent-cool: #8ea5ff;
+  --sv-accent-violet: #b38cff;
+  --sv-context-accent: var(--sv-accent);
+  --sv-context-glow: rgba(105, 230, 255, 0.24);
+  --sv-space-glass: rgba(7, 13, 22, 0.74);
+  --sv-space-glass-strong: rgba(8, 15, 25, 0.9);
+  --sv-space-glass-soft: rgba(13, 25, 40, 0.5);
+  --sv-edge-light: rgba(176, 230, 255, 0.3);
+  --sv-edge-shadow: rgba(0, 0, 0, 0.55);
+  --sv-panel-noise:
+    radial-gradient(circle at 18% 0%, rgba(255, 255, 255, 0.055), transparent 28%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.045), transparent 42%);
+  --sv-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --sv-ease-physical: cubic-bezier(0.2, 0.85, 0.2, 1);
+  --sv-motion-fast: 160ms;
+  --sv-motion-medium: 280ms;
+  --sv-motion-slow: 520ms;
+  --sv-radius-sm: 8px;
+  --sv-radius-md: 12px;
+  --sv-radius-lg: 16px;
+  --sv-shadow-soft: 0 24px 58px rgba(0, 0, 0, 0.42);
+  --sv-shadow-panel:
+    0 18px 44px rgba(0, 0, 0, 0.42),
+    inset 0 1px 0 rgba(255, 255, 255, 0.07),
+    inset 0 -1px 0 rgba(0, 0, 0, 0.34);
+  --sv-sidebar-width: 264px;
+  --sv-page-gutter: 32px;
+}

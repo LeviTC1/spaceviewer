@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "id": "astronomy-engine-satellite-ephemeris-v2.1.19",
+  "generatedBy": "spaceviewer-satellite-ephemeris-manifest-v1",
+  "package": {
+    "name": "astronomy-engine",
+    "version": "2.1.19",
+    "releaseTag": "v2.1.19",
+    "releaseCommit": "61dc07020aaa6885d2c7f688a4d82beaf6edb9ef",
+    "releaseUrl": "https://github.com/cosinekitty/astronomy/releases/tag/v2.1.19",
+    "repository": "https://github.com/cosinekitty/astronomy",
+    "creator": "Donald Cross",
+    "license": "MIT",
+    "licenseUrl": "https://raw.githubusercontent.com/cosinekitty/astronomy/v2.1.19/LICENSE",
+    "npmIntegrity": "sha512-8yWKNf7UeNbH458h3sAJ6ZgAjE5jTXp/mNNRFoC20j2SHwZIjAQeEsBB2Q3uCFRaTCCJRv33K2XhkhZQMXoX6w=="
+  },
+  "controlledBodies": [
+    "moon",
+    "io",
+    "europa",
+    "ganymede",
+    "callisto"
+  ],
+  "models": [
+    {
+      "id": "astronomy-engine-improved-lunar",
+      "bodies": [
+        "moon"
+      ],
+      "sourceBasis": "Nautical Almanac Office Improved Lunar Ephemeris of 1954, derived from E. W. Brown lunar theory and adapted by Astronomy Engine",
+      "nativeOrigin": "geocentric",
+      "nativeFrame": "EQJ J2000 mean equator",
+      "runtimeFrame": "ECL J2000 mean ecliptic",
+      "positionUnit": "astronomical-unit",
+      "velocityUnit": "astronomical-unit-per-day"
+    },
+    {
+      "id": "astronomy-engine-l1.2-galilean",
+      "bodies": [
+        "io",
+        "europa",
+        "ganymede",
+        "callisto"
+      ],
+      "sourceBasis": "IMCCE L1.2 analytical theory by Duriez, Lainey and Vienne, translated and optimized by Astronomy Engine",
+      "theoryUrl": "https://ftp.imcce.fr/pub/ephem/satel/galilean/L1/L1.2/",
+      "nativeOrigin": "jovicentric",
+      "nativeFrame": "EQJ J2000 mean equator",
+      "runtimeFrame": "ECL J2000 mean ecliptic",
+      "positionUnit": "astronomical-unit",
+      "velocityUnit": "astronomical-unit-per-day"
+    }
+  ],
+  "runtime": {
+    "activeStartUtc": "2025-01-01T00:00:00.000Z",
+    "activeEndUtc": "2050-12-31T23:59:59.999Z",
+    "frameTransform": "Astronomy Engine Rotation_EQJ_ECL applied to position and velocity",
+    "evaluation": "Local analytical evaluation; no animation-frame network request",
+    "fallback": "Unsupported moons retain the explicitly labelled parent-relative circular seed model",
+    "accuracyBoundary": "Visualisation-grade analytical ephemerides. Not for spacecraft navigation, occultation prediction, operational timing or ground-track prediction. SpaceViewer does not model limb topography, light time or full satellite attitude here."
+  },
+  "validation": {
+    "generalClaim": "Astronomy Engine targets angular accuracy within one arcminute for its supported astronomy calculations",
+    "galileanFixtureCountPerMoon": 5001,
+    "galileanPositionRelativeTolerance": 0.0009,
+    "galileanVelocityRelativeTolerance": 0.0009,
+    "validationSource": "Astronomy Engine v2.1.19 generate/test.js comparisons against NASA/JPL Horizons"
+  },
+  "attribution": "Astronomy Engine v2.1.19 by Donald Cross, used under the MIT License. Galilean positions are based on the IMCCE L1.2 analytical theory."
+}

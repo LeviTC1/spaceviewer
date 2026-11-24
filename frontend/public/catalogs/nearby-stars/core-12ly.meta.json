@@ -1,0 +1,233 @@
+{
+  "schemaVersion": 1,
+  "catalogId": "spaceviewer-nearby-stars-seed",
+  "catalogVersion": "nearby-stars-seed-v3",
+  "chunkId": "core-12ly",
+  "records": [
+    {
+      "id": "nearby:sun",
+      "sourceId": "Sun",
+      "name": "Sun",
+      "aliases": [],
+      "spectralType": "G2V",
+      "importance": 100,
+      "sourceRow": 1
+    },
+    {
+      "id": "nearby:proxima-centauri",
+      "sourceId": "Proxima Centauri",
+      "name": "Proxima Centauri",
+      "aliases": [],
+      "spectralType": "M5.5V",
+      "importance": 60,
+      "sourceRow": 2
+    },
+    {
+      "id": "nearby:alpha-centauri-a",
+      "sourceId": "Alpha Centauri A",
+      "name": "Alpha Centauri A",
+      "aliases": [],
+      "spectralType": "G2V",
+      "importance": 60,
+      "sourceRow": 3
+    },
+    {
+      "id": "nearby:alpha-centauri-b",
+      "sourceId": "Alpha Centauri B",
+      "name": "Alpha Centauri B",
+      "aliases": [],
+      "spectralType": "K1V",
+      "importance": 60,
+      "sourceRow": 4
+    },
+    {
+      "id": "nearby:barnard-s-star",
+      "sourceId": "Barnard's Star",
+      "name": "Barnard's Star",
+      "aliases": [],
+      "spectralType": "M4V",
+      "importance": 60,
+      "sourceRow": 5
+    },
+    {
+      "id": "nearby:wolf-359",
+      "sourceId": "Wolf 359",
+      "name": "Wolf 359",
+      "aliases": [],
+      "spectralType": "M6V",
+      "importance": 60,
+      "sourceRow": 6
+    },
+    {
+      "id": "nearby:lalande-21185",
+      "sourceId": "Lalande 21185",
+      "name": "Lalande 21185",
+      "aliases": [],
+      "spectralType": "M2V",
+      "importance": 60,
+      "sourceRow": 7
+    },
+    {
+      "id": "nearby:sirius-a",
+      "sourceId": "Sirius A",
+      "name": "Sirius A",
+      "aliases": [],
+      "spectralType": "A1V",
+      "importance": 80,
+      "sourceRow": 8
+    },
+    {
+      "id": "nearby:sirius-b",
+      "sourceId": "Sirius B",
+      "name": "Sirius B",
+      "aliases": [],
+      "spectralType": "DA2",
+      "importance": 60,
+      "sourceRow": 9
+    },
+    {
+      "id": "nearby:luyten-726-8-a",
+      "sourceId": "Luyten 726-8 A",
+      "name": "Luyten 726-8 A",
+      "aliases": [],
+      "spectralType": "M5.5V",
+      "importance": 60,
+      "sourceRow": 10
+    },
+    {
+      "id": "nearby:luyten-726-8-b",
+      "sourceId": "Luyten 726-8 B",
+      "name": "Luyten 726-8 B",
+      "aliases": [],
+      "spectralType": "M6V",
+      "importance": 60,
+      "sourceRow": 11
+    },
+    {
+      "id": "nearby:ross-154",
+      "sourceId": "Ross 154",
+      "name": "Ross 154",
+      "aliases": [],
+      "spectralType": "M3.5V",
+      "importance": 60,
+      "sourceRow": 12
+    },
+    {
+      "id": "nearby:ross-248",
+      "sourceId": "Ross 248",
+      "name": "Ross 248",
+      "aliases": [],
+      "spectralType": "M6V",
+      "importance": 60,
+      "sourceRow": 13
+    },
+    {
+      "id": "nearby:epsilon-eridani",
+      "sourceId": "Epsilon Eridani",
+      "name": "Epsilon Eridani",
+      "aliases": [],
+      "spectralType": "K2V",
+      "importance": 60,
+      "sourceRow": 14
+    },
+    {
+      "id": "nearby:lacaille-9352",
+      "sourceId": "Lacaille 9352",
+      "name": "Lacaille 9352",
+      "aliases": [],
+      "spectralType": "M2V",
+      "importance": 60,
+      "sourceRow": 47
+    },
+    {
+      "id": "nearby:61-cygni-a",
+      "sourceId": "61 Cygni A",
+      "name": "61 Cygni A",
+      "aliases": [],
+      "spectralType": "K5V",
+      "importance": 60,
+      "sourceRow": 16
+    },
+    {
+      "id": "nearby:61-cygni-b",
+      "sourceId": "61 Cygni B",
+      "name": "61 Cygni B",
+      "aliases": [],
+      "spectralType": "K7V",
+      "importance": 60,
+      "sourceRow": 17
+    },
+    {
+      "id": "nearby:procyon",
+      "sourceId": "Procyon",
+      "name": "Procyon",
+      "aliases": [],
+      "spectralType": "F5IV",
+      "importance": 60,
+      "sourceRow": 15
+    },
+    {
+      "id": "nearby:groombridge-34-a",
+      "sourceId": "Groombridge 34 A",
+      "name": "Groombridge 34 A",
+      "aliases": [],
+      "spectralType": "M1V",
+      "importance": 60,
+      "sourceRow": 20
+    },
+    {
+      "id": "nearby:groombridge-34-b",
+      "sourceId": "Groombridge 34 B",
+      "name": "Groombridge 34 B",
+      "aliases": [],
+      "spectralType": "M3V",
+      "importance": 60,
+      "sourceRow": 21
+    },
+    {
+      "id": "nearby:gliese-15-a",
+      "sourceId": "Gliese 15 A",
+      "name": "Gliese 15 A",
+      "aliases": [],
+      "spectralType": "M1V",
+      "importance": 60,
+      "sourceRow": 50
+    },
+    {
+      "id": "nearby:gliese-15-b",
+      "sourceId": "Gliese 15 B",
+      "name": "Gliese 15 B",
+      "aliases": [],
+      "spectralType": "M3V",
+      "importance": 60,
+      "sourceRow": 51
+    },
+    {
+      "id": "nearby:epsilon-ceti",
+      "sourceId": "Epsilon Ceti",
+      "name": "Epsilon Ceti",
+      "aliases": [],
+      "spectralType": "K0V",
+      "importance": 60,
+      "sourceRow": 24
+    },
+    {
+      "id": "nearby:epsilon-indi",
+      "sourceId": "Epsilon Indi",
+      "name": "Epsilon Indi",
+      "aliases": [],
+      "spectralType": "K5V",
+      "importance": 60,
+      "sourceRow": 19
+    },
+    {
+      "id": "nearby:tau-ceti",
+      "sourceId": "Tau Ceti",
+      "name": "Tau Ceti",
+      "aliases": [],
+      "spectralType": "G8V",
+      "importance": 60,
+      "sourceRow": 18
+    }
+  ]
+}

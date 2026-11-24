@@ -1,0 +1,747 @@
+{
+  "schemaVersion": 1,
+  "catalog": {
+    "id": "iau-constellation-boundaries-j2000",
+    "version": "iau-public-boundaries-j2000-v1",
+    "title": "Official IAU constellation boundary coordinates",
+    "status": "authoritative-source-snapshot",
+    "referenceFrame": "equatorial-j2000",
+    "epoch": "J2000",
+    "provenance": {
+      "sourceName": "International Astronomical Union",
+      "sourcePageUrl": "https://iauarchive.eso.org/public/themes/constellations/",
+      "sourceBaseUrl": "https://iauarchive.eso.org/static/public/constellations/txt",
+      "retrievedAt": "2026-09-02T13:00:00.000Z",
+      "credit": "International Astronomical Union constellation boundaries",
+      "usageNote": "Coordinate data define the official 88 sky regions. SpaceViewer does not redistribute the separately licensed IAU/Sky & Telescope chart artwork.",
+      "methodologyReference": "Davenhall and Leggett, Catalogue of Constellation Boundary Data, VizieR VI/49",
+      "vizierUrl": "https://cdsarc.cds.unistra.fr/viz-bin/cat/VI/49"
+    }
+  },
+  "sourceFile": {
+    "path": "catalog-source/iau-constellation-boundaries-j2000-v1.json.gz",
+    "format": "json",
+    "contentEncoding": "gzip",
+    "fileCount": 89,
+    "constellationCount": 88,
+    "vertexCount": 1565,
+    "uncompressedBytes": 71174,
+    "compressedBytes": 17073,
+    "uncompressedSha256": "d56df274606611c9a0b2d8fb4b9706cdc60c3cf7183a249c4e68d84bebfd0750",
+    "compressedSha256": "c4ffc9d50955e7f816edec7a4ff7068d0096a3f681736709e24746b009e326d0",
+    "files": [
+      {
+        "fileId": "and",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/and.txt",
+        "abbreviation": "AND",
+        "sourceAbbreviation": "AND",
+        "vertexCount": 37,
+        "sha256": "00c148a632c2c833b03c4c43f96d2d80314826db25d5d9c8359f7d50f6d982fb"
+      },
+      {
+        "fileId": "ant",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/ant.txt",
+        "abbreviation": "ANT",
+        "sourceAbbreviation": "ANT",
+        "vertexCount": 13,
+        "sha256": "795b53ade527162e31fee27d28c6b9dcc7a83aac24efdefa66a8b3097fbae5ff"
+      },
+      {
+        "fileId": "aps",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/aps.txt",
+        "abbreviation": "APS",
+        "sourceAbbreviation": "APS",
+        "vertexCount": 10,
+        "sha256": "31e2d9cf80a86fea466892b8dae23f77291e4ea2815e1189a55d65e6798a3f91"
+      },
+      {
+        "fileId": "aql",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/aql.txt",
+        "abbreviation": "AQL",
+        "sourceAbbreviation": "AQL",
+        "vertexCount": 24,
+        "sha256": "6262d7903d42bba72a5d531eff78cc9dc3c9e788f1ae97240f5a600a296134e5"
+      },
+      {
+        "fileId": "aqr",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/aqr.txt",
+        "abbreviation": "AQR",
+        "sourceAbbreviation": "AQR",
+        "vertexCount": 23,
+        "sha256": "edc1c35f1b29ae63e9e34b3670ef9c9063ed0d42248ea227c90e4c5e1c1dddd4"
+      },
+      {
+        "fileId": "ara",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/ara.txt",
+        "abbreviation": "ARA",
+        "sourceAbbreviation": "ARA",
+        "vertexCount": 15,
+        "sha256": "0771ae1933f8a193aa2b6d9a714304d6a9965cbf62fc4dc7745687b31b13218b"
+      },
+      {
+        "fileId": "ari",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/ari.txt",
+        "abbreviation": "ARI",
+        "sourceAbbreviation": "ARI",
+        "vertexCount": 12,
+        "sha256": "cb12669f4ab2c7db922452556123a83231566bfac7c1a008d9f2268fea80cf88"
+      },
+      {
+        "fileId": "aur",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/aur.txt",
+        "abbreviation": "AUR",
+        "sourceAbbreviation": "AUR",
+        "vertexCount": 21,
+        "sha256": "314220dafc191e7da9394214e79bef473c51edee0f198397d7dd264bcbfefb77"
+      },
+      {
+        "fileId": "boo",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/boo.txt",
+        "abbreviation": "BOO",
+        "sourceAbbreviation": "BOO",
+        "vertexCount": 20,
+        "sha256": "8a13d5811ac622fb7ad85b218e27d4aded671fcb8ea342bb246e42b9dcafd14d"
+      },
+      {
+        "fileId": "cae",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cae.txt",
+        "abbreviation": "CAE",
+        "sourceAbbreviation": "CAE",
+        "vertexCount": 14,
+        "sha256": "f7b7a3a730b345478e5d1738a5b27cba3feba333f3bd70b64161cf03a0d31478"
+      },
+      {
+        "fileId": "cam",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cam.txt",
+        "abbreviation": "CAM",
+        "sourceAbbreviation": "CAM",
+        "vertexCount": 34,
+        "sha256": "58a8dd4addd85e62e12cd6e3eb13fbb50f2aadbd37f40f753821599d4100120b"
+      },
+      {
+        "fileId": "cap",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cap.txt",
+        "abbreviation": "CAP",
+        "sourceAbbreviation": "CAP",
+        "vertexCount": 12,
+        "sha256": "c631c416de0294e3847fc24493cb9664dcdfd68e67f886ca5b66ae0aa2c07f7b"
+      },
+      {
+        "fileId": "car",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/car.txt",
+        "abbreviation": "CAR",
+        "sourceAbbreviation": "CAR",
+        "vertexCount": 21,
+        "sha256": "77b300c44b780a2e843a1e1d84c96551953c0fadc658278638dbf7e1419f5c22"
+      },
+      {
+        "fileId": "cas",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cas.txt",
+        "abbreviation": "CAS",
+        "sourceAbbreviation": "CAS",
+        "vertexCount": 31,
+        "sha256": "c9e66cb2191a7fd525a51811259b6089f7d608dda632500dad7735cd9f962985"
+      },
+      {
+        "fileId": "cen",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cen.txt",
+        "abbreviation": "CEN",
+        "sourceAbbreviation": "CEN",
+        "vertexCount": 20,
+        "sha256": "d425e0540e275d67ddcb37ea842bfb2bcdf217c907eded8aa92f43f7a579bfb2"
+      },
+      {
+        "fileId": "cep",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cep.txt",
+        "abbreviation": "CEP",
+        "sourceAbbreviation": "CEP",
+        "vertexCount": 39,
+        "sha256": "baaeb1315cb95d429d04eb3379c5f6ddc7129b88852497e0a03bfb1d6b1b2da2"
+      },
+      {
+        "fileId": "cet",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cet.txt",
+        "abbreviation": "CET",
+        "sourceAbbreviation": "CET",
+        "vertexCount": 14,
+        "sha256": "b0ab72d42e015c4e944bac7f18b6701ce5d550b2e46f94b39fd82690ce294953"
+      },
+      {
+        "fileId": "cha",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cha.txt",
+        "abbreviation": "CHA",
+        "sourceAbbreviation": "CHA",
+        "vertexCount": 6,
+        "sha256": "488c48c76a22e5d462c2b6b8be424eaa9166cd029f93821dbc7c5837cd1505d0"
+      },
+      {
+        "fileId": "cir",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cir.txt",
+        "abbreviation": "CIR",
+        "sourceAbbreviation": "CIR",
+        "vertexCount": 16,
+        "sha256": "24400584e0d526a66c5fe61ddbe64b34ff0bb2e6394a0a0e2edc5bc93f4b4ccf"
+      },
+      {
+        "fileId": "cma",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cma.txt",
+        "abbreviation": "CMA",
+        "sourceAbbreviation": "CMA",
+        "vertexCount": 6,
+        "sha256": "6c739383b5f60b3450b18c981e3cefac697a5668e42ed2a5b1e495e3175ed638"
+      },
+      {
+        "fileId": "cmi",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cmi.txt",
+        "abbreviation": "CMI",
+        "sourceAbbreviation": "CMI",
+        "vertexCount": 15,
+        "sha256": "0b463397573a92aaadc68e583f4a83fccfb63ac5cbe793eeb914d0536313cfb8"
+      },
+      {
+        "fileId": "cnc",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cnc.txt",
+        "abbreviation": "CNC",
+        "sourceAbbreviation": "CNC",
+        "vertexCount": 12,
+        "sha256": "6dda78fce685c5d57e4fba609663774638f9b339ae82ead52d75b399b30ebbde"
+      },
+      {
+        "fileId": "col",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/col.txt",
+        "abbreviation": "COL",
+        "sourceAbbreviation": "COL",
+        "vertexCount": 7,
+        "sha256": "2d8174e1343656e895f86cf5339bb12f400ecb5b2262d58b8eb0458185ad1a43"
+      },
+      {
+        "fileId": "com",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/com.txt",
+        "abbreviation": "COM",
+        "sourceAbbreviation": "COM",
+        "vertexCount": 12,
+        "sha256": "25619e92358a478c1d5b1dd11d6b9073a3248f8d2df598288a856362c1f50ded"
+      },
+      {
+        "fileId": "cra",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cra.txt",
+        "abbreviation": "CRA",
+        "sourceAbbreviation": "CRA",
+        "vertexCount": 5,
+        "sha256": "4cfa9c1c784b4242e1153f68b190a687b9ad728da3ed50527e924d107531d283"
+      },
+      {
+        "fileId": "crb",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/crb.txt",
+        "abbreviation": "CRB",
+        "sourceAbbreviation": "CRB",
+        "vertexCount": 10,
+        "sha256": "7337622336060a1fe227d23830dd90877fd0f639fd99c376de3f6ca0bc4a7b7d"
+      },
+      {
+        "fileId": "crt",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/crt.txt",
+        "abbreviation": "CRT",
+        "sourceAbbreviation": "CRT",
+        "vertexCount": 9,
+        "sha256": "9a532f9b6556d4e12bcd2cc5a4003c06ff5c77cbe96541b7f87fea204fc5e957"
+      },
+      {
+        "fileId": "cru",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cru.txt",
+        "abbreviation": "CRU",
+        "sourceAbbreviation": "CRU",
+        "vertexCount": 4,
+        "sha256": "6e2a798475234f9e8b34fdfb2a3196522142ba081aee24d9108606050dff92fe"
+      },
+      {
+        "fileId": "crv",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/crv.txt",
+        "abbreviation": "CRV",
+        "sourceAbbreviation": "CRV",
+        "vertexCount": 6,
+        "sha256": "69ad4adcbd83b934ea7d86c2a59455bc2bcf6e78b05d0236ac69c31019495792"
+      },
+      {
+        "fileId": "cvn",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cvn.txt",
+        "abbreviation": "CVN",
+        "sourceAbbreviation": "CVN",
+        "vertexCount": 15,
+        "sha256": "db4e8d9d2dc427573a72b3b3b96cab4eccf7e34586158da9fc3926dde57e071b"
+      },
+      {
+        "fileId": "cyg",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/cyg.txt",
+        "abbreviation": "CYG",
+        "sourceAbbreviation": "CYG",
+        "vertexCount": 33,
+        "sha256": "426cac3c18e11d18783a3e4b413ed57ee923a623fba05e039a7c1df371cf67b0"
+      },
+      {
+        "fileId": "del",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/del.txt",
+        "abbreviation": "DEL",
+        "sourceAbbreviation": "DEL",
+        "vertexCount": 15,
+        "sha256": "32e9c00ded0e1c40ba669c57d0b32df7624d39df9531efec2dd94bc5a0c0e852"
+      },
+      {
+        "fileId": "dor",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/dor.txt",
+        "abbreviation": "DOR",
+        "sourceAbbreviation": "DOR",
+        "vertexCount": 22,
+        "sha256": "c5db24357ffc63ce13a821c4f6ee3b45418d2879a407dd52cdf2898fe6ab2f71"
+      },
+      {
+        "fileId": "dra",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/dra.txt",
+        "abbreviation": "DRA",
+        "sourceAbbreviation": "DRA",
+        "vertexCount": 50,
+        "sha256": "837b6ca8995b1b2577df91efcf7c0fb5fd4d57b7fe24533ad909e2ea9f11ec48"
+      },
+      {
+        "fileId": "equ",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/equ.txt",
+        "abbreviation": "EQU",
+        "sourceAbbreviation": "EQU",
+        "vertexCount": 9,
+        "sha256": "3955424b1e7a64791a8cbefdbddaf74389e7bf6b8fa97e6156e881320eef73dc"
+      },
+      {
+        "fileId": "eri",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/eri.txt",
+        "abbreviation": "ERI",
+        "sourceAbbreviation": "ERI",
+        "vertexCount": 46,
+        "sha256": "17a1368d53c141113601c99fb83dc824ad087e7f6c5dd66e32cb16f30d8cddf3"
+      },
+      {
+        "fileId": "for",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/for.txt",
+        "abbreviation": "FOR",
+        "sourceAbbreviation": "FOR",
+        "vertexCount": 11,
+        "sha256": "7812b9ec56f5524166f81bc69c21c0f1e12ad9e0ec021b80d6f7ae2e6c0d940b"
+      },
+      {
+        "fileId": "gem",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/gem.txt",
+        "abbreviation": "GEM",
+        "sourceAbbreviation": "GEM",
+        "vertexCount": 24,
+        "sha256": "7aa3b448d64a1a5a29ddac0d0b742a7ad1c5cbd02cf3de3d18c96b4ba6cc82f8"
+      },
+      {
+        "fileId": "gru",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/gru.txt",
+        "abbreviation": "GRU",
+        "sourceAbbreviation": "GRU",
+        "vertexCount": 9,
+        "sha256": "7bab50345b7762019b5af4be4631ccbf55bf5ad8d7846a6b9e47e70c79e705f6"
+      },
+      {
+        "fileId": "her",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/her.txt",
+        "abbreviation": "HER",
+        "sourceAbbreviation": "HER",
+        "vertexCount": 33,
+        "sha256": "bf2cd75e0f82a0d09fa6374791d5cc101447d24fa6f46312b9ae4b217e232d4d"
+      },
+      {
+        "fileId": "hor",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/hor.txt",
+        "abbreviation": "HOR",
+        "sourceAbbreviation": "HOR",
+        "vertexCount": 23,
+        "sha256": "1f8185ffe437384a7d20c4302df3eb5df1d1ab4e502d75d9528dd2b19c75d4e1"
+      },
+      {
+        "fileId": "hya",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/hya.txt",
+        "abbreviation": "HYA",
+        "sourceAbbreviation": "HYA",
+        "vertexCount": 39,
+        "sha256": "d3ed46d2f579d2e4e976110187b729fca943559bf3345a72f073b9e01c2779e0"
+      },
+      {
+        "fileId": "hyi",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/hyi.txt",
+        "abbreviation": "HYI",
+        "sourceAbbreviation": "HYI",
+        "vertexCount": 14,
+        "sha256": "9123a1393a7efc7a671356e2c8224d65704a5a8adc2535ac15c0698e465772c4"
+      },
+      {
+        "fileId": "ind",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/ind.txt",
+        "abbreviation": "IND",
+        "sourceAbbreviation": "IND",
+        "vertexCount": 12,
+        "sha256": "c16e06fa0d69bccfff7e0979d3c8e16974b1c6c5ef4685b63903a8cfe5f9d50e"
+      },
+      {
+        "fileId": "lac",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/lac.txt",
+        "abbreviation": "LAC",
+        "sourceAbbreviation": "LAC",
+        "vertexCount": 17,
+        "sha256": "694e49af1012c6485f482475b3b9a60ae3526922f39049ccdf1d832618446410"
+      },
+      {
+        "fileId": "leo",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/leo.txt",
+        "abbreviation": "LEO",
+        "sourceAbbreviation": "LEO",
+        "vertexCount": 20,
+        "sha256": "75142f9dc0a602c30073a64336a580993f2a260b98cf5cfd500ecdac072152e4"
+      },
+      {
+        "fileId": "lep",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/lep.txt",
+        "abbreviation": "LEP",
+        "sourceAbbreviation": "LEP",
+        "vertexCount": 9,
+        "sha256": "5e3321f1b17809b7cf633dc3aa9234fb8f392cd881bab2ea09d70d83ef9b3377"
+      },
+      {
+        "fileId": "lib",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/lib.txt",
+        "abbreviation": "LIB",
+        "sourceAbbreviation": "LIB",
+        "vertexCount": 14,
+        "sha256": "f776fd5c3a9af545a005570f2c79bb5a6a494fc2a58939eef105d29440bdad8f"
+      },
+      {
+        "fileId": "lmi",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/lmi.txt",
+        "abbreviation": "LMI",
+        "sourceAbbreviation": "LMI",
+        "vertexCount": 17,
+        "sha256": "b2e3469b64c378602a5b896331221255892629d0bf5f7b8037c3d9a686136dfd"
+      },
+      {
+        "fileId": "lup",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/lup.txt",
+        "abbreviation": "LUP",
+        "sourceAbbreviation": "LUP",
+        "vertexCount": 14,
+        "sha256": "d04e199954bbbaa0f451fd04d723996c8f57353ef0478078e3f4bc1961c17e67"
+      },
+      {
+        "fileId": "lyn",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/lyn.txt",
+        "abbreviation": "LYN",
+        "sourceAbbreviation": "LYN",
+        "vertexCount": 23,
+        "sha256": "7a272659db4edd32365e97dc59a20a115d6d1007d2de0410c7ae3059e4fa1654"
+      },
+      {
+        "fileId": "lyr",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/lyr.txt",
+        "abbreviation": "LYR",
+        "sourceAbbreviation": "LYR",
+        "vertexCount": 17,
+        "sha256": "94539aa8cc564a9acd60b9df19107df89cebebbd9acdae41d55282e39ffdd8ae"
+      },
+      {
+        "fileId": "men",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/men.txt",
+        "abbreviation": "MEN",
+        "sourceAbbreviation": "MEN",
+        "vertexCount": 10,
+        "sha256": "a459ab48f38f8b1a9a362ee79992b7090775c373545e0fbbe933063fd48bb0b4"
+      },
+      {
+        "fileId": "mic",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/mic.txt",
+        "abbreviation": "MIC",
+        "sourceAbbreviation": "MIC",
+        "vertexCount": 5,
+        "sha256": "cbebb1a96f1e06a9cc89dad4b2d1496ce8bb59a417ac723a354cc09b4f39aea3"
+      },
+      {
+        "fileId": "mon",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/mon.txt",
+        "abbreviation": "MON",
+        "sourceAbbreviation": "MON",
+        "vertexCount": 19,
+        "sha256": "ec44e745e93c1be06da1a92592a7297860a357001a23287846d563598fbb12b4"
+      },
+      {
+        "fileId": "mus",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/mus.txt",
+        "abbreviation": "MUS",
+        "sourceAbbreviation": "MUS",
+        "vertexCount": 9,
+        "sha256": "34ab5a8fd9b620fb83a7e0b90b4c172e41b4691c7ebb3e9e23e36d8c0d67e91b"
+      },
+      {
+        "fileId": "nor",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/nor.txt",
+        "abbreviation": "NOR",
+        "sourceAbbreviation": "NOR",
+        "vertexCount": 12,
+        "sha256": "8adc7f61827efcb03ae49f5f8c0690e49e7278825fd2d7edec14fd98efd32368"
+      },
+      {
+        "fileId": "oct",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/oct.txt",
+        "abbreviation": "OCT",
+        "sourceAbbreviation": "OCT",
+        "vertexCount": 14,
+        "sha256": "4572aedcfc251f7dcee516515cd348c69a1247df2582cdbdef9b8874f82092c4"
+      },
+      {
+        "fileId": "oph",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/oph.txt",
+        "abbreviation": "OPH",
+        "sourceAbbreviation": "OPH",
+        "vertexCount": 39,
+        "sha256": "05a36117ca6a8c336871e709053585ea87cd3d239798384f2b601c23fe182109"
+      },
+      {
+        "fileId": "ori",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/ori.txt",
+        "abbreviation": "ORI",
+        "sourceAbbreviation": "ORI",
+        "vertexCount": 28,
+        "sha256": "05c5186dd77546378c2e2aeb742e158f3765663c95037cb2f5e64c49ae20d451"
+      },
+      {
+        "fileId": "pav",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/pav.txt",
+        "abbreviation": "PAV",
+        "sourceAbbreviation": "PAV",
+        "vertexCount": 9,
+        "sha256": "4c2284ac23fbc9c0e6425ca54e40239a7edbba9344ce8615c4b3ac5d8c501391"
+      },
+      {
+        "fileId": "peg",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/peg.txt",
+        "abbreviation": "PEG",
+        "sourceAbbreviation": "PEG",
+        "vertexCount": 41,
+        "sha256": "ce57de5add2b35bd1183ee48ee0a915e877565210fcb1bbac08e7e8924aa2adb"
+      },
+      {
+        "fileId": "per",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/per.txt",
+        "abbreviation": "PER",
+        "sourceAbbreviation": "PER",
+        "vertexCount": 28,
+        "sha256": "b7f3bb3a1c7102b5a44d057af42de0b7e3824c48af345ad332a6649c7784f43b"
+      },
+      {
+        "fileId": "phe",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/phe.txt",
+        "abbreviation": "PHE",
+        "sourceAbbreviation": "PHE",
+        "vertexCount": 12,
+        "sha256": "f90e595720c694e8567ceed9f0608fb304cf7c62bfaf1fce9e0ba96e880b06db"
+      },
+      {
+        "fileId": "pic",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/pic.txt",
+        "abbreviation": "PIC",
+        "sourceAbbreviation": "PIC",
+        "vertexCount": 22,
+        "sha256": "784d5d57803b44ebda6c44fab550ffd031a9b0fe2325e34e7e5c31a7190a6bf9"
+      },
+      {
+        "fileId": "psa",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/psa.txt",
+        "abbreviation": "PSA",
+        "sourceAbbreviation": "PSA",
+        "vertexCount": 6,
+        "sha256": "477b5a1131e7ab66e2bb273558bc51fe5cb473a9b1a9b8cf225e77064fdc2b1b"
+      },
+      {
+        "fileId": "psc",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/psc.txt",
+        "abbreviation": "PSC",
+        "sourceAbbreviation": "PSC",
+        "vertexCount": 26,
+        "sha256": "e07e121d7c84ee4f576186c2dd915fb45e4ac6ff6f58f76d6ed6b2ecc302f243"
+      },
+      {
+        "fileId": "pup",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/pup.txt",
+        "abbreviation": "PUP",
+        "sourceAbbreviation": "PUP",
+        "vertexCount": 13,
+        "sha256": "5a9b05a6f17e4317e84e1f1917d80b8ae85add3cbbbe0ed4a9f3c3c2e153dbd8"
+      },
+      {
+        "fileId": "pyx",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/pyx.txt",
+        "abbreviation": "PYX",
+        "sourceAbbreviation": "PYX",
+        "vertexCount": 8,
+        "sha256": "9d742810b362add093b8af4ef0314cab47971fba9891cbed295dcab2796b58c3"
+      },
+      {
+        "fileId": "ret",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/ret.txt",
+        "abbreviation": "RET",
+        "sourceAbbreviation": "RET",
+        "vertexCount": 11,
+        "sha256": "2c10fc129dbeee2cbc3563dc1a2bee661def9299cadb51e76cb49743de18f3cf"
+      },
+      {
+        "fileId": "scl",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/scl.txt",
+        "abbreviation": "SCL",
+        "sourceAbbreviation": "SCL",
+        "vertexCount": 7,
+        "sha256": "184667a79d9af739369368162de2123c55dde9244f8ec5529ce38dd525dbf99f"
+      },
+      {
+        "fileId": "sco",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/sco.txt",
+        "abbreviation": "SCO",
+        "sourceAbbreviation": "SCO",
+        "vertexCount": 20,
+        "sha256": "f9d41008fd2e9799b1394a8d8e3aea97fb5168fbd8040257a2a17c72f4b83f5a"
+      },
+      {
+        "fileId": "sct",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/sct.txt",
+        "abbreviation": "SCT",
+        "sourceAbbreviation": "SCT",
+        "vertexCount": 6,
+        "sha256": "425127bdd457c1b5558e979bbc51eb6909e2f69f8531df1f194a53a8116cd5e6"
+      },
+      {
+        "fileId": "ser1",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/ser1.txt",
+        "abbreviation": "SER",
+        "sourceAbbreviation": "SER1",
+        "vertexCount": 15,
+        "sha256": "defdef4839497fac79d3b593e2e416d9d48ff13df0966568caff3965bdcd0db2"
+      },
+      {
+        "fileId": "ser2",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/ser2.txt",
+        "abbreviation": "SER",
+        "sourceAbbreviation": "SER2",
+        "vertexCount": 25,
+        "sha256": "4c53ef186ca1d39bc19c85bc8bbfb2fdcc49e133c956906bfb09c5384691a232"
+      },
+      {
+        "fileId": "sex",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/sex.txt",
+        "abbreviation": "SEX",
+        "sourceAbbreviation": "SEX",
+        "vertexCount": 7,
+        "sha256": "f7b279389822222c31691b14496eefec8d4a0f96bcfd4dcd77b82bcc95cf5448"
+      },
+      {
+        "fileId": "sge",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/sge.txt",
+        "abbreviation": "SGE",
+        "sourceAbbreviation": "SGE",
+        "vertexCount": 14,
+        "sha256": "5f76bae10a94af7b5578ab6862c612c3bcb55a8a8ce89ce261a4326db2172a8c"
+      },
+      {
+        "fileId": "sgr",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/sgr.txt",
+        "abbreviation": "SGR",
+        "sourceAbbreviation": "SGR",
+        "vertexCount": 13,
+        "sha256": "d52970d0f8d629adeb8c905a8eeb9f7e35e92e531d87592fff3eee8fea0a2b4c"
+      },
+      {
+        "fileId": "tau",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/tau.txt",
+        "abbreviation": "TAU",
+        "sourceAbbreviation": "TAU",
+        "vertexCount": 27,
+        "sha256": "7e87692c76aaad855277bd2d33a1ed53117130a1e9d4c6be513b140e07cd8d59"
+      },
+      {
+        "fileId": "tel",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/tel.txt",
+        "abbreviation": "TEL",
+        "sourceAbbreviation": "TEL",
+        "vertexCount": 5,
+        "sha256": "a216b5dc9380b52576d7fb6f44566e561090a3b050db33360e62ff4670aeb818"
+      },
+      {
+        "fileId": "tra",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/tra.txt",
+        "abbreviation": "TRA",
+        "sourceAbbreviation": "TRA",
+        "vertexCount": 18,
+        "sha256": "c9ffa830c11a7e7822871715ddd0aa04fef80cedd196bbeac6cc4f93f0686331"
+      },
+      {
+        "fileId": "tri",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/tri.txt",
+        "abbreviation": "TRI",
+        "sourceAbbreviation": "TRI",
+        "vertexCount": 16,
+        "sha256": "d7cb0a905af1704e1cd253cc5b0af9e618fac15f49372744d066227457e20006"
+      },
+      {
+        "fileId": "tuc",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/tuc.txt",
+        "abbreviation": "TUC",
+        "sourceAbbreviation": "TUC",
+        "vertexCount": 11,
+        "sha256": "5c8aa4808a856ca905c07842ac870ff058295bc41fae06d7d292382d21d2c2f3"
+      },
+      {
+        "fileId": "uma",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/uma.txt",
+        "abbreviation": "UMA",
+        "sourceAbbreviation": "UMA",
+        "vertexCount": 32,
+        "sha256": "993b3ecb483d675dee5863598f1abf5726d9d7a86a9d73fabe2ff1bff074c3be"
+      },
+      {
+        "fileId": "umi",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/umi.txt",
+        "abbreviation": "UMI",
+        "sourceAbbreviation": "UMI",
+        "vertexCount": 22,
+        "sha256": "0296b91d60ab1e03c89e823ab93e40dc3949c6accb406c2722aa7c96278ff215"
+      },
+      {
+        "fileId": "vel",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/vel.txt",
+        "abbreviation": "VEL",
+        "sourceAbbreviation": "VEL",
+        "vertexCount": 14,
+        "sha256": "627b4388b7ca3fe29a8d8cfcd8bfdfd79afeb80560844dc674fa5a09067fc70c"
+      },
+      {
+        "fileId": "vir",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/vir.txt",
+        "abbreviation": "VIR",
+        "sourceAbbreviation": "VIR",
+        "vertexCount": 19,
+        "sha256": "19ab8b46ad0990e8c6dec61c8f5fd7b55afb61f1de9eb0e8cb85cc5ca2d5a1c8"
+      },
+      {
+        "fileId": "vol",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/vol.txt",
+        "abbreviation": "VOL",
+        "sourceAbbreviation": "VOL",
+        "vertexCount": 7,
+        "sha256": "91e1fbe79e4ae1f5439a78f6a7d9f8a3f9a967fb221a8f983c948f3ae25a1b06"
+      },
+      {
+        "fileId": "vul",
+        "sourceUrl": "https://iauarchive.eso.org/static/public/constellations/txt/vul.txt",
+        "abbreviation": "VUL",
+        "sourceAbbreviation": "VUL",
+        "vertexCount": 21,
+        "sha256": "84cd10ad59669111b3499067f8602610797c61d95ee40f4fd786744e88e07d01"
+      }
+    ]
+  }
+}

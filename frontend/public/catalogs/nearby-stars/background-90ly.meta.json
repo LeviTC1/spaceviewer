@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "catalogId": "spaceviewer-nearby-stars-seed",
+  "catalogVersion": "nearby-stars-seed-v3",
+  "chunkId": "background-90ly",
+  "records": [
+    {
+      "id": "nearby:fomalhaut",
+      "sourceId": "Fomalhaut",
+      "name": "Fomalhaut",
+      "aliases": [],
+      "spectralType": "A3V",
+      "importance": 80,
+      "sourceRow": 31
+    },
+    {
+      "id": "nearby:gamma-leporis",
+      "sourceId": "Gamma Leporis",
+      "name": "Gamma Leporis",
+      "aliases": [],
+      "spectralType": "F6V",
+      "importance": 30,
+      "sourceRow": 38
+    },
+    {
+      "id": "nearby:epsilon-leporis",
+      "sourceId": "Epsilon Leporis",
+      "name": "Epsilon Leporis",
+      "aliases": [],
+      "spectralType": "K4III",
+      "importance": 80,
+      "sourceRow": 39
+    },
+    {
+      "id": "nearby:delta-eridani",
+      "sourceId": "Delta Eridani",
+      "name": "Delta Eridani",
+      "aliases": [],
+      "spectralType": "K0IV",
+      "importance": 30,
+      "sourceRow": 40
+    },
+    {
+      "id": "nearby:beta-comae",
+      "sourceId": "Beta Comae",
+      "name": "Beta Comae",
+      "aliases": [],
+      "spectralType": "G0V",
+      "importance": 30,
+      "sourceRow": 36
+    },
+    {
+      "id": "nearby:pollux",
+      "sourceId": "Pollux",
+      "name": "Pollux",
+      "aliases": [],
+      "spectralType": "K0III",
+      "importance": 80,
+      "sourceRow": 34
+    },
+    {
+      "id": "nearby:denebola",
+      "sourceId": "Denebola",
+      "name": "Denebola",
+      "aliases": [],
+      "spectralType": "A3V",
+      "importance": 80,
+      "sourceRow": 35
+    },
+    {
+      "id": "nearby:arcturus",
+      "sourceId": "Arcturus",
+      "name": "Arcturus",
+      "aliases": [],
+      "spectralType": "K1.5III",
+      "importance": 80,
+      "sourceRow": 32
+    },
+    {
+      "id": "nearby:zeta-reticuli",
+      "sourceId": "Zeta Reticuli",
+      "name": "Zeta Reticuli",
+      "aliases": [],
+      "spectralType": "G2V",
+      "importance": 30,
+      "sourceRow": 37
+    },
+    {
+      "id": "nearby:capella",
+      "sourceId": "Capella",
+      "name": "Capella",
+      "aliases": [],
+      "spectralType": "G8III",
+      "importance": 80,
+      "sourceRow": 33
+    },
+    {
+      "id": "nearby:gliese-163",
+      "sourceId": "Gliese 163",
+      "name": "Gliese 163",
+      "aliases": [],
+      "spectralType": "M3V",
+      "importance": 30,
+      "sourceRow": 55
+    }
+  ]
+}

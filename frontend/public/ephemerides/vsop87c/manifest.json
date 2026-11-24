@@ -1,0 +1,388 @@
+{
+  "schemaVersion": 1,
+  "format": "spaceviewer-vsop87c-float64-v1",
+  "ephemeris": {
+    "id": "vsop87c-heliocentric-2025-2050",
+    "version": "vsop87c-2025-2050-v1",
+    "title": "VSOP87C streamed heliocentric planet ephemeris",
+    "referenceFrame": "heliocentric-ecliptic-j2000",
+    "positionUnit": "astronomical-unit",
+    "timeScale": "julian-date-input-to-pinned-solver"
+  },
+  "source": {
+    "theory": "Bretagnon and Francou, Planetary theories in rectangular and spherical variables: VSOP87 solutions, Astronomy and Astrophysics 202 (1988), 309-315",
+    "theoryUrl": "https://ftp.imcce.fr/pub/ephem/planets/vsop87/",
+    "implementation": "vsop87 npm package",
+    "implementationVersion": "1.0.5",
+    "implementationUrl": "https://www.npmjs.com/package/vsop87",
+    "implementationPath": "node_modules/vsop87/dist/vsop87c.js",
+    "licenceId": "MIT",
+    "credit": "VSOP87 theory by Pierre Bretagnon and Gerard Francou; JavaScript implementation by G.C. Marty",
+    "implementationSha256": "cf271ff5de090c752977f1c80d163fbacf1edd8820e0e67f89be55b92fed859d",
+    "licenceSha256": "ad144c2ef337a91d367ea8870c19b4d2cfeb72196fef4b369bb8cbc70a6d5d0f"
+  },
+  "validity": {
+    "minimumUtcDate": "2025-01-01",
+    "maximumUtcDate": "2050-12-31",
+    "runtimeClampRequired": true
+  },
+  "sampling": {
+    "positionStepJulianDays": 1,
+    "interpolation": "linear-cartesian-between-adjacent-float64-keyframes",
+    "orbitSamplesPerPlanet": 192,
+    "orbitReferenceJulianDate": 2451545,
+    "note": "The runtime already used one-Julian-day VSOP87C keyframes. This build preserves that interpolation contract while moving evaluation offline. Orbit paths are representative display guides sampled across one nominal period about J2000 and are not osculating elements."
+  },
+  "planets": [
+    {
+      "id": "mercury",
+      "orbitalPeriodDays": 88
+    },
+    {
+      "id": "venus",
+      "orbitalPeriodDays": 225
+    },
+    {
+      "id": "earth",
+      "orbitalPeriodDays": 365
+    },
+    {
+      "id": "mars",
+      "orbitalPeriodDays": 687
+    },
+    {
+      "id": "jupiter",
+      "orbitalPeriodDays": 4333
+    },
+    {
+      "id": "saturn",
+      "orbitalPeriodDays": 10759
+    },
+    {
+      "id": "uranus",
+      "orbitalPeriodDays": 30687
+    },
+    {
+      "id": "neptune",
+      "orbitalPeriodDays": 60190
+    }
+  ],
+  "limitations": "This browser asset is a bounded visualization ephemeris, not an operational navigation product. It preserves the pinned package's VSOP87C output and one-day Cartesian interpolation, omits Pluto, does not include covariance, light-time, relativity corrections beyond the source theory, Earth orientation or current JPL/INPOP fitting. Pluto continues to use the separately disclosed Keplerian fallback.",
+  "build": {
+    "builder": "spaceviewer-vsop87c-ephemeris-builder-v1",
+    "deterministic": true,
+    "headerBytes": 64,
+    "byteOrder": "little-endian",
+    "scalarPrecision": "float64",
+    "positionLayout": "sample-major-planet-major-xyz",
+    "orbitLayout": "planet-major-sample-major-xyz",
+    "planetOrder": [
+      "mercury",
+      "venus",
+      "earth",
+      "mars",
+      "jupiter",
+      "saturn",
+      "uranus",
+      "neptune"
+    ],
+    "chunkCount": 26,
+    "totalBinaryBytes": 1871808
+  },
+  "chunks": [
+    {
+      "id": "positions-2025",
+      "year": 2025,
+      "startJulianDate": 2460676,
+      "endJulianDate": 2461042,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2025.svep",
+      "integrity": "sha256-uy0QFSUB0aPS/NAHTaf1FsDFmBQuYAi08W9Ea37PBjA="
+    },
+    {
+      "id": "positions-2026",
+      "year": 2026,
+      "startJulianDate": 2461041,
+      "endJulianDate": 2461407,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2026.svep",
+      "integrity": "sha256-MNFHd8LoL2yXn437vNMkUn0OPDXQ1RGVzugcwD13eRo="
+    },
+    {
+      "id": "positions-2027",
+      "year": 2027,
+      "startJulianDate": 2461406,
+      "endJulianDate": 2461772,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2027.svep",
+      "integrity": "sha256-HORCA0uHzJXfofAoDN7MTktYdQUFxezP3H0mkSm0Vtg="
+    },
+    {
+      "id": "positions-2028",
+      "year": 2028,
+      "startJulianDate": 2461771,
+      "endJulianDate": 2462138,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-2028.svep",
+      "integrity": "sha256-gJS3M1ML8fUBUMmJO4pX3GxXYc4UghylqgIaN3Zm96Q="
+    },
+    {
+      "id": "positions-2029",
+      "year": 2029,
+      "startJulianDate": 2462137,
+      "endJulianDate": 2462503,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2029.svep",
+      "integrity": "sha256-x2PC2p/QvONNJE2fNVcRzWMIlZ0yUBt6PkiPl8j3DZw="
+    },
+    {
+      "id": "positions-2030",
+      "year": 2030,
+      "startJulianDate": 2462502,
+      "endJulianDate": 2462868,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2030.svep",
+      "integrity": "sha256-Cq7qIqfSt9GjFkH7Ul5eZhchLUcHFfZBOkFr2Wpilgw="
+    },
+    {
+      "id": "positions-2031",
+      "year": 2031,
+      "startJulianDate": 2462867,
+      "endJulianDate": 2463233,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2031.svep",
+      "integrity": "sha256-esHaRRV7Wx3Mr5hw6kXmx3XqSr6v9un7VXmOGv5RWnY="
+    },
+    {
+      "id": "positions-2032",
+      "year": 2032,
+      "startJulianDate": 2463232,
+      "endJulianDate": 2463599,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-2032.svep",
+      "integrity": "sha256-fh+XPn39G+rDeJF40YrcAQIGstPTc6PijDVLryEZFCU="
+    },
+    {
+      "id": "positions-2033",
+      "year": 2033,
+      "startJulianDate": 2463598,
+      "endJulianDate": 2463964,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2033.svep",
+      "integrity": "sha256-s7nrU5znaHfJuHS11sWRSYdONW8lPTENucwsJIAWjOQ="
+    },
+    {
+      "id": "positions-2034",
+      "year": 2034,
+      "startJulianDate": 2463963,
+      "endJulianDate": 2464329,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2034.svep",
+      "integrity": "sha256-R3w1tBxLTxRLUwrmzRHMci9Hn4/N3v5681SPl3zMU48="
+    },
+    {
+      "id": "positions-2035",
+      "year": 2035,
+      "startJulianDate": 2464328,
+      "endJulianDate": 2464694,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2035.svep",
+      "integrity": "sha256-JMD8vifG3YtJV2cXYIazheddX9hRUhPfmO04fgLRy0w="
+    },
+    {
+      "id": "positions-2036",
+      "year": 2036,
+      "startJulianDate": 2464693,
+      "endJulianDate": 2465060,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-2036.svep",
+      "integrity": "sha256-8U2kwOlxnYYGYyuqzDsJpPw8F+g2w/0/6zl58z3BQ9g="
+    },
+    {
+      "id": "positions-2037",
+      "year": 2037,
+      "startJulianDate": 2465059,
+      "endJulianDate": 2465425,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2037.svep",
+      "integrity": "sha256-O6BVpyfOPKOnTTPTOIpUt+YctkjpiJaR2DPdTb3x3PQ="
+    },
+    {
+      "id": "positions-2038",
+      "year": 2038,
+      "startJulianDate": 2465424,
+      "endJulianDate": 2465790,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2038.svep",
+      "integrity": "sha256-lHLsys0WOV7P43sVY/Pi3LWCh3IJZ7AFrzSUvue2wfI="
+    },
+    {
+      "id": "positions-2039",
+      "year": 2039,
+      "startJulianDate": 2465789,
+      "endJulianDate": 2466155,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2039.svep",
+      "integrity": "sha256-0IF/M3R1CjxhAWO/bS4mG2j1XcbXZRSXtTrbQQuN2GA="
+    },
+    {
+      "id": "positions-2040",
+      "year": 2040,
+      "startJulianDate": 2466154,
+      "endJulianDate": 2466521,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-2040.svep",
+      "integrity": "sha256-GKL971Y4SvBj//M0snuBEwz13bwhB/ls4BjIc86u7Eo="
+    },
+    {
+      "id": "positions-2041",
+      "year": 2041,
+      "startJulianDate": 2466520,
+      "endJulianDate": 2466886,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2041.svep",
+      "integrity": "sha256-8IgGqhycyqyAf8bp6LFp9Ba7p0yDJNln1rmNyEy0F58="
+    },
+    {
+      "id": "positions-2042",
+      "year": 2042,
+      "startJulianDate": 2466885,
+      "endJulianDate": 2467251,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2042.svep",
+      "integrity": "sha256-TzwduF1RrEU9gMLn8CzTNG6Yay+i90L1SIzhA4AhF2c="
+    },
+    {
+      "id": "positions-2043",
+      "year": 2043,
+      "startJulianDate": 2467250,
+      "endJulianDate": 2467616,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2043.svep",
+      "integrity": "sha256-3JYwWA0z4s/GP9QYYZGdpTvGISJ3L9yAB0ZE0Ry4JBg="
+    },
+    {
+      "id": "positions-2044",
+      "year": 2044,
+      "startJulianDate": 2467615,
+      "endJulianDate": 2467982,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-2044.svep",
+      "integrity": "sha256-5tTbBrBJvK/Qi5ENlqbUDQhupC+JFAVyXCnUGYpjdZY="
+    },
+    {
+      "id": "positions-2045",
+      "year": 2045,
+      "startJulianDate": 2467981,
+      "endJulianDate": 2468347,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2045.svep",
+      "integrity": "sha256-fNXNBmPad3mciDpu4niHAAcOrcCTzZONiTk8kUKcn3o="
+    },
+    {
+      "id": "positions-2046",
+      "year": 2046,
+      "startJulianDate": 2468346,
+      "endJulianDate": 2468712,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2046.svep",
+      "integrity": "sha256-JJHm4G1wzikB7yVJKeyy6y6D93TDGAAVR4kEwemdmrM="
+    },
+    {
+      "id": "positions-2047",
+      "year": 2047,
+      "startJulianDate": 2468711,
+      "endJulianDate": 2469077,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2047.svep",
+      "integrity": "sha256-61lhftwTHIJNlhPtWBy9hx6KHDZCIZM4us9K3iUyV2Y="
+    },
+    {
+      "id": "positions-2048",
+      "year": 2048,
+      "startJulianDate": 2469076,
+      "endJulianDate": 2469443,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-2048.svep",
+      "integrity": "sha256-a8XFDwP15205eN2GGMOPg/Nrns8z35whRkm46KzMETw="
+    },
+    {
+      "id": "positions-2049",
+      "year": 2049,
+      "startJulianDate": 2469442,
+      "endJulianDate": 2469808,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2049.svep",
+      "integrity": "sha256-fNh1EYe+FXkVhbvdOwBKjpgPdwYIBlpX0NVrJ7NUP1Y="
+    },
+    {
+      "id": "positions-2050",
+      "year": 2050,
+      "startJulianDate": 2469807,
+      "endJulianDate": 2470173,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2050.svep",
+      "integrity": "sha256-xLOZI/4A4QsiR1MxnMYFjc0ZJli8YVHFwN13sPE2SZE="
+    }
+  ],
+  "orbitAsset": {
+    "id": "representative-orbits",
+    "referenceJulianDate": 2451545,
+    "sampleCount": 192,
+    "byteLength": 36928,
+    "url": "./representative-orbits.svep",
+    "integrity": "sha256-G01Tpbqi/RkCsLF9SayeY4MZBp0DirDIuyvzYFw5ZIc="
+  }
+}

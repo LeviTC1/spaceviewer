@@ -1,0 +1,2144 @@
+{
+  "schemaVersion": 3,
+  "format": "spaceviewer-star-columns-v3",
+  "catalog": {
+    "id": "gaia-dr3-nearby-100pc-g9",
+    "version": "gaia-dr3-nearby-100pc-g9-v2",
+    "title": "Gaia DR3 nearby stellar visualization subset",
+    "status": "authoritative-derived-subset",
+    "referenceFrame": "heliocentric-icrs-cartesian",
+    "positionUnit": "light-year",
+    "epoch": {
+      "kind": "julian-year",
+      "value": "J2016.0",
+      "scale": "TCB"
+    },
+    "provenance": {
+      "sourceName": "Gaia Data Release 3 gaiadr3.gaia_source",
+      "sourcePath": "frontend/catalog-source/gaia-dr3-nearby-100pc-g9.csv.gz",
+      "sourceUrl": "https://gea.esac.esa.int/tap-server/tap/sync",
+      "retrievedAt": "2026-09-02T00:50:42.650Z",
+      "licenceId": "Gaia DR3 open data with ESA/Gaia/DPAC credit",
+      "licenceStatus": "verified",
+      "credit": "ESA/Gaia/DPAC",
+      "documentationUrl": "https://gea.esac.esa.int/archive/documentation/GDR3/",
+      "creditsUrl": "https://gea.esac.esa.int/archive/documentation/GDR3/Miscellaneous/sec_credit_and_citation_instructions/",
+      "notes": "Gaia DR3 data are open and free to use with ESA/Gaia/DPAC credit. This visualization-oriented subset includes optional Solar-system-barycentric radial velocity and the published within-source astrometric correlations; it is not a statistically complete volume sample."
+    }
+  },
+  "query": {
+    "language": "ADQL",
+    "table": "gaiadr3.gaia_source",
+    "text": "SELECT source_id, ref_epoch, ra, ra_error, dec, dec_error, parallax, parallax_error, parallax_over_error, pmra, pmra_error, pmdec, pmdec_error, radial_velocity, radial_velocity_error, ra_dec_corr, ra_parallax_corr, ra_pmra_corr, ra_pmdec_corr, dec_parallax_corr, dec_pmra_corr, dec_pmdec_corr, parallax_pmra_corr, parallax_pmdec_corr, pmra_pmdec_corr, phot_g_mean_mag, bp_rp, teff_gspphot, ruwe\nFROM gaiadr3.gaia_source\nWHERE parallax >= 10\n  AND parallax_over_error >= 10\n  AND phot_g_mean_mag <= 9\n  AND (astrometric_params_solved = 31 OR astrometric_params_solved = 95)\n  AND duplicated_source = 'false'",
+    "selection": {
+      "nominalMaximumDistanceParsec": 100,
+      "parallaxMinimumMas": 10,
+      "parallaxSignalToNoiseMinimum": 10,
+      "maximumApparentMagnitudeG": 9,
+      "astrometricSolutions": [
+        31,
+        95
+      ],
+      "excludesDuplicatedSourceFlag": true
+    },
+    "interpretation": "Distances are the naive inverse of positive Gaia parallax for rendering. The selection limits fractional parallax uncertainty but does not apply the Gaia parallax zero-point correction or a Bayesian distance prior."
+  },
+  "sourceFile": {
+    "path": "catalog-source/gaia-dr3-nearby-100pc-g9.csv.gz",
+    "format": "csv",
+    "contentEncoding": "gzip",
+    "columns": [
+      "source_id",
+      "ref_epoch",
+      "ra",
+      "ra_error",
+      "dec",
+      "dec_error",
+      "parallax",
+      "parallax_error",
+      "parallax_over_error",
+      "pmra",
+      "pmra_error",
+      "pmdec",
+      "pmdec_error",
+      "radial_velocity",
+      "radial_velocity_error",
+      "ra_dec_corr",
+      "ra_parallax_corr",
+      "ra_pmra_corr",
+      "ra_pmdec_corr",
+      "dec_parallax_corr",
+      "dec_pmra_corr",
+      "dec_pmdec_corr",
+      "parallax_pmra_corr",
+      "parallax_pmdec_corr",
+      "pmra_pmdec_corr",
+      "phot_g_mean_mag",
+      "bp_rp",
+      "teff_gspphot",
+      "ruwe"
+    ],
+    "recordCount": 15448,
+    "uncompressedBytes": 5578836,
+    "compressedBytes": 2511168,
+    "uncompressedSha256": "f93d6c1fa9849672469cca7a35197e5759a9f732b8346776065b0663e44e8564",
+    "compressedSha256": "67012b07596362a700098bfc7fd391eab8123fbee307ddfc079b6db7b5921259"
+  },
+  "build": {
+    "builder": "spaceviewer-star-catalog-builder-v6",
+    "deterministic": true,
+    "recordCount": 15448,
+    "navigationRecordCount": 832,
+    "chunkCount": 49,
+    "totalBinaryBytes": 2295712,
+    "exoplanetHostCrossmatch": {
+      "method": "nasa-exoplanet-archive-gaia-dr3-source-id-exact",
+      "catalogId": "nasa-exoplanet-archive-pscomppars-nearby-100pc",
+      "catalogVersion": "pscomppars-snapshot-2026-09-02",
+      "sourceSha256": "4b6e91917a3475e2e03f54109b0b4af0108b81c6fcdb487229e75f9d8fecad4f",
+      "matchedRecordCount": 497,
+      "navigationGuarantee": "Every exact-match Gaia source is retained as a searchable navigation record, independent of the ordinary per-chunk brightness limit.",
+      "boundary": "Only exact NASA Exoplanet Archive gaia_dr3_id values present in the receipted SpaceViewer Gaia subset are linked; no positional nearest-neighbour match is inferred."
+    },
+    "spatialPartition": {
+      "scheme": "Gaia source_id nested HEALPix",
+      "level": 1,
+      "cellCount": 48,
+      "sourceIdRightShiftBits": 57,
+      "brightCoreMaximumMagnitudeG": 6,
+      "priorityMetric": "descending-dot-product-of-live-camera-forward-and-source-record-centroid-icrs",
+      "note": "The all-sky bright core loads first; fainter sources are partitioned into 48 level-1 HEALPix cells encoded by Gaia source_id, then pending cells are reprioritized against the live camera direction."
+    },
+    "derivedPosition": {
+      "formula": "distance_pc=1000/parallax_mas; ICRS spherical to heliocentric Cartesian; light_year=parsec*3.2615637771674333",
+      "caveat": "Distances are the naive inverse of positive Gaia parallax for rendering. The selection limits fractional parallax uncertainty but does not apply the Gaia parallax zero-point correction or a Bayesian distance prior."
+    },
+    "propagation": {
+      "referenceEpochJulianYear": 2016,
+      "minimumJulianYear": 1900,
+      "maximumJulianYear": 2100,
+      "model": "uniform-rectilinear-space-motion",
+      "radialVelocityTreatment": "gaia-dr3-when-available-zero-fallback",
+      "radialVelocityReferenceFrame": "solar-system-barycentric",
+      "radialVelocityRecordCount": 13492,
+      "radialVelocityFallbackRecordCount": 1956,
+      "radialVelocityCoverageFraction": 0.8733816675297773,
+      "covarianceModel": "full-six-parameter-linearized-jacobian",
+      "radialVelocityCovarianceTreatment": "independent-spectroscopic-uncertainty-when-available-conditional-zero-otherwise",
+      "covarianceReferenceUrl": "https://gea.esac.esa.int/archive/documentation/GEDR3/Data_processing/chap_cu3ast/sec_cu3ast_intro/ssec_cu3ast_intro_tansforms.html",
+      "astrometricCorrelationColumns": [
+        "ra_dec_corr",
+        "ra_parallax_corr",
+        "ra_pmra_corr",
+        "ra_pmdec_corr",
+        "dec_parallax_corr",
+        "dec_pmra_corr",
+        "dec_pmdec_corr",
+        "parallax_pmra_corr",
+        "parallax_pmdec_corr",
+        "pmra_pmdec_corr"
+      ],
+      "uncertaintyTreatment": "Selected Gaia navigation stars use the complete six-parameter uniform-rectilinear transform. Forward automatic differentiation evaluates all 36 Jacobian terms, and C=J*C0*J' propagates the ten Gaia within-source astrometric correlations plus independent published radial-velocity uncertainty into the angular confidence ellipse and 3D ICRS Cartesian position ellipsoid.",
+      "limitations": "Missing radial velocities remain an explicit 0 km/s fallback with covariance conditional on that value because no undocumented velocity-dispersion prior is invented. The model omits light-time, non-single-star acceleration solutions, the parallax zero-point correction, Bayesian distance inference, and between-source correlations."
+    },
+    "brightnessProxy": {
+      "scientific": false,
+      "formula": "clamp(0.04 + pow(clamp(1-(G+2)/11,0,1),0.82)*0.96,0.04,1)",
+      "purpose": "Display transfer for point size and alpha; the source G magnitude remains authoritative."
+    },
+    "binaryLayout": {
+      "headerBytes": 192,
+      "byteOrder": "little-endian",
+      "positionPrecision": "float64",
+      "scalarPrecision": "float32",
+      "columns": [
+        {
+          "key": "sourceIdHigh",
+          "type": "uint32"
+        },
+        {
+          "key": "sourceIdLow",
+          "type": "uint32"
+        },
+        {
+          "key": "x",
+          "type": "float64"
+        },
+        {
+          "key": "y",
+          "type": "float64"
+        },
+        {
+          "key": "z",
+          "type": "float64"
+        },
+        {
+          "key": "distanceLy",
+          "type": "float64"
+        },
+        {
+          "key": "raDeg",
+          "type": "float32"
+        },
+        {
+          "key": "raErrorMas",
+          "type": "float32"
+        },
+        {
+          "key": "decDeg",
+          "type": "float32"
+        },
+        {
+          "key": "decErrorMas",
+          "type": "float32"
+        },
+        {
+          "key": "parallaxMas",
+          "type": "float32"
+        },
+        {
+          "key": "parallaxErrorMas",
+          "type": "float32"
+        },
+        {
+          "key": "pmRaMasYr",
+          "type": "float32"
+        },
+        {
+          "key": "pmRaErrorMasYr",
+          "type": "float32"
+        },
+        {
+          "key": "pmDecMasYr",
+          "type": "float32"
+        },
+        {
+          "key": "pmDecErrorMasYr",
+          "type": "float32"
+        },
+        {
+          "key": "radialVelocityKmS",
+          "type": "float32"
+        },
+        {
+          "key": "radialVelocityErrorKmS",
+          "type": "float32"
+        },
+        {
+          "key": "raDecCorr",
+          "type": "float32"
+        },
+        {
+          "key": "raParallaxCorr",
+          "type": "float32"
+        },
+        {
+          "key": "raPmRaCorr",
+          "type": "float32"
+        },
+        {
+          "key": "raPmDecCorr",
+          "type": "float32"
+        },
+        {
+          "key": "decParallaxCorr",
+          "type": "float32"
+        },
+        {
+          "key": "decPmRaCorr",
+          "type": "float32"
+        },
+        {
+          "key": "decPmDecCorr",
+          "type": "float32"
+        },
+        {
+          "key": "parallaxPmRaCorr",
+          "type": "float32"
+        },
+        {
+          "key": "parallaxPmDecCorr",
+          "type": "float32"
+        },
+        {
+          "key": "pmRaPmDecCorr",
+          "type": "float32"
+        },
+        {
+          "key": "apparentMagnitudeG",
+          "type": "float32"
+        },
+        {
+          "key": "colorIndexBpRp",
+          "type": "float32"
+        },
+        {
+          "key": "temperatureK",
+          "type": "float32"
+        },
+        {
+          "key": "ruwe",
+          "type": "float32"
+        },
+        {
+          "key": "brightnessProxy",
+          "type": "float32"
+        }
+      ]
+    }
+  },
+  "chunks": [
+    {
+      "id": "bright-core-g6",
+      "label": "Bright all-sky core",
+      "importanceTier": "core",
+      "selection": "G <= 6",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 2039,
+      "navigationRecordCount": 243,
+      "bounds": {
+        "min": {
+          "x": -307.4207473707717,
+          "y": -307.6335452861199,
+          "z": -317.4932049550977
+        },
+        "max": {
+          "x": 315.6120675677267,
+          "y": 317.23748558657786,
+          "z": 314.41041329860883
+        },
+        "radiusLy": 325.8674545625918
+      },
+      "spatialCell": null,
+      "binaryUrl": "./bright-core-g6.svsc",
+      "metadataUrl": "./bright-core-g6.meta.json",
+      "byteLength": 301964,
+      "binaryIntegrity": "sha256-bY1T/wt3IAKuDW+W3NhtghO4eX51d9Cm+e6H6VPoFgE=",
+      "metadataIntegrity": "sha256-H/SPA2659OXSibDOvvCN3Nj2CGypreDa89Uve1FoA6o="
+    },
+    {
+      "id": "sky-00",
+      "label": "HEALPix level 1 cell 0",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 0",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 327,
+      "navigationRecordCount": 11,
+      "bounds": {
+        "min": {
+          "x": 23.180323566004773,
+          "y": 34.23367645414501,
+          "z": 1.6429569835126487
+        },
+        "max": {
+          "x": 270.7564047399875,
+          "y": 260.89127531996076,
+          "z": 204.89033800140814
+        },
+        "radiusLy": 325.3544336524914
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 0,
+        "recordCentroidUnitIcrs": {
+          "x": 0.6574106107265326,
+          "y": 0.6614840603575842,
+          "z": 0.360901824319317
+        },
+        "maximumRecordSeparationDeg": 20.625952370162647
+      },
+      "binaryUrl": "./sky-00.svsc",
+      "metadataUrl": "./sky-00.meta.json",
+      "byteLength": 48588,
+      "binaryIntegrity": "sha256-LD8tTqQeIyGuC//JNWYTE3H6uU5FhB98D+ZqHBjK4JE=",
+      "metadataIntegrity": "sha256-Sj2carhnIy/gXKGwqZ1MNq0MQu86YGeYZTo6nN932Qk="
+    },
+    {
+      "id": "sky-01",
+      "label": "HEALPix level 1 cell 1",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 1",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 278,
+      "navigationRecordCount": 9,
+      "bounds": {
+        "min": {
+          "x": 0.4513192690571142,
+          "y": 18.25518196384673,
+          "z": 13.674342672588294
+        },
+        "max": {
+          "x": 147.84781789786115,
+          "y": 277.8917650517843,
+          "z": 266.44755925373465
+        },
+        "radiusLy": 325.5283542669062
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 1,
+        "recordCentroidUnitIcrs": {
+          "x": 0.2753162789201207,
+          "y": 0.6844886921671345,
+          "z": 0.6750379077184512
+        },
+        "maximumRecordSeparationDeg": 23.148371949425172
+      },
+      "binaryUrl": "./sky-01.svsc",
+      "metadataUrl": "./sky-01.meta.json",
+      "byteLength": 41336,
+      "binaryIntegrity": "sha256-i0aotsMEcxmtao25Z4tAMHUxIMB+ihzLej461nsN3ow=",
+      "metadataIntegrity": "sha256-2KXdFhitn6yB2TggLwroIb/p27/DBjuLAkyrsMKBOW0="
+    },
+    {
+      "id": "sky-02",
+      "label": "HEALPix level 1 cell 2",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 2",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 286,
+      "navigationRecordCount": 13,
+      "bounds": {
+        "min": {
+          "x": 8.327530558592786,
+          "y": 0.17615802063339014,
+          "z": 8.074927898910966
+        },
+        "max": {
+          "x": 271.7727202037711,
+          "y": 151.11413295372412,
+          "z": 291.342463707904
+        },
+        "radiusLy": 324.4324023466051
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 2,
+        "recordCentroidUnitIcrs": {
+          "x": 0.6925676374923404,
+          "y": 0.27602340986578133,
+          "z": 0.6664541579916392
+        },
+        "maximumRecordSeparationDeg": 27.195268190316938
+      },
+      "binaryUrl": "./sky-02.svsc",
+      "metadataUrl": "./sky-02.meta.json",
+      "byteLength": 42520,
+      "binaryIntegrity": "sha256-DSwG6zGikxFlfoExtGTMWe6p4n9UjHHtP5+JluRSHbI=",
+      "metadataIntegrity": "sha256-V7+5aIIgTEEhFc6VHMekP8V3PMin5VO1NluXe1H0q8U="
+    },
+    {
+      "id": "sky-03",
+      "label": "HEALPix level 1 cell 3",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 3",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 282,
+      "navigationRecordCount": 9,
+      "bounds": {
+        "min": {
+          "x": 0.340418579527286,
+          "y": 0.04805738984636095,
+          "z": 25.491724128640428
+        },
+        "max": {
+          "x": 159.76157897060423,
+          "y": 154.6675205297413,
+          "z": 321.8004677647441
+        },
+        "radiusLy": 323.36218676930713
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 3,
+        "recordCentroidUnitIcrs": {
+          "x": 0.2696750259016051,
+          "y": 0.257972961944612,
+          "z": 0.9277528395593797
+        },
+        "maximumRecordSeparationDeg": 23.04085260289708
+      },
+      "binaryUrl": "./sky-03.svsc",
+      "metadataUrl": "./sky-03.meta.json",
+      "byteLength": 41928,
+      "binaryIntegrity": "sha256-znZFV7m2wI83k5npP6Af5f7StTbqfZbB9E8lO7AcP5U=",
+      "metadataIntegrity": "sha256-a3S031lxLjmhX5BpsgF35bhA7GGUJKdmwvcLXSG3r7A="
+    },
+    {
+      "id": "sky-04",
+      "label": "HEALPix level 1 cell 4",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 4",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 278,
+      "navigationRecordCount": 13,
+      "bounds": {
+        "min": {
+          "x": -278.8822839096514,
+          "y": 6.460788936000861,
+          "z": 4.517113658107977
+        },
+        "max": {
+          "x": -13.791564136909404,
+          "y": 266.350774112205,
+          "z": 195.21055802954064
+        },
+        "radiusLy": 325.98937005884216
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 4,
+        "recordCentroidUnitIcrs": {
+          "x": -0.668743553233832,
+          "y": 0.6636606528156288,
+          "z": 0.3351665226607847
+        },
+        "maximumRecordSeparationDeg": 21.358329897093878
+      },
+      "binaryUrl": "./sky-04.svsc",
+      "metadataUrl": "./sky-04.meta.json",
+      "byteLength": 41336,
+      "binaryIntegrity": "sha256-8j9MAFHGMTk+sYXKhudhcPJiYDMdGGs7VhlW3YfxHr0=",
+      "metadataIntegrity": "sha256-FlJv9K92O25OYSx2/FaA//M0qbeUwxYPlShud9Siiuo="
+    },
+    {
+      "id": "sky-05",
+      "label": "HEALPix level 1 cell 5",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 5",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 234,
+      "navigationRecordCount": 10,
+      "bounds": {
+        "min": {
+          "x": -268.96829998828036,
+          "y": 0.09619419424791026,
+          "z": 4.8751604344088655
+        },
+        "max": {
+          "x": -6.518223092762842,
+          "y": 153.4441451097907,
+          "z": 264.77822358265223
+        },
+        "radiusLy": 324.9800517656678
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 5,
+        "recordCentroidUnitIcrs": {
+          "x": -0.6934345825991672,
+          "y": 0.26003956663237743,
+          "z": 0.671958260192673
+        },
+        "maximumRecordSeparationDeg": 24.600049167782636
+      },
+      "binaryUrl": "./sky-05.svsc",
+      "metadataUrl": "./sky-05.meta.json",
+      "byteLength": 34824,
+      "binaryIntegrity": "sha256-H5PFVQKy1/c3eQAE3Xmni2iCtMoFXEHGVfOoGnzEnvE=",
+      "metadataIntegrity": "sha256-crc1VjAgwhXmcNOILOdQOEm4LL5jRjAMithohrFkdNw="
+    },
+    {
+      "id": "sky-06",
+      "label": "HEALPix level 1 cell 6",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 6",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 290,
+      "navigationRecordCount": 8,
+      "bounds": {
+        "min": {
+          "x": -139.27719468422475,
+          "y": 14.796467401312325,
+          "z": 9.99131605847983
+        },
+        "max": {
+          "x": -0.4629604885956197,
+          "y": 269.32628268852187,
+          "z": 277.9440414163602
+        },
+        "radiusLy": 324.14984967643755
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 6,
+        "recordCentroidUnitIcrs": {
+          "x": -0.25279144254727387,
+          "y": 0.6976340225193113,
+          "z": 0.670375459871849
+        },
+        "maximumRecordSeparationDeg": 25.35343422074752
+      },
+      "binaryUrl": "./sky-06.svsc",
+      "metadataUrl": "./sky-06.meta.json",
+      "byteLength": 43112,
+      "binaryIntegrity": "sha256-/tsUOIV/av6hVy2BtQECssQH5KfDMMRElMUpzmxfXGk=",
+      "metadataIntegrity": "sha256-A87jX7p/Ua7BbyU35i4xp2siJar8OwSVpII/kFAij20="
+    },
+    {
+      "id": "sky-07",
+      "label": "HEALPix level 1 cell 7",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 7",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 280,
+      "navigationRecordCount": 10,
+      "bounds": {
+        "min": {
+          "x": -161.959759230168,
+          "y": 0.13653049072883788,
+          "z": 16.428983576165034
+        },
+        "max": {
+          "x": -0.41823383787256707,
+          "y": 169.50568296221957,
+          "z": 321.30235787221
+        },
+        "radiusLy": 326.0589008948703
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 7,
+        "recordCentroidUnitIcrs": {
+          "x": -0.27311658298722036,
+          "y": 0.25826723186508005,
+          "z": 0.9266635684228304
+        },
+        "maximumRecordSeparationDeg": 25.567291709682795
+      },
+      "binaryUrl": "./sky-07.svsc",
+      "metadataUrl": "./sky-07.meta.json",
+      "byteLength": 41632,
+      "binaryIntegrity": "sha256-N9iI/uKSK42tT0+g9wY6s+ukZnnc3BuxIJotauhin6I=",
+      "metadataIntegrity": "sha256-/Roo3gvKu4xSl3JOb+ZJYkVaFcatMGzkSzovaINcZn0="
+    },
+    {
+      "id": "sky-08",
+      "label": "HEALPix level 1 cell 8",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 8",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 282,
+      "navigationRecordCount": 8,
+      "bounds": {
+        "min": {
+          "x": -268.76651664004106,
+          "y": -269.1086328583458,
+          "z": 4.520611817667636
+        },
+        "max": {
+          "x": -15.2493825965263,
+          "y": -14.144159522508481,
+          "z": 184.95699105509993
+        },
+        "radiusLy": 324.948268319369
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 8,
+        "recordCentroidUnitIcrs": {
+          "x": -0.6647159379265517,
+          "y": -0.6768669333738286,
+          "z": 0.3162338950389942
+        },
+        "maximumRecordSeparationDeg": 22.671945615020757
+      },
+      "binaryUrl": "./sky-08.svsc",
+      "metadataUrl": "./sky-08.meta.json",
+      "byteLength": 41928,
+      "binaryIntegrity": "sha256-4qKTTmJVP29LUVls8h2VZhXv+AehdU/mgSOomnZHz/4=",
+      "metadataIntegrity": "sha256-ptp2rEFwYAyT1X/3roJTmHvi4IOrWH21VIwjiwpISsg="
+    },
+    {
+      "id": "sky-09",
+      "label": "HEALPix level 1 cell 9",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 9",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 298,
+      "navigationRecordCount": 11,
+      "bounds": {
+        "min": {
+          "x": -156.1806942680526,
+          "y": -261.0543785923106,
+          "z": 17.730109105163944
+        },
+        "max": {
+          "x": -0.31770216684246233,
+          "y": -25.359110450005385,
+          "z": 279.0952585586396
+        },
+        "radiusLy": 325.49702924747595
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 9,
+        "recordCentroidUnitIcrs": {
+          "x": -0.2397197276299027,
+          "y": -0.6790061414183864,
+          "z": 0.6938912826236969
+        },
+        "maximumRecordSeparationDeg": 23.339932345380678
+      },
+      "binaryUrl": "./sky-09.svsc",
+      "metadataUrl": "./sky-09.meta.json",
+      "byteLength": 44296,
+      "binaryIntegrity": "sha256-n9gLcKgSwOuWoXQzWNFjNz8QKxZwYa9yJF1PUtYRR/o=",
+      "metadataIntegrity": "sha256-lbbDc77SRJfSGWcNmXY/9Y233PvJaxlqp2uQ19vAzGA="
+    },
+    {
+      "id": "sky-10",
+      "label": "HEALPix level 1 cell 10",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 10",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 240,
+      "navigationRecordCount": 8,
+      "bounds": {
+        "min": {
+          "x": -257.9097534387095,
+          "y": -154.891391276072,
+          "z": 19.962646254017958
+        },
+        "max": {
+          "x": -26.394231652516208,
+          "y": -0.35641606587488794,
+          "z": 263.7612051842996
+        },
+        "radiusLy": 324.80882327242597
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 10,
+        "recordCentroidUnitIcrs": {
+          "x": -0.679620583542507,
+          "y": -0.2821877334008846,
+          "z": 0.6771159025923211
+        },
+        "maximumRecordSeparationDeg": 25.436452049827267
+      },
+      "binaryUrl": "./sky-10.svsc",
+      "metadataUrl": "./sky-10.meta.json",
+      "byteLength": 35712,
+      "binaryIntegrity": "sha256-oEpCOh2f5g2nSf//D/rpsv+a04n8dqpab/LwxNI0EN0=",
+      "metadataIntegrity": "sha256-rqGZUYWGxL0niJtRXN+SOPAzNsBDJ3G25ZfSXrpKNGg="
+    },
+    {
+      "id": "sky-11",
+      "label": "HEALPix level 1 cell 11",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 11",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 314,
+      "navigationRecordCount": 17,
+      "bounds": {
+        "min": {
+          "x": -158.56774068723615,
+          "y": -152.4850649186832,
+          "z": 13.791040617434062
+        },
+        "max": {
+          "x": -0.5627926468327534,
+          "y": -0.20228996008646363,
+          "z": 323.23277417616856
+        },
+        "radiusLy": 325.88016836236824
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 11,
+        "recordCentroidUnitIcrs": {
+          "x": -0.2760739586172812,
+          "y": -0.2847380481592352,
+          "z": 0.9179909658073181
+        },
+        "maximumRecordSeparationDeg": 23.33772349679501
+      },
+      "binaryUrl": "./sky-11.svsc",
+      "metadataUrl": "./sky-11.meta.json",
+      "byteLength": 46664,
+      "binaryIntegrity": "sha256-mmGMb6/aU/Caw0GecEZMcacqPGXRLhalQ++u1b+qPHQ=",
+      "metadataIntegrity": "sha256-6hOHCJeXkQ0EznIp7ufvklogivirkf6xFaQu6tWA2h4="
+    },
+    {
+      "id": "sky-12",
+      "label": "HEALPix level 1 cell 12",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 12",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 209,
+      "navigationRecordCount": 10,
+      "bounds": {
+        "min": {
+          "x": 24.069248100452167,
+          "y": -271.71280455538584,
+          "z": 5.607396519111818
+        },
+        "max": {
+          "x": 265.1709288416539,
+          "y": -33.62654734250315,
+          "z": 191.97383160500195
+        },
+        "radiusLy": 325.8145714721011
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 12,
+        "recordCentroidUnitIcrs": {
+          "x": 0.6510312816211588,
+          "y": -0.6770324441631445,
+          "z": 0.3431986886647303
+        },
+        "maximumRecordSeparationDeg": 21.745607113967065
+      },
+      "binaryUrl": "./sky-12.svsc",
+      "metadataUrl": "./sky-12.meta.json",
+      "byteLength": 31124,
+      "binaryIntegrity": "sha256-8zi6RV/QYvFxevxOgwBXnl4ZWDBtKEdABPBLpuyv+3E=",
+      "metadataIntegrity": "sha256-+7DdY6goJ9T/mTsn+dylTsCMtAWOY5gQXQ4bYut0AaQ="
+    },
+    {
+      "id": "sky-13",
+      "label": "HEALPix level 1 cell 13",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 13",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 235,
+      "navigationRecordCount": 8,
+      "bounds": {
+        "min": {
+          "x": 27.94027611843277,
+          "y": -157.77317190018394,
+          "z": 26.100794550687024
+        },
+        "max": {
+          "x": 266.83801763723295,
+          "y": -0.41994450831310376,
+          "z": 283.7394842807948
+        },
+        "radiusLy": 325.9412158781735
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 13,
+        "recordCentroidUnitIcrs": {
+          "x": 0.6652424592431163,
+          "y": -0.246257268238585,
+          "z": 0.7048473794090748
+        },
+        "maximumRecordSeparationDeg": 24.62005406473285
+      },
+      "binaryUrl": "./sky-13.svsc",
+      "metadataUrl": "./sky-13.meta.json",
+      "byteLength": 34972,
+      "binaryIntegrity": "sha256-TwhWY/JiTy6EaYvr8/gzjCZTJ3PqKYd8VVfDK/A1My8=",
+      "metadataIntegrity": "sha256-SUo78Mk5HtPxtBLMcMaDAJ5ohCiwbkKogl0bwytwzhE="
+    },
+    {
+      "id": "sky-14",
+      "label": "HEALPix level 1 cell 14",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 14",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 319,
+      "navigationRecordCount": 18,
+      "bounds": {
+        "min": {
+          "x": 0.15889390876672305,
+          "y": -255.53604612374087,
+          "z": 9.914660872372988
+        },
+        "max": {
+          "x": 157.73929268331094,
+          "y": -5.7074522409687845,
+          "z": 283.1574419589131
+        },
+        "radiusLy": 326.13009667752857
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 14,
+        "recordCentroidUnitIcrs": {
+          "x": 0.25984386829462297,
+          "y": -0.6782505873430222,
+          "z": 0.6873552974106856
+        },
+        "maximumRecordSeparationDeg": 24.260040245314475
+      },
+      "binaryUrl": "./sky-14.svsc",
+      "metadataUrl": "./sky-14.meta.json",
+      "byteLength": 47404,
+      "binaryIntegrity": "sha256-5FEjsDq/1H8yzwywhJFdg9jYnlG7CELJQGyqadDqKys=",
+      "metadataIntegrity": "sha256-ZnK9BuXSeDIwQrSDobWloJy/UBMDfEi/TQ8P6k0lb34="
+    },
+    {
+      "id": "sky-15",
+      "label": "HEALPix level 1 cell 15",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 15",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 319,
+      "navigationRecordCount": 9,
+      "bounds": {
+        "min": {
+          "x": 0.21403513237985697,
+          "y": -164.58163282150912,
+          "z": 20.30078987290486
+        },
+        "max": {
+          "x": 163.24785161331747,
+          "y": -0.1705090926034953,
+          "z": 318.9909292617782
+        },
+        "radiusLy": 325.49594393524376
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 15,
+        "recordCentroidUnitIcrs": {
+          "x": 0.27175211484521206,
+          "y": -0.25104371142015697,
+          "z": 0.9290467388853737
+        },
+        "maximumRecordSeparationDeg": 25.44186281914214
+      },
+      "binaryUrl": "./sky-15.svsc",
+      "metadataUrl": "./sky-15.meta.json",
+      "byteLength": 47404,
+      "binaryIntegrity": "sha256-2wj9Lw4EigUFLjanJEnLnFBUYaAdHbmJVdC21xqWLfQ=",
+      "metadataIntegrity": "sha256-a4hyl6Fy2a21xH4KwiFJPfXA59XGlVnZFNBQOI5/q9I="
+    },
+    {
+      "id": "sky-16",
+      "label": "HEALPix level 1 cell 16",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 16",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 293,
+      "navigationRecordCount": 10,
+      "bounds": {
+        "min": {
+          "x": 11.26217632870331,
+          "y": -112.15244246248405,
+          "z": -195.65437437792514
+        },
+        "max": {
+          "x": 323.0962125072607,
+          "y": 82.47881109277039,
+          "z": -7.203497113026229
+        },
+        "radiusLy": 325.9032888830919
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 16,
+        "recordCentroidUnitIcrs": {
+          "x": 0.9404356675511505,
+          "y": -0.009829421196135174,
+          "z": -0.3398295715157387
+        },
+        "maximumRecordSeparationDeg": 19.61412247164839
+      },
+      "binaryUrl": "./sky-16.svsc",
+      "metadataUrl": "./sky-16.meta.json",
+      "byteLength": 43556,
+      "binaryIntegrity": "sha256-+7IilUVRjAR+zRxO0M1e5H5iQ3nHl3vNyAHXOtHxs8g=",
+      "metadataIntegrity": "sha256-uKHsDxlCt/e2QwQwKkWyDOdPg0kFRCrSpt0M6ofBVIY="
+    },
+    {
+      "id": "sky-17",
+      "label": "HEALPix level 1 cell 17",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 17",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 302,
+      "navigationRecordCount": 12,
+      "bounds": {
+        "min": {
+          "x": 61.64754442970529,
+          "y": 1.0599465992573311,
+          "z": -94.65338880005599
+        },
+        "max": {
+          "x": 318.8674454232047,
+          "y": 225.76052704277356,
+          "z": 75.79847349023524
+        },
+        "radiusLy": 323.71783983082815
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 17,
+        "recordCentroidUnitIcrs": {
+          "x": 0.918276144224376,
+          "y": 0.3958695532138561,
+          "z": 0.007497985507798327
+        },
+        "maximumRecordSeparationDeg": 23.033763635032383
+      },
+      "binaryUrl": "./sky-17.svsc",
+      "metadataUrl": "./sky-17.meta.json",
+      "byteLength": 44888,
+      "binaryIntegrity": "sha256-OTIvv16tkR0zjd+dbG8HgJXIXpSF+HOkbbrvPz5ORf4=",
+      "metadataIntegrity": "sha256-uPZUBk+ImbWARsEOdRtmeLCMfs904UI2nYwXtYzRx9w="
+    },
+    {
+      "id": "sky-18",
+      "label": "HEALPix level 1 cell 18",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 18",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 308,
+      "navigationRecordCount": 9,
+      "bounds": {
+        "min": {
+          "x": 14.147182060949616,
+          "y": -199.35423281225104,
+          "z": -81.1847992158415
+        },
+        "max": {
+          "x": 311.2042498625788,
+          "y": -1.8070849412342234,
+          "z": 93.50781357881287
+        },
+        "radiusLy": 325.91936314456393
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 18,
+        "recordCentroidUnitIcrs": {
+          "x": 0.9318152319943434,
+          "y": -0.36292275680813424,
+          "z": -0.0027287385568530434
+        },
+        "maximumRecordSeparationDeg": 21.69532929490147
+      },
+      "binaryUrl": "./sky-18.svsc",
+      "metadataUrl": "./sky-18.meta.json",
+      "byteLength": 45776,
+      "binaryIntegrity": "sha256-bO6106iUZAJY0IeoYvSMm4mljb6cwFYQXKVWpW5Ps2E=",
+      "metadataIntegrity": "sha256-jAdxkCJCruljNy3jepiTj5FOxg6Fk/5meJogHTA382c="
+    },
+    {
+      "id": "sky-19",
+      "label": "HEALPix level 1 cell 19",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 19",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 257,
+      "navigationRecordCount": 8,
+      "bounds": {
+        "min": {
+          "x": 19.2363838441424,
+          "y": -91.07296531839044,
+          "z": 0.8060972793955228
+        },
+        "max": {
+          "x": 317.84934576933153,
+          "y": 107.23239210588143,
+          "z": 190.9424671477353
+        },
+        "radiusLy": 325.6583897240146
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 19,
+        "recordCentroidUnitIcrs": {
+          "x": 0.9348617488597002,
+          "y": -0.007641317294792818,
+          "z": 0.3549297406374719
+        },
+        "maximumRecordSeparationDeg": 20.67541590039273
+      },
+      "binaryUrl": "./sky-19.svsc",
+      "metadataUrl": "./sky-19.meta.json",
+      "byteLength": 38228,
+      "binaryIntegrity": "sha256-vvCe48Q5M0rRuA1mxIbY4qQv2U1OOeqAEa1EmGw01ZQ=",
+      "metadataIntegrity": "sha256-4NdQO1GSHexeQyHUH9qKIotemCg29p39l7fjVFfS9/A="
+    },
+    {
+      "id": "sky-20",
+      "label": "HEALPix level 1 cell 20",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 20",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 237,
+      "navigationRecordCount": 15,
+      "bounds": {
+        "min": {
+          "x": -105.94875726935291,
+          "y": 8.179789952964256,
+          "z": -188.45909074538082
+        },
+        "max": {
+          "x": 86.19906121974611,
+          "y": 322.89684552802186,
+          "z": -2.5057730714984197
+        },
+        "radiusLy": 326.0895065429082
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 20,
+        "recordCentroidUnitIcrs": {
+          "x": -0.0013830805353002057,
+          "y": 0.9276929639756507,
+          "z": -0.37334146793291656
+        },
+        "maximumRecordSeparationDeg": 19.695673700881464
+      },
+      "binaryUrl": "./sky-20.svsc",
+      "metadataUrl": "./sky-20.meta.json",
+      "byteLength": 35268,
+      "binaryIntegrity": "sha256-cEpQn797ExiQU+m9aa6SYGTubNlJcUinqhfe4vB8vkg=",
+      "metadataIntegrity": "sha256-N0AyEURLi7CnU9F2PuecoSIo/4QnuPaVpZwdZDCTqhE="
+    },
+    {
+      "id": "sky-21",
+      "label": "HEALPix level 1 cell 21",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 21",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 278,
+      "navigationRecordCount": 14,
+      "bounds": {
+        "min": {
+          "x": -195.17509596815663,
+          "y": 11.413665123667302,
+          "z": -77.1752507094289
+        },
+        "max": {
+          "x": -4.57776840709421,
+          "y": 312.8727117554519,
+          "z": 85.69956936539265
+        },
+        "radiusLy": 325.18878433454967
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 21,
+        "recordCentroidUnitIcrs": {
+          "x": -0.3684918118645798,
+          "y": 0.9295628020453613,
+          "z": -0.011259735446952586
+        },
+        "maximumRecordSeparationDeg": 21.413946148515894
+      },
+      "binaryUrl": "./sky-21.svsc",
+      "metadataUrl": "./sky-21.meta.json",
+      "byteLength": 41336,
+      "binaryIntegrity": "sha256-t80439z/rjOit95IJ2k5gaSO1sSKvw7Rb08UQQ/ex8c=",
+      "metadataIntegrity": "sha256-imJf82IFO+Qk68aMa8DGB+1O4Ikg4SbBbGgbvReqZYQ="
+    },
+    {
+      "id": "sky-22",
+      "label": "HEALPix level 1 cell 22",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 22",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 279,
+      "navigationRecordCount": 11,
+      "bounds": {
+        "min": {
+          "x": 2.3051872992035563,
+          "y": 18.422055234296177,
+          "z": -93.93631010523586
+        },
+        "max": {
+          "x": 209.41254269955203,
+          "y": 322.05322291258574,
+          "z": 89.75401340477437
+        },
+        "radiusLy": 326.1311353453477
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 22,
+        "recordCentroidUnitIcrs": {
+          "x": 0.39440927295122086,
+          "y": 0.9181985509937167,
+          "z": 0.036779700421953485
+        },
+        "maximumRecordSeparationDeg": 21.04754474013927
+      },
+      "binaryUrl": "./sky-22.svsc",
+      "metadataUrl": "./sky-22.meta.json",
+      "byteLength": 41484,
+      "binaryIntegrity": "sha256-qCODFr91146stpRMjiEdnSRqEgAwSioWYzYM3kfknNk=",
+      "metadataIntegrity": "sha256-Bk7FlKRmsZqT05BoSGjjkK39c9DSLZ/cHDM5VV3H++4="
+    },
+    {
+      "id": "sky-23",
+      "label": "HEALPix level 1 cell 23",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 23",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 274,
+      "navigationRecordCount": 11,
+      "bounds": {
+        "min": {
+          "x": -75.8803346139655,
+          "y": 30.67963103694373,
+          "z": 3.1277348687712494
+        },
+        "max": {
+          "x": 84.07318927623399,
+          "y": 322.8620178932566,
+          "z": 195.8228616103679
+        },
+        "radiusLy": 325.40776834864204
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 23,
+        "recordCentroidUnitIcrs": {
+          "x": -0.010443659698510284,
+          "y": 0.937821370844088,
+          "z": 0.34696110208525854
+        },
+        "maximumRecordSeparationDeg": 19.008639689202518
+      },
+      "binaryUrl": "./sky-23.svsc",
+      "metadataUrl": "./sky-23.meta.json",
+      "byteLength": 40744,
+      "binaryIntegrity": "sha256-2YcKlNaQGU1LPMUTVnsFNFbz7GkbR0OYhPC4qBuiWEg=",
+      "metadataIntegrity": "sha256-zhEaFT7Wt8KdOxY41NFiybI5yHp+rnoNWs2tqYLwzHY="
+    },
+    {
+      "id": "sky-24",
+      "label": "HEALPix level 1 cell 24",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 24",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 279,
+      "navigationRecordCount": 12,
+      "bounds": {
+        "min": {
+          "x": -314.9311238904527,
+          "y": -90.36139646035134,
+          "z": -202.44285605804592
+        },
+        "max": {
+          "x": -24.81299123225685,
+          "y": 91.53328151445965,
+          "z": -2.800551282599713
+        },
+        "radiusLy": 324.43870718523095
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 24,
+        "recordCentroidUnitIcrs": {
+          "x": -0.9460410956467405,
+          "y": 0.008992190171962948,
+          "z": -0.32392188234731234
+        },
+        "maximumRecordSeparationDeg": 22.04718201870339
+      },
+      "binaryUrl": "./sky-24.svsc",
+      "metadataUrl": "./sky-24.meta.json",
+      "byteLength": 41484,
+      "binaryIntegrity": "sha256-tMoRAkb2jrSW7IjQMGDQWIS9DChWAg9uQLp5X5IBXe8=",
+      "metadataIntegrity": "sha256-Tb8eFnev1edW7JvaSh1fK9Nk51h4sXn07XhbBSJln3w="
+    },
+    {
+      "id": "sky-25",
+      "label": "HEALPix level 1 cell 25",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 25",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 280,
+      "navigationRecordCount": 13,
+      "bounds": {
+        "min": {
+          "x": -321.47513819644644,
+          "y": -202.53666407979097,
+          "z": -84.61823741754719
+        },
+        "max": {
+          "x": -15.339416471307658,
+          "y": -7.628093844058785,
+          "z": 95.19210810552906
+        },
+        "radiusLy": 324.85242072667927
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 25,
+        "recordCentroidUnitIcrs": {
+          "x": -0.9199301577771115,
+          "y": -0.3918608531704785,
+          "z": -0.013174845907381359
+        },
+        "maximumRecordSeparationDeg": 21.28713807376281
+      },
+      "binaryUrl": "./sky-25.svsc",
+      "metadataUrl": "./sky-25.meta.json",
+      "byteLength": 41632,
+      "binaryIntegrity": "sha256-Q/poI72LQS4lXxO53y6NF8kjm+S3pnaZbtsl6SRWJlA=",
+      "metadataIntegrity": "sha256-i6KH9usDGfPsn9WrgHYxle2Rzpb2s5tU7fZta/ypOD0="
+    },
+    {
+      "id": "sky-26",
+      "label": "HEALPix level 1 cell 26",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 26",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 290,
+      "navigationRecordCount": 18,
+      "bounds": {
+        "min": {
+          "x": -315.06210453215033,
+          "y": 5.258607193273503,
+          "z": -94.99197469902538
+        },
+        "max": {
+          "x": -21.162078451650743,
+          "y": 204.59399511202525,
+          "z": 88.32527482917962
+        },
+        "radiusLy": 326.1352361950785
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 26,
+        "recordCentroidUnitIcrs": {
+          "x": -0.9298502598745344,
+          "y": 0.36787788012717765,
+          "z": -0.006660294617738709
+        },
+        "maximumRecordSeparationDeg": 21.53139921255493
+      },
+      "binaryUrl": "./sky-26.svsc",
+      "metadataUrl": "./sky-26.meta.json",
+      "byteLength": 43112,
+      "binaryIntegrity": "sha256-3oJFEtwM/EBAu4AuO+ENHpEWt26qd+++jKMLjA5hnEo=",
+      "metadataIntegrity": "sha256-r8LD7i0O+3LFb7bliRShwn5wEg6U0+VqCOiHPGNia8s="
+    },
+    {
+      "id": "sky-27",
+      "label": "HEALPix level 1 cell 27",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 27",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 343,
+      "navigationRecordCount": 14,
+      "bounds": {
+        "min": {
+          "x": -321.8450832513331,
+          "y": -95.58508424334833,
+          "z": 6.851655203237203
+        },
+        "max": {
+          "x": -19.593990320025664,
+          "y": 111.6576130006354,
+          "z": 166.03004182674326
+        },
+        "radiusLy": 325.85827149226463
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 27,
+        "recordCentroidUnitIcrs": {
+          "x": -0.9366796872193478,
+          "y": -0.0014160573367137397,
+          "z": 0.350184463293682
+        },
+        "maximumRecordSeparationDeg": 20.256467046575583
+      },
+      "binaryUrl": "./sky-27.svsc",
+      "metadataUrl": "./sky-27.meta.json",
+      "byteLength": 50956,
+      "binaryIntegrity": "sha256-l/ogyoKlhY8jC6CbN/76vmLtvNRNPsV9lQgyb+r4ZvI=",
+      "metadataIntegrity": "sha256-bAmR7CVkIWEm3K5qFAPU+Vzm0SAo4qXCvAh80zowsWo="
+    },
+    {
+      "id": "sky-28",
+      "label": "HEALPix level 1 cell 28",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 28",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 263,
+      "navigationRecordCount": 10,
+      "bounds": {
+        "min": {
+          "x": -88.98913623248,
+          "y": -315.49217841836025,
+          "z": -186.9668746697211
+        },
+        "max": {
+          "x": 88.80085141930982,
+          "y": -25.19901550727872,
+          "z": -1.3354246248983124
+        },
+        "radiusLy": 325.39511370819116
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 28,
+        "recordCentroidUnitIcrs": {
+          "x": 0.03186993451137996,
+          "y": -0.9376498856404218,
+          "z": -0.3461170311220528
+        },
+        "maximumRecordSeparationDeg": 19.37527835914239
+      },
+      "binaryUrl": "./sky-28.svsc",
+      "metadataUrl": "./sky-28.meta.json",
+      "byteLength": 39116,
+      "binaryIntegrity": "sha256-3DafTK36/26uMqLBAfPHsnKmLAR0wE5Rng9XrxSmplc=",
+      "metadataIntegrity": "sha256-hAMiLL97NbmOz2viIcOJzNkllt0nJ2uMnWU+e5jz2ok="
+    },
+    {
+      "id": "sky-29",
+      "label": "HEALPix level 1 cell 29",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 29",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 295,
+      "navigationRecordCount": 14,
+      "bounds": {
+        "min": {
+          "x": 1.074668779755264,
+          "y": -323.97802333311813,
+          "z": -76.4775587737029
+        },
+        "max": {
+          "x": 186.5692680788263,
+          "y": -18.1421012907381,
+          "z": 92.1193453984366
+        },
+        "radiusLy": 325.70853886742356
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 29,
+        "recordCentroidUnitIcrs": {
+          "x": 0.36958538394662666,
+          "y": -0.9290109000505852,
+          "z": 0.018584713078922014
+        },
+        "maximumRecordSeparationDeg": 21.334161999886145
+      },
+      "binaryUrl": "./sky-29.svsc",
+      "metadataUrl": "./sky-29.meta.json",
+      "byteLength": 43852,
+      "binaryIntegrity": "sha256-9ZUiGYN+1tHHj+bNFBdMFjoshf5x/ebmE2zFe9YdvPo=",
+      "metadataIntegrity": "sha256-xSN2Aax7FXeTlwfKuVcIDB/BLrZ5kiZv9N4CHRfF4zw="
+    },
+    {
+      "id": "sky-30",
+      "label": "HEALPix level 1 cell 30",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 30",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 280,
+      "navigationRecordCount": 11,
+      "bounds": {
+        "min": {
+          "x": -217.20384697646494,
+          "y": -319.3914464400547,
+          "z": -73.30265427143796
+        },
+        "max": {
+          "x": -3.7438205970411094,
+          "y": -12.671414697611743,
+          "z": 84.52539848390492
+        },
+        "radiusLy": 325.7857438532992
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 30,
+        "recordCentroidUnitIcrs": {
+          "x": -0.4116830130790606,
+          "y": -0.9113256473029354,
+          "z": -0.0016313522096636991
+        },
+        "maximumRecordSeparationDeg": 23.159949462000366
+      },
+      "binaryUrl": "./sky-30.svsc",
+      "metadataUrl": "./sky-30.meta.json",
+      "byteLength": 41632,
+      "binaryIntegrity": "sha256-yeL9aJG8+1uuOaEh8Zug2aOND7kP3pRge9s9Bg2l094=",
+      "metadataIntegrity": "sha256-Cv7Rmj4dy+R1gey/UxLOder8w/6KaH6kF4DEx2zjqxQ="
+    },
+    {
+      "id": "sky-31",
+      "label": "HEALPix level 1 cell 31",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 31",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 215,
+      "navigationRecordCount": 12,
+      "bounds": {
+        "min": {
+          "x": -92.25153325165289,
+          "y": -313.31233799136055,
+          "z": 0.49267989777843213
+        },
+        "max": {
+          "x": 87.6693694206415,
+          "y": -5.942237953271123,
+          "z": 179.57036134543628
+        },
+        "radiusLy": 323.3464108272375
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 31,
+        "recordCentroidUnitIcrs": {
+          "x": -0.00812765964495968,
+          "y": -0.939963707618738,
+          "z": 0.34117762164059234
+        },
+        "maximumRecordSeparationDeg": 20.186766390250583
+      },
+      "binaryUrl": "./sky-31.svsc",
+      "metadataUrl": "./sky-31.meta.json",
+      "byteLength": 32012,
+      "binaryIntegrity": "sha256-L3oTsPRdzG/oxmr4yFyZ8vo+tYieTpvnOvM7QQ3tGi0=",
+      "metadataIntegrity": "sha256-mAfGT8XjMDvrAIAFb1QGp4N+I+SA2wR3/BDcItYFPQI="
+    },
+    {
+      "id": "sky-32",
+      "label": "HEALPix level 1 cell 32",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 32",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 332,
+      "navigationRecordCount": 24,
+      "bounds": {
+        "min": {
+          "x": 0.7630331955438873,
+          "y": 0.05064286236310185,
+          "z": -322.2615714321932
+        },
+        "max": {
+          "x": 151.82492868683147,
+          "y": 167.167004240452,
+          "z": -44.05957560097472
+        },
+        "radiusLy": 325.9431214950681
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 32,
+        "recordCentroidUnitIcrs": {
+          "x": 0.28359846362368707,
+          "y": 0.2665467153970322,
+          "z": -0.9211540370325355
+        },
+        "maximumRecordSeparationDeg": 23.360642577509797
+      },
+      "binaryUrl": "./sky-32.svsc",
+      "metadataUrl": "./sky-32.meta.json",
+      "byteLength": 49328,
+      "binaryIntegrity": "sha256-JD4kuXSorC1IF0rkCKPRu/ISZrifLyWo+gLKCV8XJzM=",
+      "metadataIntegrity": "sha256-8ve45mW2r3aY9XmO2yOXTDv1fZ9MxBU64mPLJZqQuPY="
+    },
+    {
+      "id": "sky-33",
+      "label": "HEALPix level 1 cell 33",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 33",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 318,
+      "navigationRecordCount": 13,
+      "bounds": {
+        "min": {
+          "x": 0.06426884451810139,
+          "y": 8.866355122165201,
+          "z": -274.40025290902804
+        },
+        "max": {
+          "x": 156.30019500894048,
+          "y": 268.2819831262022,
+          "z": -9.079659772991384
+        },
+        "radiusLy": 326.15269272146674
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 33,
+        "recordCentroidUnitIcrs": {
+          "x": 0.24301967161786242,
+          "y": 0.6797602646267487,
+          "z": -0.692002472424282
+        },
+        "maximumRecordSeparationDeg": 24.355149438032015
+      },
+      "binaryUrl": "./sky-33.svsc",
+      "metadataUrl": "./sky-33.meta.json",
+      "byteLength": 47256,
+      "binaryIntegrity": "sha256-xZgu4S8l5yoB9eZL/BNbDOMdudHfAruh5XMrJSJiUPM=",
+      "metadataIntegrity": "sha256-XpLuqJU1+B31DYnRf1Jl2ZvVY6I/gPAoG6DJfQaMr24="
+    },
+    {
+      "id": "sky-34",
+      "label": "HEALPix level 1 cell 34",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 34",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 237,
+      "navigationRecordCount": 15,
+      "bounds": {
+        "min": {
+          "x": 21.24370338449235,
+          "y": 0.12324639453378197,
+          "z": -269.4960327641457
+        },
+        "max": {
+          "x": 274.1091905074446,
+          "y": 163.34499005626603,
+          "z": -22.98108072987976
+        },
+        "radiusLy": 325.7816978071252
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 34,
+        "recordCentroidUnitIcrs": {
+          "x": 0.677996120889076,
+          "y": 0.2448016195420513,
+          "z": -0.6931041964444841
+        },
+        "maximumRecordSeparationDeg": 24.37214588338926
+      },
+      "binaryUrl": "./sky-34.svsc",
+      "metadataUrl": "./sky-34.meta.json",
+      "byteLength": 35268,
+      "binaryIntegrity": "sha256-nyj+lDsVgS7Jnz5TR3BCp4H11KjsvE9ICYGcugr49pw=",
+      "metadataIntegrity": "sha256-89FbE0b5JxXhjNE8j/o02DRS33D+ST7ZFIXfz1QOgU4="
+    },
+    {
+      "id": "sky-35",
+      "label": "HEALPix level 1 cell 35",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 35",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 223,
+      "navigationRecordCount": 9,
+      "bounds": {
+        "min": {
+          "x": 24.029546855710493,
+          "y": 15.760495781923863,
+          "z": -195.92380796185736
+        },
+        "max": {
+          "x": 266.67035375610675,
+          "y": 271.2112791610729,
+          "z": -4.674785397571095
+        },
+        "radiusLy": 325.24068997576546
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 35,
+        "recordCentroidUnitIcrs": {
+          "x": 0.6794169652255521,
+          "y": 0.651797899481715,
+          "z": -0.3369749035090372
+        },
+        "maximumRecordSeparationDeg": 20.206920590688654
+      },
+      "binaryUrl": "./sky-35.svsc",
+      "metadataUrl": "./sky-35.meta.json",
+      "byteLength": 33196,
+      "binaryIntegrity": "sha256-PPARTgD7j6LzkcKKVe2WQspufDdnOAbZeIl+qZPkyEI=",
+      "metadataIntegrity": "sha256-lBRbyW4qdlnzwwKSNY41YCUtlMuk7hq9gFL8FLpcCps="
+    },
+    {
+      "id": "sky-36",
+      "label": "HEALPix level 1 cell 36",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 36",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 294,
+      "navigationRecordCount": 13,
+      "bounds": {
+        "min": {
+          "x": -152.0701739385309,
+          "y": 0.29492101697340334,
+          "z": -320.4000888344981
+        },
+        "max": {
+          "x": -0.21815108586429746,
+          "y": 160.49710594625682,
+          "z": -29.598945699578227
+        },
+        "radiusLy": 325.56533437515606
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 36,
+        "recordCentroidUnitIcrs": {
+          "x": -0.26536498526318114,
+          "y": 0.25698109960673216,
+          "z": -0.9292696804701993
+        },
+        "maximumRecordSeparationDeg": 22.499618530995257
+      },
+      "binaryUrl": "./sky-36.svsc",
+      "metadataUrl": "./sky-36.meta.json",
+      "byteLength": 43704,
+      "binaryIntegrity": "sha256-1ZGBBprbtlgYzyT/6fml9obcMPDqPaHo+8keHhNtfrc=",
+      "metadataIntegrity": "sha256-hPduHOOn+7IiuKgG5Mle1OjiG69PRsy4qVBl+cayRwM="
+    },
+    {
+      "id": "sky-37",
+      "label": "HEALPix level 1 cell 37",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 37",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 230,
+      "navigationRecordCount": 14,
+      "bounds": {
+        "min": {
+          "x": -267.1650814553584,
+          "y": 0.006912237801658,
+          "z": -292.12265644328147
+        },
+        "max": {
+          "x": -17.876660424612567,
+          "y": 163.99386394076137,
+          "z": -25.32109120530059
+        },
+        "radiusLy": 325.52231398463954
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 37,
+        "recordCentroidUnitIcrs": {
+          "x": -0.6920218992436757,
+          "y": 0.24761202987044234,
+          "z": -0.6780810966474551
+        },
+        "maximumRecordSeparationDeg": 23.342588105005365
+      },
+      "binaryUrl": "./sky-37.svsc",
+      "metadataUrl": "./sky-37.meta.json",
+      "byteLength": 34232,
+      "binaryIntegrity": "sha256-Z30opFrdUCbtPnJ+rYEi0tZFZnUJP7Ce0tFdND17zbc=",
+      "metadataIntegrity": "sha256-QAS4r3Tr0bwpjnj0i6o5/rMsWaOhyz4um8hgU8Bt3T4="
+    },
+    {
+      "id": "sky-38",
+      "label": "HEALPix level 1 cell 38",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 38",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 304,
+      "navigationRecordCount": 15,
+      "bounds": {
+        "min": {
+          "x": -162.38322659261286,
+          "y": 21.502677189485716,
+          "z": -283.41221063589967
+        },
+        "max": {
+          "x": -0.24078528812828076,
+          "y": 273.6244257743757,
+          "z": -22.91261969517282
+        },
+        "radiusLy": 325.92085984944555
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 38,
+        "recordCentroidUnitIcrs": {
+          "x": -0.24860744333075016,
+          "y": 0.6727624939822722,
+          "z": -0.6968392682759066
+        },
+        "maximumRecordSeparationDeg": 23.436869171463936
+      },
+      "binaryUrl": "./sky-38.svsc",
+      "metadataUrl": "./sky-38.meta.json",
+      "byteLength": 45184,
+      "binaryIntegrity": "sha256-JAfwWUW98s7miqx4/cxGKs+gmAai14F283B3ySvw72I=",
+      "metadataIntegrity": "sha256-cWUPicfULdpl9s7YLn2Sf+NvnWKIsS++cN+r6VbuATg="
+    },
+    {
+      "id": "sky-39",
+      "label": "HEALPix level 1 cell 39",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 39",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 205,
+      "navigationRecordCount": 9,
+      "bounds": {
+        "min": {
+          "x": -270.3597554043599,
+          "y": 26.58156877354913,
+          "z": -198.99947394228116
+        },
+        "max": {
+          "x": -20.92421341309224,
+          "y": 266.91641621305644,
+          "z": -7.0326120055866035
+        },
+        "radiusLy": 325.9127483859482
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 39,
+        "recordCentroidUnitIcrs": {
+          "x": -0.6876413613874334,
+          "y": 0.6430885436690105,
+          "z": -0.33702593833547656
+        },
+        "maximumRecordSeparationDeg": 21.36139017527691
+      },
+      "binaryUrl": "./sky-39.svsc",
+      "metadataUrl": "./sky-39.meta.json",
+      "byteLength": 30532,
+      "binaryIntegrity": "sha256-8DSIXQmZV6QGQ+jid8DrrdgAGJJrnKQLIQehH0WrzpU=",
+      "metadataIntegrity": "sha256-Z0AvBCDEBgS5q0tNAmXdgCSi/LDyINy8RgbCb71Fca4="
+    },
+    {
+      "id": "sky-40",
+      "label": "HEALPix level 1 cell 40",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 40",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 263,
+      "navigationRecordCount": 15,
+      "bounds": {
+        "min": {
+          "x": -156.87794001618394,
+          "y": -164.703527434671,
+          "z": -321.92636614443467
+        },
+        "max": {
+          "x": -0.2640999938991406,
+          "y": -0.44021366823613195,
+          "z": -3.772663865923719
+        },
+        "radiusLy": 326.08835541792496
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 40,
+        "recordCentroidUnitIcrs": {
+          "x": -0.27252756425437025,
+          "y": -0.2483770058340733,
+          "z": -0.9295362229060689
+        },
+        "maximumRecordSeparationDeg": 24.92400184746052
+      },
+      "binaryUrl": "./sky-40.svsc",
+      "metadataUrl": "./sky-40.meta.json",
+      "byteLength": 39116,
+      "binaryIntegrity": "sha256-jBDsnXfG3mYyxWUXBdfWyEwDX42ElkmyKfo7moYHJ6g=",
+      "metadataIntegrity": "sha256-JEFZgw/lp2UGoSoDFAjbO6TIUqw0v10NH1+ywXZzXTw="
+    },
+    {
+      "id": "sky-41",
+      "label": "HEALPix level 1 cell 41",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 41",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 267,
+      "navigationRecordCount": 14,
+      "bounds": {
+        "min": {
+          "x": -153.3748680123399,
+          "y": -259.1438030063412,
+          "z": -275.8187332531438
+        },
+        "max": {
+          "x": -0.7463549166791664,
+          "y": -10.051622649722459,
+          "z": -10.842142773806303
+        },
+        "radiusLy": 325.83662616613924
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 41,
+        "recordCentroidUnitIcrs": {
+          "x": -0.2629679128950595,
+          "y": -0.690938035707956,
+          "z": -0.6733888234888131
+        },
+        "maximumRecordSeparationDeg": 25.897541497839697
+      },
+      "binaryUrl": "./sky-41.svsc",
+      "metadataUrl": "./sky-41.meta.json",
+      "byteLength": 39708,
+      "binaryIntegrity": "sha256-vH6GbqS/NGW8xah2kbZlfTv9wQdIjXHYM/Qn4XGm98Y=",
+      "metadataIntegrity": "sha256-CZLyVfrEgrPQ+AkJWPwFTxPdEUM8As9VdAeCBFDFAMI="
+    },
+    {
+      "id": "sky-42",
+      "label": "HEALPix level 1 cell 42",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 42",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 279,
+      "navigationRecordCount": 12,
+      "bounds": {
+        "min": {
+          "x": -272.80194883564695,
+          "y": -155.07027801108077,
+          "z": -278.7544560989537
+        },
+        "max": {
+          "x": -29.8039869345279,
+          "y": -0.03823135466016687,
+          "z": -25.494911276644874
+        },
+        "radiusLy": 326.0393415537985
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 42,
+        "recordCentroidUnitIcrs": {
+          "x": -0.695519344707394,
+          "y": -0.2700102123384055,
+          "z": -0.6658433196862205
+        },
+        "maximumRecordSeparationDeg": 25.467372740621027
+      },
+      "binaryUrl": "./sky-42.svsc",
+      "metadataUrl": "./sky-42.meta.json",
+      "byteLength": 41484,
+      "binaryIntegrity": "sha256-tdBeD1Gt/inC36rAwQ37fW9DHfS5b/OeIkZvfGmC2Hw=",
+      "metadataIntegrity": "sha256-JhzEP9JISUKIYoDJC892kg7O3fcWltGxiv9NZpderx0="
+    },
+    {
+      "id": "sky-43",
+      "label": "HEALPix level 1 cell 43",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 43",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 331,
+      "navigationRecordCount": 13,
+      "bounds": {
+        "min": {
+          "x": -274.1016277531817,
+          "y": -265.6130451168529,
+          "z": -207.2679788956035
+        },
+        "max": {
+          "x": -26.161596807593316,
+          "y": -19.582520359986493,
+          "z": -5.202921364473191
+        },
+        "radiusLy": 326.09237936386484
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 43,
+        "recordCentroidUnitIcrs": {
+          "x": -0.6667809264604785,
+          "y": -0.6696007192486173,
+          "z": -0.3271667356108197
+        },
+        "maximumRecordSeparationDeg": 20.55059592444378
+      },
+      "binaryUrl": "./sky-43.svsc",
+      "metadataUrl": "./sky-43.meta.json",
+      "byteLength": 49180,
+      "binaryIntegrity": "sha256-U1IZb/DmogNSsoH+9wLPMJCVsiaK+x/yczHd7Auobo0=",
+      "metadataIntegrity": "sha256-u1pReolHdRXCnpYnsuC3Fyq8mHfQ9D0ODGogeLxIPOc="
+    },
+    {
+      "id": "sky-44",
+      "label": "HEALPix level 1 cell 44",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 44",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 317,
+      "navigationRecordCount": 18,
+      "bounds": {
+        "min": {
+          "x": 0.1349622826830018,
+          "y": -163.99105354303848,
+          "z": -315.2907473396359
+        },
+        "max": {
+          "x": 167.8286283638169,
+          "y": -0.9838672402044881,
+          "z": -32.021378574470354
+        },
+        "radiusLy": 325.8366014794471
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 44,
+        "recordCentroidUnitIcrs": {
+          "x": 0.28474416490043236,
+          "y": -0.2613599385776718,
+          "z": -0.9222861503144407
+        },
+        "maximumRecordSeparationDeg": 24.285869145291514
+      },
+      "binaryUrl": "./sky-44.svsc",
+      "metadataUrl": "./sky-44.meta.json",
+      "byteLength": 47108,
+      "binaryIntegrity": "sha256-M6hHAuFTDtgx19nrCsi+qw+j9DZUXWJAZqjPQjFvoEM=",
+      "metadataIntegrity": "sha256-tNAn8+buajHQ8tlNYshaP4BFE6+m8yCw43uipZlSCVQ="
+    },
+    {
+      "id": "sky-45",
+      "label": "HEALPix level 1 cell 45",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 45",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 243,
+      "navigationRecordCount": 13,
+      "bounds": {
+        "min": {
+          "x": 8.452682508628826,
+          "y": -160.4552882743913,
+          "z": -274.3655179567152
+        },
+        "max": {
+          "x": 281.55703545829783,
+          "y": -0.5761678295260799,
+          "z": -6.280274753138401
+        },
+        "radiusLy": 326.07533579828555
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 45,
+        "recordCentroidUnitIcrs": {
+          "x": 0.6985973731472203,
+          "y": -0.25002649443385677,
+          "z": -0.670409175289927
+        },
+        "maximumRecordSeparationDeg": 25.963084768930944
+      },
+      "binaryUrl": "./sky-45.svsc",
+      "metadataUrl": "./sky-45.meta.json",
+      "byteLength": 36156,
+      "binaryIntegrity": "sha256-P3Ub7P7dXcs6QgZKr7k1KI8uyj8H0zQGzL2RVsMReNk=",
+      "metadataIntegrity": "sha256-gS+3v63jejkoWzJrstq6aoDImWA49dgonY2HD7E+kGk="
+    },
+    {
+      "id": "sky-46",
+      "label": "HEALPix level 1 cell 46",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 46",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 342,
+      "navigationRecordCount": 14,
+      "bounds": {
+        "min": {
+          "x": 0.1909458893838539,
+          "y": -274.97169140863826,
+          "z": -279.6439549427715
+        },
+        "max": {
+          "x": 153.3136306407437,
+          "y": -11.82447818329887,
+          "z": -14.258022536296156
+        },
+        "radiusLy": 324.44135028449347
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 46,
+        "recordCentroidUnitIcrs": {
+          "x": 0.2658674126939176,
+          "y": -0.6859887716382381,
+          "z": -0.677298991623126
+        },
+        "maximumRecordSeparationDeg": 23.21765625149974
+      },
+      "binaryUrl": "./sky-46.svsc",
+      "metadataUrl": "./sky-46.meta.json",
+      "byteLength": 50808,
+      "binaryIntegrity": "sha256-rmHceHSQ7q0jqrW14wRmZsexj+LmOII15sSvgXQu5F4=",
+      "metadataIntegrity": "sha256-lQKtaOJsPPdl38NPbUGIDTUb5hEwo+W5w0cNBn4UTEQ="
+    },
+    {
+      "id": "sky-47",
+      "label": "HEALPix level 1 cell 47",
+      "importanceTier": "background",
+      "selection": "G > 6 and nested HEALPix level 1 = 47",
+      "maxDistanceLy": 326.15637771674335,
+      "recordCount": 280,
+      "navigationRecordCount": 12,
+      "bounds": {
+        "min": {
+          "x": 17.856334143018927,
+          "y": -276.905130459294,
+          "z": -202.27867367293976
+        },
+        "max": {
+          "x": 257.53135688659387,
+          "y": -20.331748113813294,
+          "z": -4.339842738620681
+        },
+        "radiusLy": 325.9863972720209
+      },
+      "spatialCell": {
+        "scheme": "gaia-source-id-nested-healpix",
+        "level": 1,
+        "index": 47,
+        "recordCentroidUnitIcrs": {
+          "x": 0.6646659390072334,
+          "y": -0.6636745437497527,
+          "z": -0.3431549059858979
+        },
+        "maximumRecordSeparationDeg": 20.390341740581068
+      },
+      "binaryUrl": "./sky-47.svsc",
+      "metadataUrl": "./sky-47.meta.json",
+      "byteLength": 41632,
+      "binaryIntegrity": "sha256-Kdg0QiJbOMtuS7P6P5voJyNAtYdXaLEHWEheEPnhLPo=",
+      "metadataIntegrity": "sha256-Hc4SYcdl76pA3XEfjnhmvgy2/WIXlle3+GMU/5O+Lss="
+    }
+  ]
+}

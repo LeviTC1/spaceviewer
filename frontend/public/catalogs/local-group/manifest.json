@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "catalog": {
+    "id": "lvdb-local-group-v1",
+    "version": "v1.1.1",
+    "title": "SpaceViewer Local Group physical-coordinate subset",
+    "sourceCatalog": "Local Volume Database combined catalogue",
+    "sourceReleaseDate": "2026-08-12",
+    "sourceUrl": "https://github.com/apace7/local_volume_database/releases/download/v1.1.1/comb_all.csv",
+    "releaseUrl": "https://github.com/apace7/local_volume_database/releases/tag/v1.1.1",
+    "licenceId": "CC0-1.0",
+    "licenceUrl": "https://creativecommons.org/publicdomain/zero/1.0/",
+    "citationDoi": "10.33232/001c.144859",
+    "archiveDoi": "10.5281/zenodo.14076714",
+    "referenceFrame": "supergalactic-cartesian",
+    "positionUnit": "kiloparsec",
+    "epoch": "J2000 ICRS input transformed by the upstream LVDB pipeline"
+  },
+  "selection": {
+    "description": "Confirmed galaxies associated with the Milky Way or M31 plus confirmed Local Group field galaxies within 1.4 Mpc, M31, and M33.",
+    "confirmedFlagsRequired": true,
+    "localGroupBoundaryKpc": 1400,
+    "tables": [
+      "dwarf_mw",
+      "dwarf_m31",
+      "dwarf_local_field",
+      "misc"
+    ],
+    "miscKeys": [
+      "m_031",
+      "m_033"
+    ]
+  },
+  "projectionBoundary": {
+    "sourceCoordinates": "Heliocentric supergalactic Cartesian positions in physical kiloparsecs",
+    "renderedRadius": "Logarithmically compressed in scene space; direction is preserved while radial separation is not linear"
+  },
+  "build": {
+    "scriptVersion": "spaceviewer-local-group-builder-v1",
+    "sourceSha256": "7d2f231646bfee843e549818f9b3332929afd9c14d5eb450d59e051d07dcebd6",
+    "recordCount": 117,
+    "minimumDistanceKpc": 21.58,
+    "maximumDistanceKpc": 1393.16,
+    "generatedSha256": "df2dbef0b495064c698d4c6111bc7ccead5c2e1f0305e87c6bb051c3b434d257"
+  }
+}

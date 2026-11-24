@@ -1,0 +1,122 @@
+{
+  "schema": "spaceviewer-solar-texture-inventory-v2",
+  "id": "spaceviewer-solar-texture-inventory",
+  "version": "solar-textures-v2",
+  "assetRoot": "frontend/public/solar-textures",
+  "sourceStatus": "verified",
+  "licenceStatus": "verified",
+  "attributionHref": "/solar-textures/ATTRIBUTION.txt",
+  "note": "Every public texture has a byte-level source receipt or a controlled local-generation receipt. Performance assets are recorded derivatives; Pluto now uses the New Horizons global colour mosaic instead of the former fictional map.",
+  "renderingStatus": "visual-reference-only",
+  "sources": [
+    {
+      "id": "solar-system-scope-cc-by-4.0",
+      "author": "Solar System Scope / INOVE",
+      "sourcePage": "https://www.solarsystemscope.com/textures/",
+      "licence": "CC-BY-4.0",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "sourceStatus": "verified",
+      "licenceStatus": "verified",
+      "retrievedAt": "2026-09-02",
+      "attribution": "Solar System Scope textures by Solar System Scope / INOVE, licensed CC BY 4.0; performance copies are resized and re-encoded derivatives."
+    },
+    {
+      "id": "three-js-mit",
+      "author": "three.js authors",
+      "sourcePage": "https://github.com/mrdoob/three.js/tree/20bd26f2d1f2797602c084975b793591b3472558/examples/textures/planets",
+      "licence": "MIT",
+      "licenceUrl": "https://github.com/mrdoob/three.js/blob/20bd26f2d1f2797602c084975b793591b3472558/LICENSE",
+      "sourceStatus": "verified",
+      "licenceStatus": "verified",
+      "retrievedAt": "2026-09-02",
+      "attribution": "Planet texture assets from the three.js project, Copyright 2010-2026 three.js authors, MIT License; performance copies are resized and re-encoded derivatives."
+    },
+    {
+      "id": "nasa-new-horizons-pluto",
+      "author": "NASA/JHUAPL/SwRI",
+      "sourcePage": "https://science.nasa.gov/resource/pluto-global-color-map/",
+      "licence": "NASA-MEDIA-USAGE-GUIDELINES",
+      "licenceUrl": "https://www.nasa.gov/nasa-brand-center/images-and-media/",
+      "sourceStatus": "verified",
+      "licenceStatus": "verified",
+      "retrievedAt": "2026-09-02",
+      "attribution": "Pluto Global Color Map, credit NASA/JHUAPL/SwRI; resized and re-encoded for browser rendering. NASA does not endorse SpaceViewer.",
+      "sourceFile": "catalog-source/solar-textures/nasa-pluto-global-color-map.jpg",
+      "sourceSha256": "1c13296bb0d2678224f3579033c4fe4cd302dc2a0afa02c94a0ff1baa56d53c9"
+    },
+    {
+      "id": "spaceviewer-generated-noise",
+      "author": "SpaceViewer project",
+      "sourcePage": null,
+      "licence": "NO-THIRD-PARTY-ASSET",
+      "licenceUrl": null,
+      "sourceStatus": "verified",
+      "licenceStatus": "not-applicable",
+      "retrievedAt": "2026-09-02",
+      "attribution": "Deterministic RGB data texture generated locally from the recorded xorshift32 seed; no third-party image is embedded."
+    }
+  ],
+  "transforms": [
+    {
+      "id": "identity-byte-copy",
+      "tool": "none",
+      "description": "The public high-tier asset is byte-for-byte identical to the pinned upstream download."
+    },
+    {
+      "id": "imagemagick-lanczos-performance-v1",
+      "tool": "ImageMagick 7.1.2-18",
+      "description": "Lanczos half-size resize, metadata stripped; JPEG outputs use progressive 4:2:0 quality 88 and PNG outputs use compression level 9."
+    },
+    {
+      "id": "imagemagick-lanczos-pluto-v1",
+      "tool": "ImageMagick 7.1.2-18",
+      "description": "NASA 5926x2963 equirectangular source resized to 2048x1024 with Lanczos, metadata stripped, progressive JPEG 4:2:0 quality 92."
+    },
+    {
+      "id": "xorshift32-rgb-noise-v1",
+      "tool": "frontend/scripts/build-solar-texture-derivatives.mjs",
+      "description": "256x256 RGB PNG generated from xorshift32 seed 0x53505632, PNG filter 0, zlib level 9."
+    },
+    {
+      "id": "identity-project-copy",
+      "tool": "node:fs copyFile",
+      "description": "Byte-for-byte copy of the controlled project-generated high-tier asset."
+    }
+  ],
+  "assets": {
+    "high/2k_earth_daymap.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "sourceUrl": "https://www.solarsystemscope.com/textures/download/2k_earth_daymap.jpg", "sourceSha256": "767ee1dc6eb3802699bfccf6f264880f8acd0b80de3191cd24984fe279b07b7c", "transformId": "identity-byte-copy", "expectedSha256": "767ee1dc6eb3802699bfccf6f264880f8acd0b80de3191cd24984fe279b07b7c" },
+    "high/2k_jupiter.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "sourceUrl": "https://www.solarsystemscope.com/textures/download/2k_jupiter.jpg", "sourceSha256": "b0f04d005350252636b0e3396fc592548cbd9e9126b269d32d5c6abd4b0e4f2b", "transformId": "identity-byte-copy", "expectedSha256": "b0f04d005350252636b0e3396fc592548cbd9e9126b269d32d5c6abd4b0e4f2b" },
+    "high/2k_mars.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "sourceUrl": "https://www.solarsystemscope.com/textures/download/2k_mars.jpg", "sourceSha256": "2d187f3e77a98eaa8cea5f4cc722f633c122ef170b9e94ace6b5fb6cbc3f8e01", "transformId": "identity-byte-copy", "expectedSha256": "2d187f3e77a98eaa8cea5f4cc722f633c122ef170b9e94ace6b5fb6cbc3f8e01" },
+    "high/2k_mercury.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "sourceUrl": "https://www.solarsystemscope.com/textures/download/2k_mercury.jpg", "sourceSha256": "5a5c80607f643496bac9a631e71957def35ed788895f18b678ac849c2b38e48a", "transformId": "identity-byte-copy", "expectedSha256": "5a5c80607f643496bac9a631e71957def35ed788895f18b678ac849c2b38e48a" },
+    "high/2k_neptune.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "sourceUrl": "https://www.solarsystemscope.com/textures/download/2k_neptune.jpg", "sourceSha256": "cb42ea82709741d28b0af44d8b283cbc6dbd0c521a7f0e1e1e010ade00977df6", "transformId": "identity-byte-copy", "expectedSha256": "cb42ea82709741d28b0af44d8b283cbc6dbd0c521a7f0e1e1e010ade00977df6" },
+    "high/2k_pluto.jpg": { "sourceId": "nasa-new-horizons-pluto", "sourceUrl": "https://assets.science.nasa.gov/dynamicimage/assets/science/psd/solar/2023/09/p/l/pluto_color_mapmosaic.jpg?crop=faces%2Cfocalpoint&fit=clip&h=2963&w=5926", "sourceSha256": "1c13296bb0d2678224f3579033c4fe4cd302dc2a0afa02c94a0ff1baa56d53c9", "transformId": "imagemagick-lanczos-pluto-v1", "expectedSha256": "b4b2898cb446cd4241a105db7575959f241548d756b21a538bdbc3f294673cb7" },
+    "high/2k_saturn.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "sourceUrl": "https://www.solarsystemscope.com/textures/download/2k_saturn.jpg", "sourceSha256": "54a900ca9bf7ab62e70f862852759abdf342e6d6436a95a2fe9ebdb6bcd3bbac", "transformId": "identity-byte-copy", "expectedSha256": "54a900ca9bf7ab62e70f862852759abdf342e6d6436a95a2fe9ebdb6bcd3bbac" },
+    "high/2k_saturn_ring_alpha.png": { "sourceId": "solar-system-scope-cc-by-4.0", "sourceUrl": "https://www.solarsystemscope.com/textures/download/2k_saturn_ring_alpha.png", "sourceSha256": "4b0644b2f3ef259fd0bfaedd9dc52f9e7d9738f65f50363e8c4dd19f650d7334", "transformId": "identity-byte-copy", "expectedSha256": "4b0644b2f3ef259fd0bfaedd9dc52f9e7d9738f65f50363e8c4dd19f650d7334" },
+    "high/2k_sun.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "sourceUrl": "https://www.solarsystemscope.com/textures/download/2k_sun.jpg", "sourceSha256": "ff0f076ba65e03b5ab518451bc96699325be38e3ccbdd5869ee1c00f3a0c8816", "transformId": "identity-byte-copy", "expectedSha256": "ff0f076ba65e03b5ab518451bc96699325be38e3ccbdd5869ee1c00f3a0c8816" },
+    "high/2k_uranus.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "sourceUrl": "https://www.solarsystemscope.com/textures/download/2k_uranus.jpg", "sourceSha256": "d15239d46f82d3ea13d2b260b5b29b2a382f42f2916dae0694d0387b1204a09d", "transformId": "identity-byte-copy", "expectedSha256": "d15239d46f82d3ea13d2b260b5b29b2a382f42f2916dae0694d0387b1204a09d" },
+    "high/2k_venus_surface.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "sourceUrl": "https://www.solarsystemscope.com/textures/download/2k_venus_surface.jpg", "sourceSha256": "dbe5db1c794a8ab4cbf7dd6bf193540c400fc833ce1e6cc399318aa68026278b", "transformId": "identity-byte-copy", "expectedSha256": "dbe5db1c794a8ab4cbf7dd6bf193540c400fc833ce1e6cc399318aa68026278b" },
+    "high/earth_atmos_2048.jpg": { "sourceId": "three-js-mit", "sourceUrl": "https://raw.githubusercontent.com/mrdoob/three.js/20bd26f2d1f2797602c084975b793591b3472558/examples/textures/planets/earth_atmos_2048.jpg", "sourceSha256": "2faa400d1eade3bc44caf6750d1b772bd9bbb6d87362c02bc7c3304e78fa0a9d", "transformId": "identity-byte-copy", "expectedSha256": "2faa400d1eade3bc44caf6750d1b772bd9bbb6d87362c02bc7c3304e78fa0a9d" },
+    "high/earth_clouds_1024.png": { "sourceId": "three-js-mit", "sourceUrl": "https://raw.githubusercontent.com/mrdoob/three.js/22bd108ab13cb0c0d944eae510442484fe4fac14/examples/textures/planets/earth_clouds_1024.png", "sourceSha256": "7d3b82ef6b3feb506fc06f02a744aed3d864e23e7417075005f4082a7ff935a4", "transformId": "identity-byte-copy", "expectedSha256": "7d3b82ef6b3feb506fc06f02a744aed3d864e23e7417075005f4082a7ff935a4" },
+    "high/earth_lights_2048.png": { "sourceId": "three-js-mit", "sourceUrl": "https://raw.githubusercontent.com/mrdoob/three.js/9da365cac562c1a1a8879ec891cc8895961ef725/examples/textures/planets/earth_lights_2048.png", "sourceSha256": "3cc6972d1d5b6310f33ea6ef4cc14a38f1dd141a91d26888206889327d983d7b", "transformId": "identity-byte-copy", "expectedSha256": "3cc6972d1d5b6310f33ea6ef4cc14a38f1dd141a91d26888206889327d983d7b" },
+    "high/earth_specular_2048.jpg": { "sourceId": "three-js-mit", "sourceUrl": "https://raw.githubusercontent.com/mrdoob/three.js/20bd26f2d1f2797602c084975b793591b3472558/examples/textures/planets/earth_specular_2048.jpg", "sourceSha256": "2df48906732d7a458b2d0a7cdec51a829262307c6bdee4cfdf079a4dd7c71c69", "transformId": "identity-byte-copy", "expectedSha256": "2df48906732d7a458b2d0a7cdec51a829262307c6bdee4cfdf079a4dd7c71c69" },
+    "high/moon_1024.jpg": { "sourceId": "three-js-mit", "sourceUrl": "https://raw.githubusercontent.com/mrdoob/three.js/20bd26f2d1f2797602c084975b793591b3472558/examples/textures/planets/moon_1024.jpg", "sourceSha256": "fcb0f1f5548e6e18d40063dd55c6aacd3daedf2407b181dab85b61e22bf9fe57", "transformId": "identity-byte-copy", "expectedSha256": "fcb0f1f5548e6e18d40063dd55c6aacd3daedf2407b181dab85b61e22bf9fe57" },
+    "high/noise.png": { "sourceId": "spaceviewer-generated-noise", "sourceUrl": null, "sourceSha256": null, "transformId": "xorshift32-rgb-noise-v1", "expectedSha256": "55afadaa4e312ad871f47e2dc3941177b16d93fe95270afe8f147eb493a3cc7b" },
+    "perf/2k_earth_daymap.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "derivedFrom": "high/2k_earth_daymap.jpg", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "4d134ddf1b40125c431b7cd014d2e293246145a0db13cf89875541e3b4b30e53" },
+    "perf/2k_jupiter.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "derivedFrom": "high/2k_jupiter.jpg", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "5255a370c66de2269acaa9d147d46dcca03be5a407e147fb16eab287b9a3cce9" },
+    "perf/2k_mars.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "derivedFrom": "high/2k_mars.jpg", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "7487a33a6119ffaa3531db79c7ae64342ed6b784880926272725e5dfddbdfe8e" },
+    "perf/2k_mercury.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "derivedFrom": "high/2k_mercury.jpg", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "3aa16323a83023b1efd8b99401032876ed57c8a6fcdb027ac891e6b17c9ff451" },
+    "perf/2k_neptune.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "derivedFrom": "high/2k_neptune.jpg", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "8a326aa88246468b7b31ae3473d9d3afc29d06b3489f7a73ca556dae24cff34a" },
+    "perf/2k_pluto.jpg": { "sourceId": "nasa-new-horizons-pluto", "derivedFrom": "high/2k_pluto.jpg", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "63c98fd1c3bd0e2f0c7f785d9cbb0d7ab65eb29b2c06adaee2b69dc5fb2baa24" },
+    "perf/2k_saturn.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "derivedFrom": "high/2k_saturn.jpg", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "27f2695dd8953c740906fce72508db60f6a756e54ecf1dca531c5c9b6ffdbfc7" },
+    "perf/2k_saturn_ring_alpha.png": { "sourceId": "solar-system-scope-cc-by-4.0", "derivedFrom": "high/2k_saturn_ring_alpha.png", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "d9041856b68aea064aa46e3a5264415a56a86cc2691a5f7e85447524618fe35e" },
+    "perf/2k_sun.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "derivedFrom": "high/2k_sun.jpg", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "c01be07d30026f759bc6bc3423efb5cb878455187d27484de2f51385cec37610" },
+    "perf/2k_uranus.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "derivedFrom": "high/2k_uranus.jpg", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "15a93d6174420303dcb49e33c8e26b925770ba556c7704646327936c18c530c0" },
+    "perf/2k_venus_surface.jpg": { "sourceId": "solar-system-scope-cc-by-4.0", "derivedFrom": "high/2k_venus_surface.jpg", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "f5579be6eff374336832b49eb65f6764149b9830bfd58083e2d8a26c2e81a84a" },
+    "perf/earth_atmos_2048.jpg": { "sourceId": "three-js-mit", "derivedFrom": "high/earth_atmos_2048.jpg", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "3adf560a16be0ee799820f0f68fef3e1672368c72fe166b46669398d18100318" },
+    "perf/earth_clouds_1024.png": { "sourceId": "three-js-mit", "derivedFrom": "high/earth_clouds_1024.png", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "708cadb48af3522c6261481107a657054f51fa4c22175b6e9aae8384ff6ad513" },
+    "perf/earth_lights_2048.png": { "sourceId": "three-js-mit", "derivedFrom": "high/earth_lights_2048.png", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "10b5cc4454790b4b371f064af2d72307fb5bd2c91c237adf67acff42b7e0b804" },
+    "perf/earth_specular_2048.jpg": { "sourceId": "three-js-mit", "derivedFrom": "high/earth_specular_2048.jpg", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "c89f6a13aeec847cc3134fadcd0e8c8ba89f038b2c6620a0524fd46c34368404" },
+    "perf/moon_1024.jpg": { "sourceId": "three-js-mit", "derivedFrom": "high/moon_1024.jpg", "transformId": "imagemagick-lanczos-performance-v1", "expectedSha256": "430d3560abb73ab2b020017a8a49bd4f181d89e5da768d6841496b30138903f2" },
+    "perf/noise.png": { "sourceId": "spaceviewer-generated-noise", "derivedFrom": "high/noise.png", "transformId": "identity-project-copy", "expectedSha256": "55afadaa4e312ad871f47e2dc3941177b16d93fe95270afe8f147eb493a3cc7b" }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "catalog": {
+    "id": "J/ApJ/885/131",
+    "version": "reid2019-vizier-2021-09-16",
+    "title": "Trigonometric parallaxes of high-mass star-forming regions",
+    "authors": "Reid et al.",
+    "catalogDoi": "10.26093/cds/vizier.18850131",
+    "articleDoi": "10.3847/1538-4357/ab4a11",
+    "catalogUrl": "https://cdsarc.cds.unistra.fr/viz-bin/cat/J/ApJ/885/131",
+    "articleUrl": "https://doi.org/10.3847/1538-4357/ab4a11",
+    "retrievedAt": "2026-09-02T00:00:00.000Z",
+    "provenance": {
+      "licenceId": "VizieR-scientific-use",
+      "licenceStatus": "verified-scientific-use-commercial-rights-source-dependent",
+      "licenceUrl": "https://cds.unistra.fr/vizier-org/licences_vizier.html",
+      "licenceSummary": "VizieR permits scientific use with explicit citation; commercial use depends on the originating journal and is not granted by this receipt.",
+      "credit": "Reid et al. (2019); VizieR catalogue J/ApJ/885/131; CDS, Strasbourg"
+    }
+  },
+  "sourceFiles": [
+    {
+      "path": "catalog-source/milky-way-reid2019/ReadMe",
+      "url": "https://cdsarc.cds.unistra.fr/ftp/J/ApJ/885/131/ReadMe",
+      "bytes": 8567,
+      "sha256": "b41f956229200db92942c23e1165da5e5017484fdbbc16914229557934dcc1f9"
+    },
+    {
+      "path": "catalog-source/milky-way-reid2019/table1.dat",
+      "url": "https://cdsarc.cds.unistra.fr/ftp/J/ApJ/885/131/table1.dat",
+      "bytes": 24142,
+      "sha256": "ca1c67c85f65bed51101f24f5acc8ec16b51ea3e8ee22ea10483f85007cbda02"
+    },
+    {
+      "path": "catalog-source/milky-way-reid2019/refs.dat",
+      "url": "https://cdsarc.cds.unistra.fr/ftp/J/ApJ/885/131/refs.dat",
+      "bytes": 5568,
+      "sha256": "507befb5a83bc1e704ef9ba8ea82cd9347a9e9f4c20bd259d7eba91914aa4e9c"
+    },
+    {
+      "path": "catalog-source/milky-way-reid2019/VIZIER_USAGE.html",
+      "url": "https://cds.unistra.fr/vizier-org/licences_vizier.html",
+      "bytes": 9428,
+      "sha256": "f6bab16f7060f41c98958f0044fa3a526eeeeacdd23cb2fa7a529016d2b29e9f"
+    }
+  ],
+  "recordCount": 199
+}

@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "catalog": {
+    "id": "nasa-exoplanet-archive-pscomppars-nearby-100pc",
+    "version": "pscomppars-snapshot-2026-09-02",
+    "title": "NASA Exoplanet Archive Planetary Systems Composite Parameters nearby confirmed planets",
+    "table": "pscomppars",
+    "retrievedAt": "2026-09-02T00:00:00.000Z",
+    "tapUrl": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+    "query": "select pl_name,hostname,pl_letter,gaia_dr2_id,gaia_dr3_id,hip_name,hd_name,tic_id,ra,dec,sy_dist,sy_disterr1,sy_disterr2,sy_vmag,sy_kmag,disc_year,discoverymethod,disc_facility,disc_telescope,pl_orbper,pl_orbpererr1,pl_orbpererr2,pl_orbsmax,pl_orbsmaxerr1,pl_orbsmaxerr2,pl_rade,pl_radeerr1,pl_radeerr2,pl_bmasse,pl_bmasseerr1,pl_bmasseerr2,pl_eqt,pl_eqterr1,pl_eqterr2,st_teff,st_tefferr1,st_tefferr2,st_spectype from pscomppars where sy_dist is not null and ra is not null and dec is not null and sy_dist <= 100",
+    "queryDocumentationUrl": "https://exoplanetarchive.ipac.caltech.edu/docs/TAP/usingTAP.html",
+    "columnDocumentationUrl": "https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html",
+    "compositeTableDocumentationUrl": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_about.html",
+    "acknowledgmentUrl": "https://exoplanetarchive.ipac.caltech.edu/docs/acknowledge.html",
+    "archivePaper": "The NASA Exoplanet Archive: Data and Tools for Exoplanet Research",
+    "archivePaperYear": 2025,
+    "selection": {
+      "predicate": "sy_dist is not null and ra is not null and dec is not null and sy_dist <= 100",
+      "maximumDistancePc": 100,
+      "planetCount": 1568,
+      "hostCount": 1056
+    },
+    "provenance": {
+      "licenceStatus": "NASA-public-data-attribution-required",
+      "credit": "NASA Exoplanet Archive, operated by Caltech under contract with NASA's Exoplanet Exploration Program",
+      "acknowledgmentRequired": true,
+      "usageBoundary": "The archive aggregates published literature. Parameter-level literature references and any third-party rights remain with their originating sources."
+    }
+  },
+  "sourceFiles": [
+    {
+      "path": "catalog-source/nasa-exoplanet-archive-nearby/pscomppars-nearby.json.gz",
+      "url": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync?query=select%20pl_name%2Chostname%2Cpl_letter%2Cgaia_dr2_id%2Cgaia_dr3_id%2Chip_name%2Chd_name%2Ctic_id%2Cra%2Cdec%2Csy_dist%2Csy_disterr1%2Csy_disterr2%2Csy_vmag%2Csy_kmag%2Cdisc_year%2Cdiscoverymethod%2Cdisc_facility%2Cdisc_telescope%2Cpl_orbper%2Cpl_orbpererr1%2Cpl_orbpererr2%2Cpl_orbsmax%2Cpl_orbsmaxerr1%2Cpl_orbsmaxerr2%2Cpl_rade%2Cpl_radeerr1%2Cpl_radeerr2%2Cpl_bmasse%2Cpl_bmasseerr1%2Cpl_bmasseerr2%2Cpl_eqt%2Cpl_eqterr1%2Cpl_eqterr2%2Cst_teff%2Cst_tefferr1%2Cst_tefferr2%2Cst_spectype%20from%20pscomppars%20where%20sy_dist%20is%20not%20null%20and%20ra%20is%20not%20null%20and%20dec%20is%20not%20null%20and%20sy_dist%20%3C%3D%20100&format=json",
+      "bytes": 189531,
+      "sha256": "4b6e91917a3475e2e03f54109b0b4af0108b81c6fcdb487229e75f9d8fecad4f",
+      "contentEncoding": "gzip"
+    },
+    {
+      "path": "catalog-source/nasa-exoplanet-archive-nearby/ACKNOWLEDGMENT.html",
+      "url": "https://exoplanetarchive.ipac.caltech.edu/docs/acknowledge.html",
+      "bytes": 26806,
+      "sha256": "f006c7fc22a68bf3c224f25e34f49decae716f4473a5af2e0b3b9372c4491f1c"
+    }
+  ]
+}

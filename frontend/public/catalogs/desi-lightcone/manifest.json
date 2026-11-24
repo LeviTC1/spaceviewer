@@ -1,0 +1,387 @@
+{
+  "schemaVersion": 1,
+  "catalog": {
+    "id": "desi-dr1-bgs-bright-21.5-ngc-lightcone",
+    "version": "DR1-iron-LSScats-v1.5",
+    "title": "DESI DR1 BGS_BRIGHT-21.5 measured-galaxy redshift light cone",
+    "sourceTitle": "DESI DR1 BGS_BRIGHT-21.5 NGC clustering catalogue",
+    "releaseDate": "2025-03-19",
+    "retrievedAt": "2026-09-02T00:00:00.000Z",
+    "sourceUrl": "https://data.desi.lbl.gov/public/dr1/survey/catalogs/dr1/LSS/iron/LSScats/v1.5/BGS_BRIGHT-21.5_NGC_clustering.dat.fits",
+    "dataReleaseUrl": "https://data.desi.lbl.gov/doc/releases/dr1/",
+    "dataModelUrl": "https://desidatamodel.readthedocs.io/en/stable/DESI_ROOT/survey/catalogs/RELEASE/LSS/SPECPROD/LSScats/VERSION/data_clustering.html",
+    "samplePaper": "DESI 2024 II: Sample Definitions, Characteristics, and Two-point Clustering Statistics",
+    "samplePaperDoi": "10.1088/1475-7516/2025/07/017",
+    "samplePaperUrl": "https://doi.org/10.1088/1475-7516/2025/07/017",
+    "credit": "DESI Collaboration; DESI Data Release 1; LSS iron clustering catalogues v1.5",
+    "licenceId": "CC-BY-4.0",
+    "licenceStatus": "verified-redistributable-with-attribution",
+    "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+    "acknowledgmentsUrl": "https://data.desi.lbl.gov/doc/acknowledgments/"
+  },
+  "selection": {
+    "sourceSample": "DESI DR1 LSS BGS_BRIGHT-21.5 NGC clustering data catalogue v1.5",
+    "sourceSampleDefinition": "BGS_BRIGHT galaxies with 0.1 < z < 0.4 and evolution-corrected Fastspecfit r-band absolute magnitude M_r < -21.5; DESI LSS catalogue vetoes and weights are inherited.",
+    "sourceRecordCount": 217614,
+    "selectedRecordCount": 22648,
+    "skyFootprint": {
+      "raMinDeg": 130,
+      "raMaxDeg": 250,
+      "decMinDeg": 30,
+      "decMaxDeg": 40,
+      "redshiftMin": 0.1,
+      "redshiftMax": 0.4,
+      "frame": "ICRS"
+    },
+    "predicate": "RA >= 130 AND RA <= 250 AND DEC >= 30 AND DEC <= 40 AND Z >= 0.1 AND Z <= 0.4",
+    "selectionBoundary": "This is a rectangular cut through the NGC clustering catalogue, not a volume-complete census of all galaxies. Angular footprint, target selection, veto masks, fibre assignment, redshift success, and magnitude selection remain observable boundaries.",
+    "displayPopulation": "Every selected measured galaxy is stored. Quality tiers use deterministic prefixes of a TARGETID hash order, preserving an unbiased visual subsample without inventing objects."
+  },
+  "coordinates": {
+    "angularFrame": "ICRS",
+    "radialObservable": "Redrock spectroscopic redshift Z",
+    "coordinateConvention": "observer-centred redshift-space comoving Cartesian",
+    "displayBasis": "local tangent basis centred on ICRS RA 190 deg, Dec 35 deg",
+    "sceneUnitsPerMpc": 0.04,
+    "cosmology": {
+      "name": "Planck 2018 baseline flat Lambda-CDM",
+      "h0KmSPerMpc": 67.4,
+      "omegaM": 0.315,
+      "omegaLambda": 0.685,
+      "speedOfLightKmS": 299792.458
+    },
+    "distanceEquation": "D_C(z) = c/H0 integral_0^z dz' / sqrt(Omega_m(1+z')^3 + Omega_Lambda)",
+    "interpretationBoundary": "Comoving distances are inferred from measured redshift under the declared reference cosmology. They are not independent distance measurements; peculiar velocities create redshift-space distortions.",
+    "distanceRangeMpc": {
+      "minimum": 434.46779395291736,
+      "maximum": 1604.4566025440781
+    }
+  },
+  "uncertainty": {
+    "sourceBoundary": "The clustering FITS product does not publish per-object ZERR, so this layer does not draw radial error bars.",
+    "statisticalBoundary": "Catalogue weights correct analysis selection effects; they are not per-galaxy measurement probabilities and do not change marker brightness.",
+    "systematicBoundary": "Peculiar velocities, fibre assignment, imaging systematics, redshift failures, masks, and the assumed cosmology remain relevant. This visualization is not a density-field estimator or precision clustering measurement."
+  },
+  "weights": {
+    "visualUse": "retained as metadata but not used to duplicate galaxies, change point brightness, or infer filaments",
+    "combined": {
+      "minimum": 0.4873540662315927,
+      "median": 0.8400227274894715,
+      "maximum": 11.979015756416322
+    },
+    "completeness": {
+      "minimum": 1,
+      "median": 1,
+      "maximum": 14
+    },
+    "imagingSystematics": {
+      "minimum": 0.9587088823318481,
+      "median": 0.9858923554420471,
+      "maximum": 1.0503714084625244
+    },
+    "redshiftFailure": {
+      "minimum": 1,
+      "median": 1,
+      "maximum": 1.0955742597579956
+    },
+    "fkp": {
+      "minimum": 0.20701515671139484,
+      "median": 0.283439288222064,
+      "maximum": 0.3883811780090407
+    },
+    "fracTlobsTiles": {
+      "minimum": 0.875,
+      "median": 0.9919735599622285,
+      "maximum": 1
+    }
+  },
+  "referenceNofZ": {
+    "source": "BGS_BRIGHT-21.5_NGC_nz.txt",
+    "populationBoundary": "Published for the full NGC sample, not recomputed for the displayed rectangular strip.",
+    "bins": [
+      {
+        "zMid": 0.10500000000000001,
+        "zLow": 0.1,
+        "zHigh": 0.11000000000000001,
+        "numberDensityH3Mpc3": 0.0005196934256707778,
+        "weightedCount": 2167.4356716198336,
+        "volumeMpc3HMinus3": 4170604.368955187
+      },
+      {
+        "zMid": 0.11500000000000002,
+        "zLow": 0.11000000000000001,
+        "zHigh": 0.12000000000000001,
+        "numberDensityH3Mpc3": 0.0005870478441648709,
+        "weightedCount": 2906.6511809593467,
+        "volumeMpc3HMinus3": 4951302.027340418
+      },
+      {
+        "zMid": 0.125,
+        "zLow": 0.12000000000000001,
+        "zHigh": 0.13,
+        "numberDensityH3Mpc3": 0.0005866116353668568,
+        "weightedCount": 3396.1158332020045,
+        "volumeMpc3HMinus3": 5789376.869550384
+      },
+      {
+        "zMid": 0.135,
+        "zLow": 0.13,
+        "zHigh": 0.14,
+        "numberDensityH3Mpc3": 0.0005727186817872143,
+        "weightedCount": 3827.2845213870883,
+        "volumeMpc3HMinus3": 6682660.515706842
+      },
+      {
+        "zMid": 0.14500000000000002,
+        "zLow": 0.14,
+        "zHigh": 0.15000000000000002,
+        "numberDensityH3Mpc3": 0.0005399694455712803,
+        "weightedCount": 4119.434218177446,
+        "volumeMpc3HMinus3": 7629013.552459696
+      },
+      {
+        "zMid": 0.15500000000000003,
+        "zLow": 0.15000000000000002,
+        "zHigh": 0.16000000000000003,
+        "numberDensityH3Mpc3": 0.0005612606162995499,
+        "weightedCount": 4841.616939625777,
+        "volumeMpc3HMinus3": 8626325.80840442
+      },
+      {
+        "zMid": 0.16500000000000004,
+        "zLow": 0.16000000000000003,
+        "zHigh": 0.17,
+        "numberDensityH3Mpc3": 0.0005508374934382403,
+        "weightedCount": 5327.986104491863,
+        "volumeMpc3HMinus3": 9672518.969679095
+      },
+      {
+        "zMid": 0.17500000000000002,
+        "zLow": 0.17,
+        "zHigh": 0.18000000000000002,
+        "numberDensityH3Mpc3": 0.0005892689095881991,
+        "weightedCount": 6343.801565842177,
+        "volumeMpc3HMinus3": 10765546.022571322
+      },
+      {
+        "zMid": 0.18500000000000003,
+        "zLow": 0.18000000000000002,
+        "zHigh": 0.19000000000000003,
+        "numberDensityH3Mpc3": 0.0005570214718514493,
+        "weightedCount": 6630.445970948198,
+        "volumeMpc3HMinus3": 11903393.865427965
+      },
+      {
+        "zMid": 0.195,
+        "zLow": 0.19000000000000003,
+        "zHigh": 0.2,
+        "numberDensityH3Mpc3": 0.000537787597812496,
+        "weightedCount": 7036.457402992463,
+        "volumeMpc3HMinus3": 13084082.696614698
+      },
+      {
+        "zMid": 0.20500000000000002,
+        "zLow": 0.2,
+        "zHigh": 0.21000000000000002,
+        "numberDensityH3Mpc3": 0.0005705545381256483,
+        "weightedCount": 8162.165015069065,
+        "volumeMpc3HMinus3": 14305670.132574743
+      },
+      {
+        "zMid": 0.21500000000000002,
+        "zLow": 0.21000000000000002,
+        "zHigh": 0.22000000000000003,
+        "numberDensityH3Mpc3": 0.0005363222772159361,
+        "weightedCount": 8348.52419542594,
+        "volumeMpc3HMinus3": 15566245.42758761
+      },
+      {
+        "zMid": 0.22500000000000003,
+        "zLow": 0.22000000000000003,
+        "zHigh": 0.23000000000000004,
+        "numberDensityH3Mpc3": 0.0005699537001160103,
+        "weightedCount": 9611.665145086232,
+        "volumeMpc3HMinus3": 16863940.251865793
+      },
+      {
+        "zMid": 0.23500000000000004,
+        "zLow": 0.23000000000000004,
+        "zHigh": 0.24000000000000002,
+        "numberDensityH3Mpc3": 0.0005332174472703917,
+        "weightedCount": 9702.911977887225,
+        "volumeMpc3HMinus3": 18196913.89986894
+      },
+      {
+        "zMid": 0.245,
+        "zLow": 0.24000000000000002,
+        "zHigh": 0.25,
+        "numberDensityH3Mpc3": 0.0005150258383020492,
+        "weightedCount": 10075.642803927945,
+        "volumeMpc3HMinus3": 19563373.43606991
+      },
+      {
+        "zMid": 0.255,
+        "zLow": 0.25,
+        "zHigh": 0.26,
+        "numberDensityH3Mpc3": 0.0005162127544460264,
+        "weightedCount": 10820.62443325721,
+        "volumeMpc3HMinus3": 20961559.628392678
+      },
+      {
+        "zMid": 0.265,
+        "zLow": 0.26,
+        "zHigh": 0.27,
+        "numberDensityH3Mpc3": 0.000538774964310106,
+        "weightedCount": 12063.033583744525,
+        "volumeMpc3HMinus3": 22389744.109938506
+      },
+      {
+        "zMid": 0.275,
+        "zLow": 0.27,
+        "zHigh": 0.28,
+        "numberDensityH3Mpc3": 0.0005253938993647162,
+        "weightedCount": 12528.677108870736,
+        "volumeMpc3HMinus3": 23846255.398130573
+      },
+      {
+        "zMid": 0.28500000000000003,
+        "zLow": 0.28,
+        "zHigh": 0.29000000000000004,
+        "numberDensityH3Mpc3": 0.0005166131531838606,
+        "weightedCount": 13085.522342837068,
+        "volumeMpc3HMinus3": 25329440.921493497
+      },
+      {
+        "zMid": 0.29500000000000004,
+        "zLow": 0.29000000000000004,
+        "zHigh": 0.30000000000000004,
+        "numberDensityH3Mpc3": 0.0004856580731586452,
+        "weightedCount": 13033.945019495883,
+        "volumeMpc3HMinus3": 26837698.660551682
+      },
+      {
+        "zMid": 0.30500000000000005,
+        "zLow": 0.30000000000000004,
+        "zHigh": 0.31000000000000005,
+        "numberDensityH3Mpc3": 0.00047485557422247604,
+        "weightedCount": 13471.397524299213,
+        "volumeMpc3HMinus3": 28369462.74950473
+      },
+      {
+        "zMid": 0.31500000000000006,
+        "zLow": 0.31000000000000005,
+        "zHigh": 0.32000000000000006,
+        "numberDensityH3Mpc3": 0.00048362460438422126,
+        "weightedCount": 14471.598782273077,
+        "volumeMpc3HMinus3": 29923206.245263617
+      },
+      {
+        "zMid": 0.32500000000000007,
+        "zLow": 0.32000000000000006,
+        "zHigh": 0.33000000000000007,
+        "numberDensityH3Mpc3": 0.0004863534828161633,
+        "weightedCount": 15318.893198556434,
+        "volumeMpc3HMinus3": 31497447.309011705
+      },
+      {
+        "zMid": 0.3350000000000001,
+        "zLow": 0.33000000000000007,
+        "zHigh": 0.3400000000000001,
+        "numberDensityH3Mpc3": 0.0005008159673084292,
+        "weightedCount": 16572.36007393007,
+        "volumeMpc3HMinus3": 33090718.25923619
+      },
+      {
+        "zMid": 0.3450000000000001,
+        "zLow": 0.3400000000000001,
+        "zHigh": 0.3500000000000001,
+        "numberDensityH3Mpc3": 0.0005172639087489198,
+        "weightedCount": 17949.897981686212,
+        "volumeMpc3HMinus3": 34701624.60222815
+      },
+      {
+        "zMid": 0.3550000000000001,
+        "zLow": 0.3500000000000001,
+        "zHigh": 0.3600000000000001,
+        "numberDensityH3Mpc3": 0.0005138504399863823,
+        "weightedCount": 18667.571468471582,
+        "volumeMpc3HMinus3": 36328803.12210357
+      },
+      {
+        "zMid": 0.3650000000000001,
+        "zLow": 0.3600000000000001,
+        "zHigh": 0.3700000000000001,
+        "numberDensityH3Mpc3": 0.0005034819871007227,
+        "weightedCount": 19117.665918605977,
+        "volumeMpc3HMinus3": 37970903.44521391
+      },
+      {
+        "zMid": 0.37500000000000006,
+        "zLow": 0.3700000000000001,
+        "zHigh": 0.38,
+        "numberDensityH3Mpc3": 0.000516807737109615,
+        "weightedCount": 20479.3545884118,
+        "volumeMpc3HMinus3": 39626640.85284026
+      },
+      {
+        "zMid": 0.385,
+        "zLow": 0.38,
+        "zHigh": 0.39,
+        "numberDensityH3Mpc3": 0.0004926262962619148,
+        "weightedCount": 20342.878455765815,
+        "volumeMpc3HMinus3": 41294747.377736636
+      },
+      {
+        "zMid": 0.395,
+        "zLow": 0.39,
+        "zHigh": 0.4,
+        "numberDensityH3Mpc3": 0.0004755441692591204,
+        "weightedCount": 20436.046554020297,
+        "volumeMpc3HMinus3": 42974024.02359149
+      }
+    ]
+  },
+  "binary": {
+    "url": "/catalogs/desi-lightcone/galaxies.svlc",
+    "format": "SpaceViewer measured redshift light-cone binary",
+    "magic": "SVLC",
+    "version": 1,
+    "headerBytes": 96,
+    "recordBytes": 72,
+    "floatsPerRecord": 14,
+    "recordCount": 22648,
+    "byteLength": 1630752,
+    "sha256": "4b5167b26a2f63c498eb4df2b6b76193564cad494aae87930cf83de35bc17e78",
+    "recordOrder": "ascending SplitMix64(TARGETID), then TARGETID; any leading prefix is a deterministic uniform LOD sample",
+    "floatFields": [
+      "raDeg",
+      "decDeg",
+      "redshift",
+      "comovingDistanceMpc",
+      "localXMpc",
+      "localYMpc",
+      "localZMpc",
+      "fracTlobsTiles",
+      "weightZFail",
+      "weightSys",
+      "weight",
+      "weightComp",
+      "nx",
+      "weightFkp"
+    ]
+  },
+  "build": {
+    "scriptVersion": "spaceviewer-desi-dr1-lightcone-builder-v1",
+    "sourceSha256": "b67e8e3ee579d9673089f2c9c6930b793a2bf1895f85198472fb7fc5aa392825",
+    "sourceRecordCount": 217614,
+    "selectedRecordCount": 22648,
+    "photometricSystemCounts": {
+      "N": 17082,
+      "S": 5566
+    },
+    "tileCountRange": {
+      "minimum": 1,
+      "maximum": 4
+    }
+  }
+}

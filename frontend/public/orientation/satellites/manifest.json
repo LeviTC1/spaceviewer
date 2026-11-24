@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "id": "naif-pck00011-controlled-satellite-orientation",
+  "generatedBy": "spaceviewer-satellite-orientation-manifest-v1",
+  "source": {
+    "fileName": "pck00011.tpc",
+    "createdBy": "NASA/JPL Navigation and Ancillary Information Facility",
+    "createdAt": "2022-12-27",
+    "sourceUrl": "https://naif.jpl.nasa.gov/pub/naif/generic_kernels/pck/pck00011.tpc",
+    "bytes": 131226,
+    "sha256": "3dff7b1dbeceaa01f25467767d3fa25816051c85d162d1edf04acb310ee28bb1",
+    "referenceFrame": "ICRF J2000",
+    "timeScale": "TDB",
+    "epoch": "J2000 TDB"
+  },
+  "controlledBodies": [
+    "moon",
+    "io",
+    "europa",
+    "ganymede",
+    "callisto"
+  ],
+  "models": [
+    {
+      "id": "naif-pck00011-lunar-me",
+      "bodies": [
+        "moon"
+      ],
+      "kernelVariables": [
+        "BODY3_NUT_PREC_ANGLES",
+        "BODY301_POLE_RA",
+        "BODY301_POLE_DEC",
+        "BODY301_PM",
+        "BODY301_NUT_PREC_RA",
+        "BODY301_NUT_PREC_DEC",
+        "BODY301_NUT_PREC_PM"
+      ],
+      "frame": "IAU_MOON Mean Earth/Polar Axis text-PCK approximation",
+      "sourceBasis": "IAU 2009 lunar rotational elements retained by NAIF because WGCCRE 2015 no longer supplies Moon elements",
+      "nominalSpinRateDegPerDay": 13.17635815
+    },
+    {
+      "id": "naif-pck00011-wgccre-galilean",
+      "bodies": [
+        "io",
+        "europa",
+        "ganymede",
+        "callisto"
+      ],
+      "kernelVariables": [
+        "BODY5_NUT_PREC_ANGLES",
+        "BODY501_POLE_RA",
+        "BODY501_POLE_DEC",
+        "BODY501_PM",
+        "BODY502_POLE_RA",
+        "BODY502_POLE_DEC",
+        "BODY502_PM",
+        "BODY503_POLE_RA",
+        "BODY503_POLE_DEC",
+        "BODY503_PM",
+        "BODY504_POLE_RA",
+        "BODY504_POLE_DEC",
+        "BODY504_PM"
+      ],
+      "frame": "IAU body-fixed frames relative to ICRF J2000",
+      "sourceBasis": "IAU WGCCRE 2015 rotational elements and Jupiter-system periodic terms",
+      "nominalSpinRatesDegPerDay": {
+        "io": 203.4889538,
+        "europa": 101.3747235,
+        "ganymede": 50.3176081,
+        "callisto": 21.5710715
+      }
+    }
+  ],
+  "runtime": {
+    "evaluation": "Local deterministic trigonometric-polynomial evaluation from the shared simulation timestamp",
+    "frameTransform": "ICRF pole and prime-meridian basis rotated to J2000 mean ecliptic, then mapped into SpaceViewer scene axes",
+    "fallback": "Moons outside the controlled five retain a fixed surface presentation and disclose that no controlled attitude model is installed",
+    "textureBoundary": "The shared texture bundle has no verified cartographic seam or longitude-origin metadata, so landmark alignment is not claimed",
+    "accuracyBoundary": "Generic visualisation-grade orientation. NAIF recommends binary lunar PCK and frame kernels for higher-accuracy lunar work; natural-satellite models can change with new observations. Not for mission operations or navigation."
+  },
+  "attribution": "NASA/JPL Navigation and Ancillary Information Facility generic PCK pck00011.tpc. Numerical rotational elements are transcribed with source citation."
+}

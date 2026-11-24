@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "catalog": {
+    "id": "desi-dr1-lss-iron-v1.5-bgs-bright-21.5-ngc",
+    "version": "DR1-iron-LSScats-v1.5",
+    "title": "DESI DR1 BGS_BRIGHT-21.5 NGC clustering catalogue",
+    "releaseDate": "2025-03-19",
+    "retrievedAt": "2026-09-02T00:00:00.000Z",
+    "sourceRecordCount": 217614,
+    "dataReleaseUrl": "https://data.desi.lbl.gov/doc/releases/dr1/",
+    "dataModelUrl": "https://desidatamodel.readthedocs.io/en/stable/DESI_ROOT/survey/catalogs/RELEASE/LSS/SPECPROD/LSScats/VERSION/data_clustering.html",
+    "samplePaper": "DESI 2024 II: Sample Definitions, Characteristics, and Two-point Clustering Statistics",
+    "samplePaperDoi": "10.1088/1475-7516/2025/07/017",
+    "samplePaperUrl": "https://doi.org/10.1088/1475-7516/2025/07/017",
+    "provenance": {
+      "licenceId": "CC-BY-4.0",
+      "licenceStatus": "verified-redistributable-with-attribution",
+      "licenceUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "desiAcknowledgmentsUrl": "https://data.desi.lbl.gov/doc/acknowledgments/",
+      "licenceSummary": "DESI DR1 is released under CC BY 4.0; attribution and the DESI acknowledgment text are required.",
+      "credit": "DESI Collaboration; DESI Data Release 1; LSS iron clustering catalogues v1.5"
+    }
+  },
+  "sourceFiles": [
+    {
+      "path": "catalog-source/desi-dr1-lightcone/BGS_BRIGHT-21.5_NGC_clustering.dat.fits",
+      "url": "https://data.desi.lbl.gov/public/dr1/survey/catalogs/dr1/LSS/iron/LSScats/v1.5/BGS_BRIGHT-21.5_NGC_clustering.dat.fits",
+      "bytes": 25470720,
+      "sha256": "b67e8e3ee579d9673089f2c9c6930b793a2bf1895f85198472fb7fc5aa392825"
+    },
+    {
+      "path": "catalog-source/desi-dr1-lightcone/BGS_BRIGHT-21.5_NGC_nz.txt",
+      "url": "https://data.desi.lbl.gov/public/dr1/survey/catalogs/dr1/LSS/iron/LSScats/v1.5/BGS_BRIGHT-21.5_NGC_nz.txt",
+      "bytes": 3214,
+      "sha256": "bae3d1571be58e3ba476ee7afd3b48d09219679b17ccc3a973058b1a9f4eb4b0"
+    },
+    {
+      "path": "catalog-source/desi-dr1-lightcone/DESI_LICENSE.html",
+      "url": "https://data.desi.lbl.gov/doc/acknowledgments/",
+      "bytes": 24346,
+      "sha256": "8dc6b564d41d1d3039be4bcc6035602b7535a437856785b9025cfb3e84c47e48"
+    }
+  ]
+}

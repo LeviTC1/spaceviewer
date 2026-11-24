@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "catalogId": "spaceviewer-nearby-stars-seed",
+  "catalogVersion": "nearby-stars-seed-v3",
+  "chunkId": "context-25ly",
+  "records": [
+    {
+      "id": "nearby:kapteyn-s-star",
+      "sourceId": "Kapteyn's Star",
+      "name": "Kapteyn's Star",
+      "aliases": [],
+      "spectralType": "M1V",
+      "importance": 30,
+      "sourceRow": 43
+    },
+    {
+      "id": "nearby:wolf-1061",
+      "sourceId": "Wolf 1061",
+      "name": "Wolf 1061",
+      "aliases": [],
+      "spectralType": "M3V",
+      "importance": 30,
+      "sourceRow": 22
+    },
+    {
+      "id": "nearby:gliese-1",
+      "sourceId": "Gliese 1",
+      "name": "Gliese 1",
+      "aliases": [],
+      "spectralType": "M1V",
+      "importance": 30,
+      "sourceRow": 49
+    },
+    {
+      "id": "nearby:van-maanen-s-star",
+      "sourceId": "Van Maanen's Star",
+      "name": "Van Maanen's Star",
+      "aliases": [],
+      "spectralType": "DZ7",
+      "importance": 30,
+      "sourceRow": 48
+    },
+    {
+      "id": "nearby:wolf-424-a",
+      "sourceId": "Wolf 424 A",
+      "name": "Wolf 424 A",
+      "aliases": [],
+      "spectralType": "M5.5V",
+      "importance": 30,
+      "sourceRow": 44
+    },
+    {
+      "id": "nearby:wolf-424-b",
+      "sourceId": "Wolf 424 B",
+      "name": "Wolf 424 B",
+      "aliases": [],
+      "spectralType": "M6V",
+      "importance": 30,
+      "sourceRow": 45
+    },
+    {
+      "id": "nearby:gliese-876",
+      "sourceId": "Gliese 876",
+      "name": "Gliese 876",
+      "aliases": [],
+      "spectralType": "M4V",
+      "importance": 30,
+      "sourceRow": 53
+    },
+    {
+      "id": "nearby:gliese-832",
+      "sourceId": "Gliese 832",
+      "name": "Gliese 832",
+      "aliases": [],
+      "spectralType": "M1.5V",
+      "importance": 30,
+      "sourceRow": 54
+    },
+    {
+      "id": "nearby:omicron2-eridani",
+      "sourceId": "Omicron2 Eridani",
+      "name": "Omicron2 Eridani",
+      "aliases": [],
+      "spectralType": "K1V",
+      "importance": 30,
+      "sourceRow": 41
+    },
+    {
+      "id": "nearby:40-eridani",
+      "sourceId": "40 Eridani",
+      "name": "40 Eridani",
+      "aliases": [],
+      "spectralType": "K1V",
+      "importance": 30,
+      "sourceRow": 28
+    },
+    {
+      "id": "nearby:altair",
+      "sourceId": "Altair",
+      "name": "Altair",
+      "aliases": [],
+      "spectralType": "A7V",
+      "importance": 30,
+      "sourceRow": 29
+    },
+    {
+      "id": "nearby:eta-cassiopeiae",
+      "sourceId": "Eta Cassiopeiae",
+      "name": "Eta Cassiopeiae",
+      "aliases": [],
+      "spectralType": "G0V",
+      "importance": 30,
+      "sourceRow": 26
+    },
+    {
+      "id": "nearby:delta-pavonis",
+      "sourceId": "Delta Pavonis",
+      "name": "Delta Pavonis",
+      "aliases": [],
+      "spectralType": "G8IV",
+      "importance": 30,
+      "sourceRow": 25
+    },
+    {
+      "id": "nearby:gliese-581",
+      "sourceId": "Gliese 581",
+      "name": "Gliese 581",
+      "aliases": [],
+      "spectralType": "M3V",
+      "importance": 30,
+      "sourceRow": 52
+    },
+    {
+      "id": "nearby:82-eridani",
+      "sourceId": "82 Eridani",
+      "name": "82 Eridani",
+      "aliases": [],
+      "spectralType": "G5V",
+      "importance": 30,
+      "sourceRow": 23
+    },
+    {
+      "id": "nearby:xi-bootis",
+      "sourceId": "Xi Bootis",
+      "name": "Xi Bootis",
+      "aliases": [],
+      "spectralType": "G8V",
+      "importance": 30,
+      "sourceRow": 27
+    },
+    {
+      "id": "nearby:gliese-667-c",
+      "sourceId": "Gliese 667 C",
+      "name": "Gliese 667 C",
+      "aliases": [],
+      "spectralType": "M1.5V",
+      "importance": 30,
+      "sourceRow": 46
+    },
+    {
+      "id": "nearby:luyten-372-58",
+      "sourceId": "Luyten 372-58",
+      "name": "Luyten 372-58",
+      "aliases": [],
+      "spectralType": "M3V",
+      "importance": 30,
+      "sourceRow": 42
+    },
+    {
+      "id": "nearby:vega",
+      "sourceId": "Vega",
+      "name": "Vega",
+      "aliases": [],
+      "spectralType": "A0V",
+      "importance": 80,
+      "sourceRow": 30
+    }
+  ]
+}

@@ -1,0 +1,111 @@
+{
+  "schemaVersion": 1,
+  "dataset": "SpaceViewer Solar small bodies",
+  "generatedAtUtc": "2026-09-02T12:54:26Z",
+  "sourceDocumentationUrl": "https://ssd-api.jpl.nasa.gov/doc/sbdb.html",
+  "reuseNote": "Numeric NASA/JPL SBDB API records are used with source attribution. No source imagery or third-party shape model is redistributed by this layer.",
+  "frame": "heliocentric ecliptic, equinox J2000",
+  "propagation": "Elliptic two-body Kepler propagation from each record's own osculating-element epoch.",
+  "limitations": "This is not a JPL Horizons n-body trajectory. Planetary perturbations and non-gravitational comet forces are not integrated, so uncertainty grows away from each element epoch. Visual radii, colour hints, labels, and comet-tail styling do not alter the propagated coordinates.",
+  "objects": [
+    {
+      "id": "ceres",
+      "designation": "1",
+      "spkId": "20000001",
+      "orbitSolutionId": "48",
+      "epochJulianDateTdb": 2461200.5,
+      "lastObservationDate": "2021-01-28",
+      "dataArcDays": 9520,
+      "queryUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?des=1&phys-par=1&full-prec=1&cd-epoch=1",
+      "upstreamCanonicalJsonSha256": "b635050217477a9fe4bbeda801577c31e0bb89c81446a7c5c47a1a720b18c6c4"
+    },
+    {
+      "id": "haumea",
+      "designation": "136108",
+      "spkId": "20136108",
+      "orbitSolutionId": "132",
+      "epochJulianDateTdb": 2461200.5,
+      "lastObservationDate": "2026-04-14",
+      "dataArcDays": 25956,
+      "queryUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?des=136108&phys-par=1&full-prec=1&cd-epoch=1",
+      "upstreamCanonicalJsonSha256": "d191a7c0ffe77de4d70c6a021f83c70d09c78be23ebd0efa46e5f25ad046b7a3"
+    },
+    {
+      "id": "eris",
+      "designation": "136199",
+      "spkId": "20136199",
+      "orbitSolutionId": "103",
+      "epochJulianDateTdb": 2461200.5,
+      "lastObservationDate": "2026-02-06",
+      "dataArcDays": 26089,
+      "queryUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?des=136199&phys-par=1&full-prec=1&cd-epoch=1",
+      "upstreamCanonicalJsonSha256": "94a20dca7c774c283b5a230cb24e58d02c1bde21ac6f22e4e97c5fbc617f9520"
+    },
+    {
+      "id": "makemake",
+      "designation": "136472",
+      "spkId": "20136472",
+      "orbitSolutionId": "130",
+      "epochJulianDateTdb": 2461200.5,
+      "lastObservationDate": "2026-04-05",
+      "dataArcDays": 25999,
+      "queryUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?des=136472&phys-par=1&full-prec=1&cd-epoch=1",
+      "upstreamCanonicalJsonSha256": "ee8b2e89931e4125397d6a1f343e3ae039978b6b435ea9e905f36cb714038ffe"
+    },
+    {
+      "id": "halley",
+      "designation": "1P",
+      "spkId": "1000036",
+      "orbitSolutionId": "75",
+      "epochJulianDateTdb": 2439875.5,
+      "lastObservationDate": "1994-01-11",
+      "dataArcDays": 57852,
+      "queryUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?des=1P&phys-par=1&full-prec=1&cd-epoch=1&cd-tp=1",
+      "upstreamCanonicalJsonSha256": "8e540f6a2fd146042b5fa5156eb9bcdb0ed834231e0291acc0a60e325b67371a"
+    },
+    {
+      "id": "encke",
+      "designation": "2P",
+      "spkId": "1000025",
+      "orbitSolutionId": "K273/11",
+      "epochJulianDateTdb": 2459891.5,
+      "lastObservationDate": "2026-08-24",
+      "dataArcDays": 2849,
+      "queryUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?des=2P&phys-par=1&full-prec=1&cd-epoch=1&cd-tp=1",
+      "upstreamCanonicalJsonSha256": "beb7530751597c02783bab5b522f3d1a33af39a6b9712b8e300d9b6460059e5e"
+    },
+    {
+      "id": "67p",
+      "designation": "67P",
+      "spkId": "1000012",
+      "orbitSolutionId": "K213/6",
+      "epochJulianDateTdb": 2457305.5,
+      "lastObservationDate": "2023-04-26",
+      "dataArcDays": 5442,
+      "queryUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?des=67P&phys-par=1&full-prec=1&cd-epoch=1&cd-tp=1",
+      "upstreamCanonicalJsonSha256": "41511ffbfa5d0ba81a163598fb28b5ae4a874cc4fbf5ff11f4db9b9fb7bdea98"
+    },
+    {
+      "id": "swift-tuttle",
+      "designation": "109P",
+      "spkId": "1000140",
+      "orbitSolutionId": "32",
+      "epochJulianDateTdb": 2450000.5,
+      "lastObservationDate": "1995-03-29",
+      "dataArcDays": 94131,
+      "queryUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?des=109P&phys-par=1&full-prec=1&cd-epoch=1&cd-tp=1",
+      "upstreamCanonicalJsonSha256": "3efe499fa382ac3d1e9db9e1217c6b73e5462cba555848143e6ac505a9c9b3b2"
+    },
+    {
+      "id": "hale-bopp",
+      "designation": "1995 O1",
+      "spkId": "1000132",
+      "orbitSolutionId": "226",
+      "epochJulianDateTdb": 2459837.5,
+      "lastObservationDate": "2022-07-09",
+      "dataArcDays": 10665,
+      "queryUrl": "https://ssd-api.jpl.nasa.gov/sbdb.api?des=C%2F1995%20O1&phys-par=1&full-prec=1&cd-epoch=1&cd-tp=1",
+      "upstreamCanonicalJsonSha256": "75dbff02da95f4d876a332cdd5a07127d07f8641c6434ee9d57e4ef630c6fbc0"
+    }
+  ]
+}

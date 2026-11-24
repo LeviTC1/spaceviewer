@@ -1,0 +1,228 @@
+{
+  "schemaVersion": 2,
+  "catalog": {
+    "id": "nasa-exoplanet-archive-pscomppars-nearby-100pc",
+    "version": "pscomppars-snapshot-2026-09-02",
+    "title": "NASA Exoplanet Archive Planetary Systems Composite Parameters nearby confirmed planets",
+    "table": "pscomppars",
+    "retrievedAt": "2026-09-02T00:00:00.000Z",
+    "tapUrl": "https://exoplanetarchive.ipac.caltech.edu/TAP/sync",
+    "queryDocumentationUrl": "https://exoplanetarchive.ipac.caltech.edu/docs/TAP/usingTAP.html",
+    "columnDocumentationUrl": "https://exoplanetarchive.ipac.caltech.edu/docs/API_PS_columns.html",
+    "compositeTableDocumentationUrl": "https://exoplanetarchive.ipac.caltech.edu/docs/pscp_about.html",
+    "acknowledgmentUrl": "https://exoplanetarchive.ipac.caltech.edu/docs/acknowledge.html",
+    "credit": "NASA Exoplanet Archive, operated by Caltech under contract with NASA's Exoplanet Exploration Program",
+    "licenceStatus": "NASA-public-data-attribution-required",
+    "usageBoundary": "The archive aggregates published literature. Parameter-level literature references and any third-party rights remain with their originating sources."
+  },
+  "selection": {
+    "predicate": "sy_dist is not null and ra is not null and dec is not null and sy_dist <= 100",
+    "maximumDistancePc": 100,
+    "sourcePlanetCount": 1568,
+    "systemCount": 1056,
+    "planetCount": 1568,
+    "distanceRangePc": {
+      "minimum": 1.30119,
+      "maximum": 99.9293
+    },
+    "boundary": "Confirmed planets in PSCompPars with a published host distance no greater than 100 pc and finite ICRS RA/Dec. This is not a completeness-limited occurrence-rate sample; archive contents and published parameter availability are strongly selection-biased."
+  },
+  "coordinates": {
+    "frame": "ICRS",
+    "origin": "Solar-system barycentric directional frame with archive host distance",
+    "distanceUnit": "parsec",
+    "sceneTransform": "ICRS spherical host coordinates converted to heliocentric Cartesian light-years, then rendered with the shared 0.8 scene-units/light-year stellar projection",
+    "placementBoundary": "All planets in one system share the host-star catalogue position. Planetary orbits are many orders of magnitude below this map scale and are not separated or animated here."
+  },
+  "parameters": {
+    "model": "PSCompPars composite parameters",
+    "boundary": "PSCompPars values may combine parameters from different published references and are not guaranteed to form one self-consistent physical solution. Missing values remain missing."
+  },
+  "crossmatch": {
+    "method": "nasa-exoplanet-archive-gaia-dr3-source-id-exact",
+    "sourceAliasField": "gaia_dr3_id",
+    "gaiaCatalogId": "gaia-dr3-nearby-100pc-g9",
+    "gaiaCatalogVersion": "gaia-dr3-nearby-100pc-g9-v2",
+    "gaiaSourceSha256": "f93d6c1fa9849672469cca7a35197e5759a9f732b8346776065b0663e44e8564",
+    "gaiaReferenceEpoch": "J2016.0",
+    "hostCount": 1056,
+    "hostsWithGaiaDr3Alias": 1033,
+    "hostsWithoutGaiaDr3Alias": 23,
+    "matchedRendererHostCount": 497,
+    "gaiaDr3AliasesOutsideRendererSubset": 536,
+    "unmatchedRendererHostCount": 559,
+    "maximumAngularSeparationArcsec": 5.196827148378595,
+    "validationThresholdArcsec": 10,
+    "boundary": "An exact NASA Exoplanet Archive Gaia DR3 source identifier is linked only when that source is present in SpaceViewer's receipted 100 pc / G <= 9 Gaia renderer subset. The measured catalogue positions remain separate because the archive composite distance and Gaia inverse-parallax distance can differ."
+  },
+  "statistics": {
+    "discoveryMethodCounts": {
+      "Astrometry": 6,
+      "Eclipse Timing Variations": 2,
+      "Imaging": 49,
+      "Radial Velocity": 960,
+      "Transit": 546,
+      "Transit Timing Variations": 5
+    },
+    "systemsWithStellarTemperature": 1050,
+    "systemsWithSpectralType": 860,
+    "planetsWithOrbitalPeriod": 1538,
+    "planetsWithRadius": 1535,
+    "planetsWithMass": 1567
+  },
+  "chunks": [
+    {
+      "id": "ra-00",
+      "label": "ICRS RA 0–30°",
+      "url": "/catalogs/exoplanets/ra-00.json",
+      "raMinDeg": 0,
+      "raMaxDeg": 30,
+      "systemCount": 85,
+      "planetCount": 129,
+      "crossmatchedSystemCount": 42,
+      "byteLength": 196877,
+      "sha256": "b0f3b488c2dafe0e67840b0360b7662f53b7a863af7caf73cbf6fcb573b12b70"
+    },
+    {
+      "id": "ra-01",
+      "label": "ICRS RA 30–60°",
+      "url": "/catalogs/exoplanets/ra-01.json",
+      "raMinDeg": 30,
+      "raMaxDeg": 60,
+      "systemCount": 91,
+      "planetCount": 139,
+      "crossmatchedSystemCount": 45,
+      "byteLength": 217419,
+      "sha256": "4d1539928318fef5611959828fa2173a6320bd6245f9c31d7724b349253e1672"
+    },
+    {
+      "id": "ra-02",
+      "label": "ICRS RA 60–90°",
+      "url": "/catalogs/exoplanets/ra-02.json",
+      "raMinDeg": 60,
+      "raMaxDeg": 90,
+      "systemCount": 93,
+      "planetCount": 153,
+      "crossmatchedSystemCount": 37,
+      "byteLength": 220900,
+      "sha256": "96e0fca8b0f140738297070176c18020a5bd6608928adca6390f1c663397c164"
+    },
+    {
+      "id": "ra-03",
+      "label": "ICRS RA 90–120°",
+      "url": "/catalogs/exoplanets/ra-03.json",
+      "raMinDeg": 90,
+      "raMaxDeg": 120,
+      "systemCount": 82,
+      "planetCount": 123,
+      "crossmatchedSystemCount": 34,
+      "byteLength": 187629,
+      "sha256": "d357da05f4d2c7bb981371ff176925b01e9a7a0fb1f9344dae01f10e27e0ffce"
+    },
+    {
+      "id": "ra-04",
+      "label": "ICRS RA 120–150°",
+      "url": "/catalogs/exoplanets/ra-04.json",
+      "raMinDeg": 120,
+      "raMaxDeg": 150,
+      "systemCount": 84,
+      "planetCount": 126,
+      "crossmatchedSystemCount": 42,
+      "byteLength": 195621,
+      "sha256": "9b5464faea1f9e8d4df0205d46d78c2f7983370ff487312849e4d9a063500797"
+    },
+    {
+      "id": "ra-05",
+      "label": "ICRS RA 150–180°",
+      "url": "/catalogs/exoplanets/ra-05.json",
+      "raMinDeg": 150,
+      "raMaxDeg": 180,
+      "systemCount": 113,
+      "planetCount": 160,
+      "crossmatchedSystemCount": 48,
+      "byteLength": 252745,
+      "sha256": "632b3d84657a23a00d2bd966c65572cbd956c0b7589c01a6032000e05bb5b967"
+    },
+    {
+      "id": "ra-06",
+      "label": "ICRS RA 180–210°",
+      "url": "/catalogs/exoplanets/ra-06.json",
+      "raMinDeg": 180,
+      "raMaxDeg": 210,
+      "systemCount": 86,
+      "planetCount": 124,
+      "crossmatchedSystemCount": 33,
+      "byteLength": 192852,
+      "sha256": "176f71eed41425e02004551cd4e236124290610183bf9adfccaf7b6cbb4ce334"
+    },
+    {
+      "id": "ra-07",
+      "label": "ICRS RA 210–240°",
+      "url": "/catalogs/exoplanets/ra-07.json",
+      "raMinDeg": 210,
+      "raMaxDeg": 240,
+      "systemCount": 76,
+      "planetCount": 109,
+      "crossmatchedSystemCount": 47,
+      "byteLength": 179054,
+      "sha256": "ca35ae2da92a20c1683befecf0a740ff21e80bb810e9659e9ea15f1bbd36a270"
+    },
+    {
+      "id": "ra-08",
+      "label": "ICRS RA 240–270°",
+      "url": "/catalogs/exoplanets/ra-08.json",
+      "raMinDeg": 240,
+      "raMaxDeg": 270,
+      "systemCount": 76,
+      "planetCount": 120,
+      "crossmatchedSystemCount": 42,
+      "byteLength": 181873,
+      "sha256": "cc53ecf2052de77335aeb7648e225546d762a708906c15be106936a29f553346"
+    },
+    {
+      "id": "ra-09",
+      "label": "ICRS RA 270–300°",
+      "url": "/catalogs/exoplanets/ra-09.json",
+      "raMinDeg": 270,
+      "raMaxDeg": 300,
+      "systemCount": 94,
+      "planetCount": 136,
+      "crossmatchedSystemCount": 42,
+      "byteLength": 209884,
+      "sha256": "ce7a437fff66b7212e2d4275b1339d525103102934d371f6b659fb265ebbf875"
+    },
+    {
+      "id": "ra-10",
+      "label": "ICRS RA 300–330°",
+      "url": "/catalogs/exoplanets/ra-10.json",
+      "raMinDeg": 300,
+      "raMaxDeg": 330,
+      "systemCount": 83,
+      "planetCount": 112,
+      "crossmatchedSystemCount": 37,
+      "byteLength": 182416,
+      "sha256": "0ed072bdda0a23c5da9675dde6fbc25cd8439f28f171a1377c5d36eaaec63c35"
+    },
+    {
+      "id": "ra-11",
+      "label": "ICRS RA 330–360°",
+      "url": "/catalogs/exoplanets/ra-11.json",
+      "raMinDeg": 330,
+      "raMaxDeg": 360,
+      "systemCount": 93,
+      "planetCount": 137,
+      "crossmatchedSystemCount": 48,
+      "byteLength": 216834,
+      "sha256": "a882e055adc19e7cf06e91faf4a5370a6b6818865210e92a213d866ab45dd140"
+    }
+  ],
+  "build": {
+    "scriptVersion": "spaceviewer-nearby-exoplanet-builder-v2",
+    "sourceSha256": "4b6e91917a3475e2e03f54109b0b4af0108b81c6fcdb487229e75f9d8fecad4f",
+    "gaiaSourceSha256": "f93d6c1fa9849672469cca7a35197e5759a9f732b8346776065b0663e44e8564",
+    "chunking": "12 independent ICRS right-ascension sectors of 30 degrees",
+    "sourcePlanetCount": 1568,
+    "systemCount": 1056,
+    "planetCount": 1568
+  }
+}

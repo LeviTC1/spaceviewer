@@ -1,0 +1,172 @@
+{
+  "schemaVersion": 3,
+  "catalogId": "gaia-dr3-nearby-100pc-g9",
+  "catalogVersion": "gaia-dr3-nearby-100pc-g9-v2",
+  "chunkId": "sky-15",
+  "recordCount": 319,
+  "navigationRecords": [
+    {
+      "binaryIndex": 0,
+      "id": "gaia-dr3:2186085478327859840",
+      "sourceId": "2186085478327859840",
+      "name": "Gaia DR3 2186085478327859840",
+      "aliases": [
+        "2186085478327859840",
+        "Gaia DR3 2186085478327859840"
+      ],
+      "importance": 65,
+      "sourceRow": 4829
+    },
+    {
+      "binaryIndex": 1,
+      "id": "gaia-dr3:2256941752830677760",
+      "sourceId": "2256941752830677760",
+      "name": "Gaia DR3 2256941752830677760",
+      "aliases": [
+        "2256941752830677760",
+        "Gaia DR3 2256941752830677760"
+      ],
+      "importance": 65,
+      "sourceRow": 5017
+    },
+    {
+      "binaryIndex": 2,
+      "id": "gaia-dr3:2182157988437859968",
+      "sourceId": "2182157988437859968",
+      "name": "Gaia DR3 2182157988437859968",
+      "aliases": [
+        "2182157988437859968",
+        "Gaia DR3 2182157988437859968"
+      ],
+      "importance": 65,
+      "sourceRow": 4822
+    },
+    {
+      "binaryIndex": 3,
+      "id": "gaia-dr3:2235207672124492288",
+      "sourceId": "2235207672124492288",
+      "name": "Gaia DR3 2235207672124492288",
+      "aliases": [
+        "2235207672124492288",
+        "Gaia DR3 2235207672124492288"
+      ],
+      "importance": 65,
+      "sourceRow": 4970
+    },
+    {
+      "binaryIndex": 71,
+      "id": "gaia-dr3:2299942278201276288",
+      "sourceId": "2299942278201276288",
+      "name": "HD 216520",
+      "aliases": [
+        "2299942278201276288",
+        "Gaia DR3 2299942278201276288",
+        "Gaia DR2 2299942278201276288",
+        "HD 216520",
+        "HIP 112527",
+        "TIC 264899051"
+      ],
+      "importance": 82,
+      "sourceRow": 5128,
+      "exoplanetHostCrossmatch": {
+        "method": "nasa-exoplanet-archive-gaia-dr3-source-id-exact",
+        "systemId": "exoplanet-system:hd-216520-b59d6990",
+        "hostName": "HD 216520",
+        "catalogId": "nasa-exoplanet-archive-pscomppars-nearby-100pc",
+        "catalogVersion": "pscomppars-snapshot-2026-09-02"
+      }
+    },
+    {
+      "binaryIndex": 159,
+      "id": "gaia-dr3:2300641567596591488",
+      "sourceId": "2300641567596591488",
+      "name": "HD 207897",
+      "aliases": [
+        "2300641567596591488",
+        "Gaia DR3 2300641567596591488",
+        "Gaia DR2 2300641567596591488",
+        "HD 207897",
+        "HIP 107038",
+        "TIC 264678534"
+      ],
+      "importance": 82,
+      "sourceRow": 5132,
+      "exoplanetHostCrossmatch": {
+        "method": "nasa-exoplanet-archive-gaia-dr3-source-id-exact",
+        "systemId": "exoplanet-system:hd-207897-d6825e54",
+        "hostName": "HD 207897",
+        "catalogId": "nasa-exoplanet-archive-pscomppars-nearby-100pc",
+        "catalogVersion": "pscomppars-snapshot-2026-09-02"
+      }
+    },
+    {
+      "binaryIndex": 198,
+      "id": "gaia-dr3:2198848918548722304",
+      "sourceId": "2198848918548722304",
+      "name": "HD 211403",
+      "aliases": [
+        "2198848918548722304",
+        "Gaia DR3 2198848918548722304",
+        "Gaia DR2 2198848918548722304",
+        "HD 211403",
+        "HIP 109876",
+        "TIC 330485001"
+      ],
+      "importance": 82,
+      "sourceRow": 4866,
+      "exoplanetHostCrossmatch": {
+        "method": "nasa-exoplanet-archive-gaia-dr3-source-id-exact",
+        "systemId": "exoplanet-system:hd-211403-7bf27342",
+        "hostName": "HD 211403",
+        "catalogId": "nasa-exoplanet-archive-pscomppars-nearby-100pc",
+        "catalogVersion": "pscomppars-snapshot-2026-09-02"
+      }
+    },
+    {
+      "binaryIndex": 209,
+      "id": "gaia-dr3:2201556328489610752",
+      "sourceId": "2201556328489610752",
+      "name": "HD 211810",
+      "aliases": [
+        "2201556328489610752",
+        "Gaia DR3 2201556328489610752",
+        "Gaia DR2 2201556328489610752",
+        "HD 211810",
+        "HIP 110094",
+        "TIC 336634601"
+      ],
+      "importance": 82,
+      "sourceRow": 4872,
+      "exoplanetHostCrossmatch": {
+        "method": "nasa-exoplanet-archive-gaia-dr3-source-id-exact",
+        "systemId": "exoplanet-system:hd-211810-76279904",
+        "hostName": "HD 211810",
+        "catalogId": "nasa-exoplanet-archive-pscomppars-nearby-100pc",
+        "catalogVersion": "pscomppars-snapshot-2026-09-02"
+      }
+    },
+    {
+      "binaryIndex": 274,
+      "id": "gaia-dr3:2248126315275354496",
+      "sourceId": "2248126315275354496",
+      "name": "HD 191939",
+      "aliases": [
+        "2248126315275354496",
+        "Gaia DR3 2248126315275354496",
+        "Gaia DR2 2248126315275354496",
+        "HD 191939",
+        "HIP 99175",
+        "TIC 269701147"
+      ],
+      "importance": 82,
+      "sourceRow": 4997,
+      "exoplanetHostCrossmatch": {
+        "method": "nasa-exoplanet-archive-gaia-dr3-source-id-exact",
+        "systemId": "exoplanet-system:hd-191939-b5dc2ad8",
+        "hostName": "HD 191939",
+        "catalogId": "nasa-exoplanet-archive-pscomppars-nearby-100pc",
+        "catalogVersion": "pscomppars-snapshot-2026-09-02"
+      }
+    }
+  ]
+}

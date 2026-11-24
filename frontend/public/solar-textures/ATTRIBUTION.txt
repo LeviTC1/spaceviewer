@@ -1,0 +1,66 @@
+SpaceViewer Solar texture attribution and usage notices
+Version: solar-textures-v2
+Receipt date: 2026-09-02
+
+Solar System Scope textures
+---------------------------
+Mercury, Venus, Earth day, Mars, Jupiter, Saturn, Saturn rings, Uranus,
+Neptune and Sun high-tier textures are byte-identical copies of downloads
+published by Solar System Scope / INOVE. Performance-tier copies were resized
+and re-encoded by the SpaceViewer project.
+
+Source: https://www.solarsystemscope.com/textures/
+Licence: Creative Commons Attribution 4.0 International (CC BY 4.0)
+Licence: https://creativecommons.org/licenses/by/4.0/
+Changes: performance-tier copies are Lanczos-resized, metadata-stripped and
+re-encoded. No endorsement by Solar System Scope or INOVE is implied.
+
+three.js planet textures
+------------------------
+Earth atmosphere, clouds, night lights and specular maps plus the Moon map are
+byte-identical copies of pinned files in the three.js repository. Performance
+copies were resized and re-encoded by the SpaceViewer project.
+
+Source: https://github.com/mrdoob/three.js/tree/20bd26f2d1f2797602c084975b793591b3472558/examples/textures/planets
+Licence: MIT
+
+The MIT License
+
+Copyright (c) 2010-2026 three.js authors
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+NASA New Horizons Pluto Global Color Map
+----------------------------------------
+Pluto uses NASA's New Horizons global colour mosaic. Credit: NASA/JHUAPL/SwRI.
+SpaceViewer resized and re-encoded the equirectangular source for its high and
+performance browser tiers.
+
+Source: https://science.nasa.gov/resource/pluto-global-color-map/
+Usage guidance: https://www.nasa.gov/nasa-brand-center/images-and-media/
+NASA should be acknowledged as the source. NASA does not endorse SpaceViewer.
+
+Project-generated data texture
+------------------------------
+noise.png contains no third-party image. It is deterministic RGB data emitted
+by frontend/scripts/build-solar-texture-derivatives.mjs using xorshift32 seed
+0x53505632. The two quality tiers are byte-identical project copies.
+
+Machine-verifiable per-file source hashes, output hashes and transformation
+receipts are recorded in /solar-textures/manifest.json.
