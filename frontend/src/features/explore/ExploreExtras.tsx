@@ -18,6 +18,8 @@ import type { CatalogueStatus } from "./useUniverseData";
 import type { Journey } from "./discovery";
 import { isDirectionOnly, type UniverseEntity, type UniverseIndex } from "./engine/universeModel";
 import { KM_PER_LY } from "./engine/units";
+import { hasSkyPhoto, SKY_PHOTO_SOURCE, useSkyPhotoStatus } from "./skyPhoto";
+import { figureFor, type SkyCulture } from "./skyCulture";
 import { KindGlyph } from "./ExploreChrome";
 
 // ---------------------------------------------------------------------------------------------
@@ -58,12 +60,13 @@ export const StartPanel: FC<{
   catalogues: CatalogueStatus[];
   resume: { id: string; name: string } | null;
   onSurprise: () => void;
+  onTonight: () => void;
   onMoment: (moment: Moment) => void;
   onStartJourney: (journey: Journey) => void;
   onPick: (id: string) => void;
   onResume: () => void;
   onClose: () => void;
-}> = ({ journeys, index, catalogues, resume, onSurprise, onMoment, onStartJourney, onPick, onResume, onClose }) => {
+}> = ({ journeys, index, catalogues, resume, onSurprise, onTonight, onMoment, onStartJourney, onPick, onResume, onClose }) => {
   const [today] = useState(() => momentForToday());
   const groups: Array<{ title: string; ids: string[] }> = [
     { title: "Solar System", ids: ["solar:sun", "solar:planet:earth", "solar:planet:mars", "solar:planet:jupiter", "solar:planet:saturn", "solar:moon:moon", "solar:planet:pluto", "solar:small-body:halley"] },
@@ -91,6 +94,17 @@ export const StartPanel: FC<{
         <span>
           <strong>Show me something incredible</strong>
           <small>Fly somewhere extraordinary and see real photographs of it</small>
+        </span>
+        <Icon name="next" size={16} />
+      </button>
+
+      <button type="button" className="ex-surprise ex-surprise--tonight" onClick={onTonight}>
+        <span className="ex-surprise__icon" aria-hidden="true">
+          <Icon name="tonight" size={20} />
+        </span>
+        <span>
+          <strong>Tonight's sky from where you are</strong>
+          <small>Stand on the Earth: the real horizon, planets and constellations, right now</small>
         </span>
         <Icon name="next" size={16} />
       </button>
@@ -265,6 +279,39 @@ export const TelescopeStrip: FC<{
 // ---------------------------------------------------------------------------------------------
 // Light-travel story for anything beyond the Solar System
 
+const lyText = (ly: number) => (ly < 100 ? ly.toFixed(1) : Math.round(ly).toLocaleString("en-GB"));
+
+/** For a star in a constellation figure: how far apart its "neighbours" really are, and a flight to prove it. */
+export const FigureLine: FC<{ entity: UniverseEntity; culture: SkyCulture | null; onShowFigure: () => void; onComeApart: () => void; figuresOn: boolean }> = ({
+  entity,
+  culture,
+  onShowFigure,
+  onComeApart,
+  figuresOn,
+}) => {
+  const info = culture ? figureFor(culture, entity) : null;
+  if (!info) return null;
+  return (
+    <div className="ex-figure-line">
+      <p className="ex-eyebrow">Constellation</p>
+      <p>
+        One of the {info.stars} stars that draw <strong>{info.figure.name}</strong>. They look side by side from Earth, but lie between{" "}
+        {lyText(info.nearestLy)} and {lyText(info.farthestLy)} light-years away: the figure only exists from here.
+      </p>
+      <div className="ex-figure-line__actions">
+        {!figuresOn ? (
+          <button type="button" className="sv-btn sv-btn--small" onClick={onShowFigure}>
+            Show the figure
+          </button>
+        ) : null}
+        <button type="button" className="sv-btn sv-btn--small" onClick={onComeApart}>
+          <Icon name="fly" size={13} /> Watch it come apart
+        </button>
+      </div>
+    </div>
+  );
+};
+
 export const LightStoryLine: FC<{ entity: UniverseEntity; distanceKm: number | null }> = ({ entity, distanceKm }) => {
   if (!distanceKm || isDirectionOnly(entity)) return null;
   const ly = distanceKm / KM_PER_LY;
@@ -276,6 +323,31 @@ export const LightStoryLine: FC<{ entity: UniverseEntity; distanceKm: number | n
       The light you would see from here left {entity.name} <strong>{story.travel} ago</strong>
       {story.departed !== null && ly >= 100 ? <>, around {formatYear(story.departed)}</> : null}
       {story.era ? <>: {story.era}</> : null}.
+    </p>
+  );
+};
+
+// ---------------------------------------------------------------------------------------------
+// Survey photograph registered on the selected object
+
+const formatFov = (deg: number) => (deg >= 1 ? `${deg.toFixed(1)}°` : `${Math.round(deg * 60)}′`);
+
+export const SkyPhotoLine: FC<{ entity: UniverseEntity }> = ({ entity }) => {
+  const status = useSkyPhotoStatus();
+  if (!hasSkyPhoto(entity) || status.entityId !== entity.id || status.state === "idle") return null;
+  return (
+    <p className="ex-lightstory ex-skyphoto" aria-live="polite">
+      <span className="sv-mark sv-mark--measured">Photograph</span>
+      {status.state === "loading" ? (
+        <>Developing a survey photograph of this patch of sky…</>
+      ) : status.state === "error" ? (
+        <>The sky survey didn't answer, so you're seeing the 3D model only.</>
+      ) : (
+        <>
+          A real photograph of a {formatFov(status.fovDeg)} field, <strong>as seen from Earth</strong>, hung at its true place and size. Fly
+          off our line of sight and it fades into the 3D model. <span className="ex-skyphoto__credit">{SKY_PHOTO_SOURCE.credit}.</span>
+        </>
+      )}
     </p>
   );
 };

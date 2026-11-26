@@ -16,7 +16,7 @@ import { PLANETS } from "../src/features/solar/solarData";
 import { getPlanetEclipseOccluders } from "../src/features/solar/eclipse/solarEclipseModel";
 
 const require = createRequire(import.meta.url);
-const vsop87c = require("vsop87/dist/vsop87c.js") as (
+const vsop87c = require("vsop87/dist/vsop87a.js") as (
   julianDate: number,
 ) => Record<string, { x: number; y: number; z: number }>;
 const fixtureDirectory = resolve(process.cwd(), "public/ephemerides/vsop87c");
@@ -59,11 +59,11 @@ describe("streamed VSOP87C ephemeris", () => {
     expect(manifest.build).toMatchObject({
       builder: "spaceviewer-vsop87c-ephemeris-builder-v1",
       scalarPrecision: "float64",
-      chunkCount: 26,
-      totalBinaryBytes: 1_871_808,
+      chunkCount: 76,
+      totalBinaryBytes: 5_400_704,
     });
     expect(manifest.validity).toEqual({
-      minimumUtcDate: "2025-01-01",
+      minimumUtcDate: "1975-01-01",
       maximumUtcDate: "2050-12-31",
       runtimeClampRequired: true,
     });
@@ -72,26 +72,39 @@ describe("streamed VSOP87C ephemeris", () => {
       licenceId: "MIT",
       theoryUrl: "https://ftp.imcce.fr/pub/ephem/planets/vsop87/",
     });
-    expect(manifest.chunks).toHaveLength(26);
+    expect(manifest.chunks).toHaveLength(76);
     expect(manifest.planets).toHaveLength(8);
   });
 
-  it("reproduces the pinned one-day interpolation for Earth and Jupiter", async () => {
-    const manifest = await readManifest();
+  it("stores exact VSOP87A keyframes and interpolates between them to within a few km", async () => {
+    const manifestSource = await readManifestSource();
+    const manifest = validateStreamedVsop87cManifest(JSON.parse(manifestSource));
     const definition = manifest.chunks.find((chunk) => chunk.year === 2026)!;
     const binary = await readAsset(definition.url);
     const chunk = decodeStreamedVsop87cPositionChunk(toArrayBuffer(binary), definition);
-    const julianDate = definition.startJulianDate + 108.375;
-
+    // Keyframes are the theory itself.
     for (const planetId of ["earth", "jupiter"] as const) {
-      const decoded = readDecodedCoordinate(manifest, chunk, planetId, julianDate);
-      const lower = vsop87c(Math.floor(julianDate))[planetId];
-      const upper = vsop87c(Math.ceil(julianDate))[planetId];
-      const t = julianDate - Math.floor(julianDate);
-      const expected = ["x", "y", "z"].map(
-        (axis) => lower[axis as keyof typeof lower] + (upper[axis as keyof typeof upper] - lower[axis as keyof typeof lower]) * t,
-      );
-      decoded.forEach((coordinate, axis) => expect(coordinate).toBeCloseTo(expected[axis], 13));
+      const decoded = readDecodedCoordinate(manifest, chunk, planetId, definition.startJulianDate + 108);
+      const truth = vsop87c(definition.startJulianDate + 108)[planetId];
+      decoded.forEach((coordinate, axis) => expect(coordinate).toBeCloseTo([truth.x, truth.y, truth.z][axis], 13));
+    }
+    // Between keyframes the cubic Hermite stays within ~10 km of the theory (Mercury ~150 km); linear was ~6,000 km and ~37,000 km.
+    vi.stubGlobal("fetch", async (input: RequestInfo | URL) => {
+      const url = new URL(String(input));
+      if (url.pathname.endsWith("manifest.json")) return new Response(manifestSource);
+      if (url.pathname.endsWith(definition.url.replace("./", ""))) return new Response(binary);
+      return new Response("missing", { status: 404 });
+    });
+    await requestStreamedVsop87cEphemeris("2026-04-19T09:00:00.000Z", { includeOrbits: false });
+    const AU_KM = 149_597_870.7;
+    for (const fraction of [0.125, 0.375, 0.5, 0.875]) {
+      const ms = Date.UTC(2026, 3, 19) + fraction * 86_400_000;
+      const jd = ms / 86_400_000 + 2_440_587.5;
+      for (const planetId of ["mercury", "earth", "jupiter"] as const) {
+        const p = getStreamedVsop87cPosition(planetId, new Date(ms))!.positionAu;
+        const truth = vsop87c(jd)[planetId];
+        expect(Math.hypot(p.x - truth.x, p.y - truth.y, p.z - truth.z) * AU_KM, planetId).toBeLessThan(planetId === "mercury" ? 200 : 15);
+      }
     }
   });
 

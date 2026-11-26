@@ -10,6 +10,9 @@ export interface OrbitalElements {
   orbitalPeriodDays: number;
 }
 
+// Mean J2000 elements (Standish, "Approximate Positions of the Planets", JPL). Periods are the sidereal
+// periods implied by JPL's mean-longitude rates (36525 × 360° / rate), not rounded figures: a 365-day
+// Earth year drifts ~7° over the 26 years since J2000. Used only until the VSOP87 block streams in.
 export const ORBITAL_ELEMENTS: Record<PlanetId, OrbitalElements> = {
   mercury: {
     semiMajorAxisAU: 0.387098,
@@ -18,7 +21,7 @@ export const ORBITAL_ELEMENTS: Record<PlanetId, OrbitalElements> = {
     longitudeOfAscendingNodeDeg: 48.331,
     argumentOfPeriapsisDeg: 29.124,
     meanLongitudeDeg: 252.251,
-    orbitalPeriodDays: 88,
+    orbitalPeriodDays: 87.9693,
   },
   venus: {
     semiMajorAxisAU: 0.723332,
@@ -27,7 +30,7 @@ export const ORBITAL_ELEMENTS: Record<PlanetId, OrbitalElements> = {
     longitudeOfAscendingNodeDeg: 76.680,
     argumentOfPeriapsisDeg: 54.852,
     meanLongitudeDeg: 181.979,
-    orbitalPeriodDays: 225,
+    orbitalPeriodDays: 224.7008,
   },
   earth: {
     semiMajorAxisAU: 1.0,
@@ -36,7 +39,7 @@ export const ORBITAL_ELEMENTS: Record<PlanetId, OrbitalElements> = {
     longitudeOfAscendingNodeDeg: 0.0,
     argumentOfPeriapsisDeg: 102.937,
     meanLongitudeDeg: 100.464,
-    orbitalPeriodDays: 365,
+    orbitalPeriodDays: 365.2564,
   },
   mars: {
     semiMajorAxisAU: 1.523679,
@@ -45,7 +48,7 @@ export const ORBITAL_ELEMENTS: Record<PlanetId, OrbitalElements> = {
     longitudeOfAscendingNodeDeg: 49.558,
     argumentOfPeriapsisDeg: 286.502,
     meanLongitudeDeg: 355.453,
-    orbitalPeriodDays: 687,
+    orbitalPeriodDays: 686.9797,
   },
   jupiter: {
     semiMajorAxisAU: 5.2044,
@@ -54,7 +57,7 @@ export const ORBITAL_ELEMENTS: Record<PlanetId, OrbitalElements> = {
     longitudeOfAscendingNodeDeg: 100.556,
     argumentOfPeriapsisDeg: 273.867,
     meanLongitudeDeg: 34.404,
-    orbitalPeriodDays: 4333,
+    orbitalPeriodDays: 4332.8171,
   },
   saturn: {
     semiMajorAxisAU: 9.5826,
@@ -63,7 +66,7 @@ export const ORBITAL_ELEMENTS: Record<PlanetId, OrbitalElements> = {
     longitudeOfAscendingNodeDeg: 113.715,
     argumentOfPeriapsisDeg: 339.392,
     meanLongitudeDeg: 49.944,
-    orbitalPeriodDays: 10759,
+    orbitalPeriodDays: 10755.8843,
   },
   uranus: {
     semiMajorAxisAU: 19.2184,
@@ -72,7 +75,7 @@ export const ORBITAL_ELEMENTS: Record<PlanetId, OrbitalElements> = {
     longitudeOfAscendingNodeDeg: 74.006,
     argumentOfPeriapsisDeg: 96.998,
     meanLongitudeDeg: 313.232,
-    orbitalPeriodDays: 30687,
+    orbitalPeriodDays: 30687.4014,
   },
   neptune: {
     semiMajorAxisAU: 30.110,
@@ -81,7 +84,7 @@ export const ORBITAL_ELEMENTS: Record<PlanetId, OrbitalElements> = {
     longitudeOfAscendingNodeDeg: 131.784,
     argumentOfPeriapsisDeg: 273.187,
     meanLongitudeDeg: 304.880,
-    orbitalPeriodDays: 60190,
+    orbitalPeriodDays: 60189.6590,
   },
   pluto: {
     semiMajorAxisAU: 39.482,
@@ -90,6 +93,6 @@ export const ORBITAL_ELEMENTS: Record<PlanetId, OrbitalElements> = {
     longitudeOfAscendingNodeDeg: 110.299,
     argumentOfPeriapsisDeg: 113.834,
     meanLongitudeDeg: 238.929,
-    orbitalPeriodDays: 90560,
+    orbitalPeriodDays: 90552.9836,
   },
 };

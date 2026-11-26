@@ -83,6 +83,23 @@ export interface GalaxyShape {
   seed: number;
 }
 
+export type CraftShape = "voyager" | "jwst" | "parker" | "probe" | "juno" | "clipper" | "lucy" | "iss" | "hubble" | "tiangong";
+
+/** A measured path: JPL Horizons tables for deep-space missions, SGP4 for Earth orbiters. */
+export interface EntityTrajectory {
+  startMs: number;
+  stopMs: number;
+  /** World position (km) at a simulated instant, or null outside the span. */
+  sample: (timeMs: number) => Vec3 | null;
+  source: string;
+  /** Earth orbiters: position relative to the Earth's centre (world frame, km). */
+  geocentric?: (timeMs: number) => Vec3 | null;
+  /** Times (ms) of the tabulated states: dense around flybys, so paths can be drawn smoothly there. */
+  knots?: () => number[];
+  /** Earth orbiters: epoch of the orbital elements (ms). */
+  elementsEpochMs?: number;
+}
+
 export interface UniverseEntity {
   id: string;
   name: string;
@@ -107,8 +124,13 @@ export interface UniverseEntity {
   direction?: Vec3;
   /** Angular diameter (arcmin) for direction-only objects. */
   angularSizeArcMin?: number;
+  /** ICRS sky position as seen from Earth (deep-sky objects), used to register survey photographs. */
+  sky?: { raDeg: number; decDeg: number };
   solarId?: string;
   linearMotion?: { p0: Vec3; vKmS: Vec3; epochMs: number };
+  trajectory?: EntityTrajectory;
+  /** Spacecraft silhouette. */
+  craft?: CraftShape;
   galaxy?: GalaxyShape;
   nebula?: NebulaStyle;
   cluster?: ClusterStyle;
@@ -301,6 +323,7 @@ const buildSolarEntities = (): UniverseEntity[] => {
         vKmS: eclipticToWorld((v[0] * KM_PER_AU) / 86_400, (v[1] * KM_PER_AU) / 86_400, (v[2] * KM_PER_AU) / 86_400),
         epochMs: voyagerEpoch,
       },
+      craft: "voyager",
       aliases: ["Voyager", "interstellar probe", "spacecraft", "NASA"],
     });
   }
@@ -340,7 +363,7 @@ const toNebulaStyle = (objectClass: DeepSkyObjectClass | undefined): NebulaStyle
 /**
  * Sky-plane basis at a world direction: line of sight L, north N (toward the celestial pole) and east E.
  */
-const skyBasis = (raDeg: number, decDeg: number) => {
+export const skyBasis = (raDeg: number, decDeg: number) => {
   const ra = raDeg * DEG;
   const dec = decDeg * DEG;
   const L = raDecToIcrsUnit(raDeg, decDeg);
@@ -437,6 +460,7 @@ const deepSkyEntity = (object: SkyObject): UniverseEntity | null => {
     staticWorld: world,
     direction: world ? undefined : direction,
     angularSizeArcMin: angular,
+    sky: { raDeg, decDeg },
     distanceNote: world ? undefined : "Direction from OpenNGC; no catalogued distance, so it is drawn on the celestial sphere.",
   };
 
@@ -611,7 +635,7 @@ export interface UniverseIndex {
 }
 
 /** Build the explorer's entity index from the SkyMap registry objects plus solar and galactic natives. */
-export const buildUniverseIndex = (objects: SkyObject[]): UniverseIndex => {
+export const buildUniverseIndex = (objects: SkyObject[], extra?: (entities: UniverseEntity[]) => UniverseEntity[]): UniverseIndex => {
   const entities = [...buildSolarEntities(), ...galacticEntities()];
   const seen = new Set(entities.map((entity) => entity.id));
   const solarObjects = new Map<string, SkyObject>();
@@ -626,6 +650,13 @@ export const buildUniverseIndex = (objects: SkyObject[]): UniverseIndex => {
     else if (object.kind === "exoplanet-system") entity = exoplanetEntity(object);
     else if (object.kind === "galaxy" || object.kind === "nebula" || object.kind === "star-cluster") entity = deepSkyEntity(object);
     if (entity) {
+      seen.add(entity.id);
+      entities.push(entity);
+    }
+  }
+  if (extra) {
+    for (const entity of extra(entities)) {
+      if (seen.has(entity.id)) continue;
       seen.add(entity.id);
       entities.push(entity);
     }
@@ -651,6 +682,11 @@ export const buildUniverseIndex = (objects: SkyObject[]): UniverseIndex => {
 /** World position (km) of an entity at a simulated instant. Direction-only entities return null. */
 export const getEntityWorld = (entity: UniverseEntity, timeMs: number): Vec3 | null => {
   if (entity.solarId) return resolveSolarWorld(entity.solarId, timeMs) ?? entity.staticWorld ?? null;
+  if (entity.trajectory) {
+    const p = entity.trajectory.sample(timeMs);
+    // Before launch a mission is nowhere; after its table ends, fall back to any older straight-line model.
+    if (p || timeMs < entity.trajectory.startMs || !entity.linearMotion) return p;
+  }
   if (entity.linearMotion) {
     const dt = (timeMs - entity.linearMotion.epochMs) / 1000;
     const { p0, vKmS } = entity.linearMotion;

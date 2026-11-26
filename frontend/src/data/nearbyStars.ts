@@ -69,7 +69,9 @@ export const NEARBY_STARS: NearbyStar[] = catalogSource.records.map((record) => 
   z: record.z,
   spectralType: record.spectralType,
   luminosity: record.luminositySolar,
-  temperature: record.temperatureK,
+  temperature: "temperatureK" in record ? record.temperatureK : undefined,
+  // SIMBAD V magnitude: close enough to Gaia G for drawing these few named stars.
+  apparentMagnitudeG: "apparentMagnitudeV" in record ? record.apparentMagnitudeV : undefined,
   radialVelocityApplied: false,
   sourceKind: "curated-seed",
   importance: record.importance,

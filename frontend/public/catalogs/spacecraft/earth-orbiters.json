@@ -1,0 +1,34 @@
+{
+  "source": "CelesTrak GP data (celestrak.org), derived from US Space Force 18 SDS",
+  "retrievedAt": "2026-11-26T16:17:42.371Z",
+  "liveUrl": "https://celestrak.org/NORAD/elements/gp.php?CATNR={norad}&FORMAT=TLE",
+  "satellites": [
+    {
+      "id": "iss",
+      "norad": 25544,
+      "name": "International Space Station",
+      "agency": "NASA · Roscosmos · ESA · JAXA · CSA",
+      "sizeKm": 0.109,
+      "line1": "1 25544U 98067A   26330.17013274  .00004569  00000+0  89217-4 0  9993",
+      "line2": "2 25544  51.6313 218.4750 0007470  66.5508 293.6265 15.49589862596860"
+    },
+    {
+      "id": "hubble",
+      "norad": 20580,
+      "name": "Hubble Space Telescope",
+      "agency": "NASA · ESA",
+      "sizeKm": 0.0132,
+      "line1": "1 20580U 90037B   26330.26264168  .00004022  00000+0  11752-3 0  9999",
+      "line2": "2 20580  28.4739  51.4559 0002420 144.3239 215.7519 15.32422762813447"
+    },
+    {
+      "id": "tiangong",
+      "norad": 48274,
+      "name": "Tiangong space station",
+      "agency": "CMSA",
+      "sizeKm": 0.055,
+      "line1": "1 48274U 21035A   26330.21315917  .00013166  00000+0  16334-3 0  9995",
+      "line2": "2 48274  41.4710  57.3047 0009913 296.5719  63.4103 15.59746181318478"
+    }
+  ]
+}

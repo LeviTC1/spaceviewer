@@ -18,13 +18,13 @@ describe("exact exoplanet-host Gaia DR3 cross-match", () => {
     const manifest = validateExoplanetCatalogManifest(exoplanetManifestSource);
     expect(manifest.crossmatch).toMatchObject({
       method: "nasa-exoplanet-archive-gaia-dr3-source-id-exact",
-      hostsWithGaiaDr3Alias: 1_033,
-      matchedRendererHostCount: 497,
+      hostsWithGaiaDr3Alias: 4_478,
+      matchedRendererHostCount: 505,
       validationThresholdArcsec: 10,
     });
     expect(manifest.crossmatch.maximumAngularSeparationArcsec).toBeLessThan(10);
     expect(manifest.crossmatch.gaiaSourceSha256).toMatch(/^[a-f0-9]{64}$/);
-    expect(manifest.chunks.reduce((sum, chunk) => sum + chunk.crossmatchedSystemCount, 0)).toBe(497);
+    expect(manifest.chunks.reduce((sum, chunk) => sum + chunk.crossmatchedSystemCount, 0)).toBe(505);
   });
 
   it("links a NASA exoplanet system to the guaranteed Gaia navigation object", () => {

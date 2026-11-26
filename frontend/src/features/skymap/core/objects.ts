@@ -201,6 +201,10 @@ export interface ExoplanetSystemScientificMetadata {
   stellarTemperatureErrorPlusK?: number;
   stellarTemperatureErrorMinusK?: number;
   spectralType?: string;
+  /** Derived from stellar luminosity (Kasting et al. 1993 flux limits); not a measurement. */
+  stellarLuminositySolar?: number;
+  stellarLuminositySource?: string;
+  habitableZone?: { innerAu: number; outerAu: number; method: string };
   sourceRelease: string;
   selectionBoundary: string;
   parameterBoundary: string;

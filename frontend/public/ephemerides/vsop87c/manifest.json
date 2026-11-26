@@ -3,8 +3,8 @@
   "format": "spaceviewer-vsop87c-float64-v1",
   "ephemeris": {
     "id": "vsop87c-heliocentric-2025-2050",
-    "version": "vsop87c-2025-2050-v1",
-    "title": "VSOP87C streamed heliocentric planet ephemeris",
+    "version": "vsop87a-1975-2050-v2",
+    "title": "VSOP87A streamed heliocentric planet ephemeris (ecliptic and equinox J2000)",
     "referenceFrame": "heliocentric-ecliptic-j2000",
     "positionUnit": "astronomical-unit",
     "timeScale": "julian-date-input-to-pinned-solver"
@@ -15,23 +15,23 @@
     "implementation": "vsop87 npm package",
     "implementationVersion": "1.0.5",
     "implementationUrl": "https://www.npmjs.com/package/vsop87",
-    "implementationPath": "node_modules/vsop87/dist/vsop87c.js",
+    "implementationPath": "node_modules/vsop87/dist/vsop87a.js",
     "licenceId": "MIT",
     "credit": "VSOP87 theory by Pierre Bretagnon and Gerard Francou; JavaScript implementation by G.C. Marty",
-    "implementationSha256": "cf271ff5de090c752977f1c80d163fbacf1edd8820e0e67f89be55b92fed859d",
+    "implementationSha256": "481d84201fa7130e4ce86a98dae78296323f8e37844a64c49563e75bd7a0a42e",
     "licenceSha256": "ad144c2ef337a91d367ea8870c19b4d2cfeb72196fef4b369bb8cbc70a6d5d0f"
   },
   "validity": {
-    "minimumUtcDate": "2025-01-01",
+    "minimumUtcDate": "1975-01-01",
     "maximumUtcDate": "2050-12-31",
     "runtimeClampRequired": true
   },
   "sampling": {
     "positionStepJulianDays": 1,
-    "interpolation": "linear-cartesian-between-adjacent-float64-keyframes",
+    "interpolation": "cubic-hermite-cartesian-with-central-difference-tangents",
     "orbitSamplesPerPlanet": 192,
     "orbitReferenceJulianDate": 2451545,
-    "note": "The runtime already used one-Julian-day VSOP87C keyframes. This build preserves that interpolation contract while moving evaluation offline. Orbit paths are representative display guides sampled across one nominal period about J2000 and are not osculating elements."
+    "note": "One-Julian-day keyframes from VSOP87A (heliocentric rectangular, ecliptic and equinox J2000; the earlier build used VSOP87C, which is referred to the ecliptic of date and drifted about 50 arcseconds a year from the J2000 star frame). The runtime interpolates with cubic Hermite segments whose tangents are central differences, removing the up-to-6,000 km chord error of linear interpolation. Orbit paths are representative display guides sampled across one nominal period about J2000 and are not osculating elements."
   },
   "planets": [
     {
@@ -67,7 +67,7 @@
       "orbitalPeriodDays": 60190
     }
   ],
-  "limitations": "This browser asset is a bounded visualization ephemeris, not an operational navigation product. It preserves the pinned package's VSOP87C output and one-day Cartesian interpolation, omits Pluto, does not include covariance, light-time, relativity corrections beyond the source theory, Earth orientation or current JPL/INPOP fitting. Pluto continues to use the separately disclosed Keplerian fallback.",
+  "limitations": "This browser asset is a bounded visualization ephemeris, not an operational navigation product. It samples VSOP87A daily from 1975 to 2050, omits Pluto, and does not include covariance, light-time, relativity corrections beyond the source theory, Earth orientation or current JPL/INPOP fitting. Pluto uses Astronomy Engine. File and format names keep their original 'vsop87c' spelling for compatibility.",
   "build": {
     "builder": "spaceviewer-vsop87c-ephemeris-builder-v1",
     "deterministic": true,
@@ -86,10 +86,560 @@
       "uranus",
       "neptune"
     ],
-    "chunkCount": 26,
-    "totalBinaryBytes": 1871808
+    "chunkCount": 76,
+    "totalBinaryBytes": 5400704
   },
   "chunks": [
+    {
+      "id": "positions-1975",
+      "year": 1975,
+      "startJulianDate": 2442413,
+      "endJulianDate": 2442779,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1975.svep",
+      "integrity": "sha256-tmDqCvcuNqm14eSJTaUyBerr4p3lxmzP7eickGJdeeA="
+    },
+    {
+      "id": "positions-1976",
+      "year": 1976,
+      "startJulianDate": 2442778,
+      "endJulianDate": 2443145,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-1976.svep",
+      "integrity": "sha256-ZCxHETtT/UsdMsJ+RURhMTInXPbsHPX1il8jXhbsHy8="
+    },
+    {
+      "id": "positions-1977",
+      "year": 1977,
+      "startJulianDate": 2443144,
+      "endJulianDate": 2443510,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1977.svep",
+      "integrity": "sha256-sK18y2PbsVBUcPO2oEPRNmixD/I89WEV1RXe0ojGjUk="
+    },
+    {
+      "id": "positions-1978",
+      "year": 1978,
+      "startJulianDate": 2443509,
+      "endJulianDate": 2443875,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1978.svep",
+      "integrity": "sha256-YB4dm/x3XcM+cYnTSTIdQj4XrAz8qbz7XZg3kpIdHP0="
+    },
+    {
+      "id": "positions-1979",
+      "year": 1979,
+      "startJulianDate": 2443874,
+      "endJulianDate": 2444240,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1979.svep",
+      "integrity": "sha256-u2ehnYu4n/kThBAZGCYtUNWm8hS4UL7mG66gxinBvbE="
+    },
+    {
+      "id": "positions-1980",
+      "year": 1980,
+      "startJulianDate": 2444239,
+      "endJulianDate": 2444606,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-1980.svep",
+      "integrity": "sha256-f1uArZIiHmnjaqAPaevUaNI8sf2BwrmG/zKZq+fiUiQ="
+    },
+    {
+      "id": "positions-1981",
+      "year": 1981,
+      "startJulianDate": 2444605,
+      "endJulianDate": 2444971,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1981.svep",
+      "integrity": "sha256-Qjy4LaTkCmLvAUqCHffHfnuFCi6pYcZWlNtfioAv3sc="
+    },
+    {
+      "id": "positions-1982",
+      "year": 1982,
+      "startJulianDate": 2444970,
+      "endJulianDate": 2445336,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1982.svep",
+      "integrity": "sha256-gq30dLT0GK3TLONDShSvUrdzpD8VW7WglapXL52lnqY="
+    },
+    {
+      "id": "positions-1983",
+      "year": 1983,
+      "startJulianDate": 2445335,
+      "endJulianDate": 2445701,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1983.svep",
+      "integrity": "sha256-U2tpywwEV54ZTpO2KXWlHB/2ba5Jcbsf+U4a4F/zGRw="
+    },
+    {
+      "id": "positions-1984",
+      "year": 1984,
+      "startJulianDate": 2445700,
+      "endJulianDate": 2446067,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-1984.svep",
+      "integrity": "sha256-6SUGfZ1Nmgt/rXlyaIbauwwX6q4KdAaKIXwsIWqtQAc="
+    },
+    {
+      "id": "positions-1985",
+      "year": 1985,
+      "startJulianDate": 2446066,
+      "endJulianDate": 2446432,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1985.svep",
+      "integrity": "sha256-rX2HnEKFrULhEiz/BjnKWEmx9W9hXmE1VIJ4Lvvgk9M="
+    },
+    {
+      "id": "positions-1986",
+      "year": 1986,
+      "startJulianDate": 2446431,
+      "endJulianDate": 2446797,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1986.svep",
+      "integrity": "sha256-Zj0bTIeSi6BvDaZtp0gIVUhZbMk5aiYuzeKH6rQjSvc="
+    },
+    {
+      "id": "positions-1987",
+      "year": 1987,
+      "startJulianDate": 2446796,
+      "endJulianDate": 2447162,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1987.svep",
+      "integrity": "sha256-a91ka9JH6h5UYelqyBDtl9JgiTDugCyYmP2da25lYRs="
+    },
+    {
+      "id": "positions-1988",
+      "year": 1988,
+      "startJulianDate": 2447161,
+      "endJulianDate": 2447528,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-1988.svep",
+      "integrity": "sha256-Z3dDDpVrlxNALEW36JGwDZJDk4YawoqoCWBF+Yi7KtU="
+    },
+    {
+      "id": "positions-1989",
+      "year": 1989,
+      "startJulianDate": 2447527,
+      "endJulianDate": 2447893,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1989.svep",
+      "integrity": "sha256-aW9SiD+Ca8kR7PdefYMevFT7wG669qv3GWPNtaLewfE="
+    },
+    {
+      "id": "positions-1990",
+      "year": 1990,
+      "startJulianDate": 2447892,
+      "endJulianDate": 2448258,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1990.svep",
+      "integrity": "sha256-AJZk2WDC3BnyXxOlx5qQVhplxRGeoG6tEM5M1IHRQHI="
+    },
+    {
+      "id": "positions-1991",
+      "year": 1991,
+      "startJulianDate": 2448257,
+      "endJulianDate": 2448623,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1991.svep",
+      "integrity": "sha256-LQEh3zWU48poL4IoTIv5P5fQ0s6YIMkINcubhBbArs0="
+    },
+    {
+      "id": "positions-1992",
+      "year": 1992,
+      "startJulianDate": 2448622,
+      "endJulianDate": 2448989,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-1992.svep",
+      "integrity": "sha256-BZ0ynkO+8oypxPIaSR0jq+Iabn1IIhQH1ClIlwwAhEU="
+    },
+    {
+      "id": "positions-1993",
+      "year": 1993,
+      "startJulianDate": 2448988,
+      "endJulianDate": 2449354,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1993.svep",
+      "integrity": "sha256-Al/A7DNihQTHYZ5mAx6it6GUeB3/8rTkb1DvtdsD1tw="
+    },
+    {
+      "id": "positions-1994",
+      "year": 1994,
+      "startJulianDate": 2449353,
+      "endJulianDate": 2449719,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1994.svep",
+      "integrity": "sha256-XsS0TOTpJ/PRUTHyJnp8gXsoBme7cZig6nnqyDtGxJA="
+    },
+    {
+      "id": "positions-1995",
+      "year": 1995,
+      "startJulianDate": 2449718,
+      "endJulianDate": 2450084,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1995.svep",
+      "integrity": "sha256-OztL47MZWNCd5fPGUPwuVNtYpyp0nzYFES+AldzcDOI="
+    },
+    {
+      "id": "positions-1996",
+      "year": 1996,
+      "startJulianDate": 2450083,
+      "endJulianDate": 2450450,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-1996.svep",
+      "integrity": "sha256-HlZI2E3FERBeV9L6or5/uIFhb5JJIKGA1tY4djcDcEA="
+    },
+    {
+      "id": "positions-1997",
+      "year": 1997,
+      "startJulianDate": 2450449,
+      "endJulianDate": 2450815,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1997.svep",
+      "integrity": "sha256-OtIsdAZHZcIHB5DxAVoNNh7NGNDovvWppVaELaX+AgI="
+    },
+    {
+      "id": "positions-1998",
+      "year": 1998,
+      "startJulianDate": 2450814,
+      "endJulianDate": 2451180,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1998.svep",
+      "integrity": "sha256-kcGM+bIz+2038kriFxCUTo1WmQZZPUvo+7bDcvNM5eU="
+    },
+    {
+      "id": "positions-1999",
+      "year": 1999,
+      "startJulianDate": 2451179,
+      "endJulianDate": 2451545,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-1999.svep",
+      "integrity": "sha256-fzBnXWl91+RApc9VIZRBp0+ot+XO8WHoBgHIXisBIAM="
+    },
+    {
+      "id": "positions-2000",
+      "year": 2000,
+      "startJulianDate": 2451544,
+      "endJulianDate": 2451911,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-2000.svep",
+      "integrity": "sha256-4PPgmgmRoDimwCJAP1eYU1T7ZVt+C2SnX3bgvb3NO7g="
+    },
+    {
+      "id": "positions-2001",
+      "year": 2001,
+      "startJulianDate": 2451910,
+      "endJulianDate": 2452276,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2001.svep",
+      "integrity": "sha256-RVqp0j+HdosiGTzXHjejh4jkVzPj8eMquhq8x+to4kE="
+    },
+    {
+      "id": "positions-2002",
+      "year": 2002,
+      "startJulianDate": 2452275,
+      "endJulianDate": 2452641,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2002.svep",
+      "integrity": "sha256-ASEEauOE9FLmqg3ZxElnNfzXXLax9oOFNyC5msD8qlg="
+    },
+    {
+      "id": "positions-2003",
+      "year": 2003,
+      "startJulianDate": 2452640,
+      "endJulianDate": 2453006,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2003.svep",
+      "integrity": "sha256-4er73d4H6ZrWx2NZ2/EPI4x8AchfNptEfboIFNXO2VA="
+    },
+    {
+      "id": "positions-2004",
+      "year": 2004,
+      "startJulianDate": 2453005,
+      "endJulianDate": 2453372,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-2004.svep",
+      "integrity": "sha256-P5iiwz0fWdPMAmU31/SLLbiCR1UJe2wvrA4SNO65Mrc="
+    },
+    {
+      "id": "positions-2005",
+      "year": 2005,
+      "startJulianDate": 2453371,
+      "endJulianDate": 2453737,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2005.svep",
+      "integrity": "sha256-bgAKDV2opp2Qfc9aEv2Eg2cgVhaQZuoPV9bVr76p4AQ="
+    },
+    {
+      "id": "positions-2006",
+      "year": 2006,
+      "startJulianDate": 2453736,
+      "endJulianDate": 2454102,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2006.svep",
+      "integrity": "sha256-wOtgbaGQg9jiv4lWLO2SUUygXCLHirei0ZQycZvKa7M="
+    },
+    {
+      "id": "positions-2007",
+      "year": 2007,
+      "startJulianDate": 2454101,
+      "endJulianDate": 2454467,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2007.svep",
+      "integrity": "sha256-W4GS3VyfuUGCzs53ZzANL6t1dBvvGFAOITpJM/RP6So="
+    },
+    {
+      "id": "positions-2008",
+      "year": 2008,
+      "startJulianDate": 2454466,
+      "endJulianDate": 2454833,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-2008.svep",
+      "integrity": "sha256-3rfNVOVmLYoGuaFgLFnrt7dJCkB8CvGdzVxeeEKCELU="
+    },
+    {
+      "id": "positions-2009",
+      "year": 2009,
+      "startJulianDate": 2454832,
+      "endJulianDate": 2455198,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2009.svep",
+      "integrity": "sha256-WNvGH5Sl5wEHyOJCGo/2Y716U1QKwbusdpixGYFlS5E="
+    },
+    {
+      "id": "positions-2010",
+      "year": 2010,
+      "startJulianDate": 2455197,
+      "endJulianDate": 2455563,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2010.svep",
+      "integrity": "sha256-WduEtIJ5I6j3ddy2pClVgpMW1VPSQm0uULl/QOK4A+8="
+    },
+    {
+      "id": "positions-2011",
+      "year": 2011,
+      "startJulianDate": 2455562,
+      "endJulianDate": 2455928,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2011.svep",
+      "integrity": "sha256-+6goNtKYnsJTx7lMMqPPJRl8O7+ULdAIKNEKjVrkEB4="
+    },
+    {
+      "id": "positions-2012",
+      "year": 2012,
+      "startJulianDate": 2455927,
+      "endJulianDate": 2456294,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-2012.svep",
+      "integrity": "sha256-VdRIxYhjLKvV1vDM48yDraEwHLsCJ8gVqX8c23Q1zbM="
+    },
+    {
+      "id": "positions-2013",
+      "year": 2013,
+      "startJulianDate": 2456293,
+      "endJulianDate": 2456659,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2013.svep",
+      "integrity": "sha256-zQgemXo6CIS1zFBTJRswsOGmO3YQtfQ0fWZzw4uimec="
+    },
+    {
+      "id": "positions-2014",
+      "year": 2014,
+      "startJulianDate": 2456658,
+      "endJulianDate": 2457024,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2014.svep",
+      "integrity": "sha256-LbBw+4QIs/HpyM1ZCmIb/5XPHwo4OUYmcxlfZlDA+6c="
+    },
+    {
+      "id": "positions-2015",
+      "year": 2015,
+      "startJulianDate": 2457023,
+      "endJulianDate": 2457389,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2015.svep",
+      "integrity": "sha256-iiGLSQBDqza5hrYDjwJLYnE2uFZR+ouoaqMXlYUAxWQ="
+    },
+    {
+      "id": "positions-2016",
+      "year": 2016,
+      "startJulianDate": 2457388,
+      "endJulianDate": 2457755,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-2016.svep",
+      "integrity": "sha256-WrrOcp2OiiLYBpXoawoB+sSwnWkopxLvB83Sl3blg50="
+    },
+    {
+      "id": "positions-2017",
+      "year": 2017,
+      "startJulianDate": 2457754,
+      "endJulianDate": 2458120,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2017.svep",
+      "integrity": "sha256-AKcrgpmRY8R9gyiFw94cMWS9icy0rJoo0uE9ObFcQ80="
+    },
+    {
+      "id": "positions-2018",
+      "year": 2018,
+      "startJulianDate": 2458119,
+      "endJulianDate": 2458485,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2018.svep",
+      "integrity": "sha256-y0h2haxaY3NHZGwKRC+DCah50wszBA5gt3jgBKjTFy0="
+    },
+    {
+      "id": "positions-2019",
+      "year": 2019,
+      "startJulianDate": 2458484,
+      "endJulianDate": 2458850,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2019.svep",
+      "integrity": "sha256-QZXxmtZtyMbiqhuv6AVfPAAKoyVNp+4BXbdkhvSJNtY="
+    },
+    {
+      "id": "positions-2020",
+      "year": 2020,
+      "startJulianDate": 2458849,
+      "endJulianDate": 2459216,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-2020.svep",
+      "integrity": "sha256-DseUX24JmrIDbaCQhz1Js+WO6vT6AYHRVTcCz9SRk7M="
+    },
+    {
+      "id": "positions-2021",
+      "year": 2021,
+      "startJulianDate": 2459215,
+      "endJulianDate": 2459581,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2021.svep",
+      "integrity": "sha256-+Vx/1X4FP1ONn2Vg+ErH5zBXxnPpwDuHPnx1IhLK4yw="
+    },
+    {
+      "id": "positions-2022",
+      "year": 2022,
+      "startJulianDate": 2459580,
+      "endJulianDate": 2459946,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2022.svep",
+      "integrity": "sha256-Kv+PkdgKrQMg+OKXfatcNvP/64lxArxR/0Ipm3BjUhk="
+    },
+    {
+      "id": "positions-2023",
+      "year": 2023,
+      "startJulianDate": 2459945,
+      "endJulianDate": 2460311,
+      "stepDays": 1,
+      "sampleCount": 367,
+      "byteLength": 70528,
+      "url": "./positions-2023.svep",
+      "integrity": "sha256-TJavsJHrNY3QNHpLNN09tNPdddz9x/Q8M6dnj82omHc="
+    },
+    {
+      "id": "positions-2024",
+      "year": 2024,
+      "startJulianDate": 2460310,
+      "endJulianDate": 2460677,
+      "stepDays": 1,
+      "sampleCount": 368,
+      "byteLength": 70720,
+      "url": "./positions-2024.svep",
+      "integrity": "sha256-bPF8NU1wpEN8DHALsvPyG3fHotKu96IFHYCV/GF1wBE="
+    },
     {
       "id": "positions-2025",
       "year": 2025,
@@ -99,7 +649,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2025.svep",
-      "integrity": "sha256-uy0QFSUB0aPS/NAHTaf1FsDFmBQuYAi08W9Ea37PBjA="
+      "integrity": "sha256-dTkmYaqbjoBy6RDQJp8xi2f/r68U+qeUOunv0eUwlJo="
     },
     {
       "id": "positions-2026",
@@ -110,7 +660,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2026.svep",
-      "integrity": "sha256-MNFHd8LoL2yXn437vNMkUn0OPDXQ1RGVzugcwD13eRo="
+      "integrity": "sha256-KU44Bi6hDEWrlPbcS8aLM53ERFtIX5a7ErGrCxl2aTc="
     },
     {
       "id": "positions-2027",
@@ -121,7 +671,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2027.svep",
-      "integrity": "sha256-HORCA0uHzJXfofAoDN7MTktYdQUFxezP3H0mkSm0Vtg="
+      "integrity": "sha256-SWSNVb86QuaONtdkh7/5p+o9XRCkO3My4s1Q6ZoiuB8="
     },
     {
       "id": "positions-2028",
@@ -132,7 +682,7 @@
       "sampleCount": 368,
       "byteLength": 70720,
       "url": "./positions-2028.svep",
-      "integrity": "sha256-gJS3M1ML8fUBUMmJO4pX3GxXYc4UghylqgIaN3Zm96Q="
+      "integrity": "sha256-xRhowDufohr6oxc5iWaxDj2tGs9s9cLGugkEhLzYcBw="
     },
     {
       "id": "positions-2029",
@@ -143,7 +693,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2029.svep",
-      "integrity": "sha256-x2PC2p/QvONNJE2fNVcRzWMIlZ0yUBt6PkiPl8j3DZw="
+      "integrity": "sha256-8qek6bMJoWsaM7UrHSUxblh5Rldq5uJJOXcH3nzqBPQ="
     },
     {
       "id": "positions-2030",
@@ -154,7 +704,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2030.svep",
-      "integrity": "sha256-Cq7qIqfSt9GjFkH7Ul5eZhchLUcHFfZBOkFr2Wpilgw="
+      "integrity": "sha256-KDt+n/Ty0ElOccstluuKEtu/uDcZmGCWLOlj7kRImww="
     },
     {
       "id": "positions-2031",
@@ -165,7 +715,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2031.svep",
-      "integrity": "sha256-esHaRRV7Wx3Mr5hw6kXmx3XqSr6v9un7VXmOGv5RWnY="
+      "integrity": "sha256-6256mz+vPeFl7YZ77uL8TqYkJ/NeYV8ZAYdLyUKC3+I="
     },
     {
       "id": "positions-2032",
@@ -176,7 +726,7 @@
       "sampleCount": 368,
       "byteLength": 70720,
       "url": "./positions-2032.svep",
-      "integrity": "sha256-fh+XPn39G+rDeJF40YrcAQIGstPTc6PijDVLryEZFCU="
+      "integrity": "sha256-AaXunHWeJcaVeCqGOZyk5P32Ua1iq2INUuWrAFbh6ms="
     },
     {
       "id": "positions-2033",
@@ -187,7 +737,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2033.svep",
-      "integrity": "sha256-s7nrU5znaHfJuHS11sWRSYdONW8lPTENucwsJIAWjOQ="
+      "integrity": "sha256-DTNhUY8bfGK37JrbWEKe/fsQP00uQNZdWYfsjoJ0G1c="
     },
     {
       "id": "positions-2034",
@@ -198,7 +748,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2034.svep",
-      "integrity": "sha256-R3w1tBxLTxRLUwrmzRHMci9Hn4/N3v5681SPl3zMU48="
+      "integrity": "sha256-ikHKJchn0yAJcZWKLFE+D4Ur64NejvqrwJP/8v2dYrs="
     },
     {
       "id": "positions-2035",
@@ -209,7 +759,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2035.svep",
-      "integrity": "sha256-JMD8vifG3YtJV2cXYIazheddX9hRUhPfmO04fgLRy0w="
+      "integrity": "sha256-ov8f2n85ONnD+FAp+NBQYSs85hXs0Gl8XDoH9niQXS0="
     },
     {
       "id": "positions-2036",
@@ -220,7 +770,7 @@
       "sampleCount": 368,
       "byteLength": 70720,
       "url": "./positions-2036.svep",
-      "integrity": "sha256-8U2kwOlxnYYGYyuqzDsJpPw8F+g2w/0/6zl58z3BQ9g="
+      "integrity": "sha256-tLkafCOUBj3hoeM49O/dumYDv+vwB/7rJJFgvLbssW4="
     },
     {
       "id": "positions-2037",
@@ -231,7 +781,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2037.svep",
-      "integrity": "sha256-O6BVpyfOPKOnTTPTOIpUt+YctkjpiJaR2DPdTb3x3PQ="
+      "integrity": "sha256-rFZF003/W4mmID5KOrHe+Rb01cC3Ey+bN5RHq58Gwwo="
     },
     {
       "id": "positions-2038",
@@ -242,7 +792,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2038.svep",
-      "integrity": "sha256-lHLsys0WOV7P43sVY/Pi3LWCh3IJZ7AFrzSUvue2wfI="
+      "integrity": "sha256-zM2tXFPAiQdD2GS8encn0ilGqKnPj2nHt4EGu8z96u4="
     },
     {
       "id": "positions-2039",
@@ -253,7 +803,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2039.svep",
-      "integrity": "sha256-0IF/M3R1CjxhAWO/bS4mG2j1XcbXZRSXtTrbQQuN2GA="
+      "integrity": "sha256-ggWv7kmJWLOHsjFQep+yt15z8G9rZZgdkVI9/YiPgtM="
     },
     {
       "id": "positions-2040",
@@ -264,7 +814,7 @@
       "sampleCount": 368,
       "byteLength": 70720,
       "url": "./positions-2040.svep",
-      "integrity": "sha256-GKL971Y4SvBj//M0snuBEwz13bwhB/ls4BjIc86u7Eo="
+      "integrity": "sha256-E4ypF9JVE4pCw/31TMD4ufKsJJe2pbUQDVcAP9fJeTI="
     },
     {
       "id": "positions-2041",
@@ -275,7 +825,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2041.svep",
-      "integrity": "sha256-8IgGqhycyqyAf8bp6LFp9Ba7p0yDJNln1rmNyEy0F58="
+      "integrity": "sha256-F8qc/ACPF3pRIwLwywVOi8SF8G5VZ0Y2UzXZeaYDnj0="
     },
     {
       "id": "positions-2042",
@@ -286,7 +836,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2042.svep",
-      "integrity": "sha256-TzwduF1RrEU9gMLn8CzTNG6Yay+i90L1SIzhA4AhF2c="
+      "integrity": "sha256-GYZZO9Qqjex5CmoqdNiDOfRhXLtwlfJILqA4quKFVnY="
     },
     {
       "id": "positions-2043",
@@ -297,7 +847,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2043.svep",
-      "integrity": "sha256-3JYwWA0z4s/GP9QYYZGdpTvGISJ3L9yAB0ZE0Ry4JBg="
+      "integrity": "sha256-3OihQ0U3B2pHLULLYqW/VgAr0sniLIq4miFMcHKjFRo="
     },
     {
       "id": "positions-2044",
@@ -308,7 +858,7 @@
       "sampleCount": 368,
       "byteLength": 70720,
       "url": "./positions-2044.svep",
-      "integrity": "sha256-5tTbBrBJvK/Qi5ENlqbUDQhupC+JFAVyXCnUGYpjdZY="
+      "integrity": "sha256-vLqqYWxVYgdPBC0DXCW+uO1TxSOxJEWD8PwI+CNxzZU="
     },
     {
       "id": "positions-2045",
@@ -319,7 +869,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2045.svep",
-      "integrity": "sha256-fNXNBmPad3mciDpu4niHAAcOrcCTzZONiTk8kUKcn3o="
+      "integrity": "sha256-jOyIVItzTBObcDFzOQUbTi1lvJ/RyetECUptSKoyvF0="
     },
     {
       "id": "positions-2046",
@@ -330,7 +880,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2046.svep",
-      "integrity": "sha256-JJHm4G1wzikB7yVJKeyy6y6D93TDGAAVR4kEwemdmrM="
+      "integrity": "sha256-YZZje1LG8MTvYfP2ILPJsxmSdIVFvLGTaO8pWaFb09U="
     },
     {
       "id": "positions-2047",
@@ -341,7 +891,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2047.svep",
-      "integrity": "sha256-61lhftwTHIJNlhPtWBy9hx6KHDZCIZM4us9K3iUyV2Y="
+      "integrity": "sha256-kccVsq1fr5Co1iMHrVL4gkX7Q4chm/JCEOctBk/JXps="
     },
     {
       "id": "positions-2048",
@@ -352,7 +902,7 @@
       "sampleCount": 368,
       "byteLength": 70720,
       "url": "./positions-2048.svep",
-      "integrity": "sha256-a8XFDwP15205eN2GGMOPg/Nrns8z35whRkm46KzMETw="
+      "integrity": "sha256-swg65BpmqSTZsHbNvwh3dMec6OTtPuLYqMrnwWXQnDQ="
     },
     {
       "id": "positions-2049",
@@ -363,7 +913,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2049.svep",
-      "integrity": "sha256-fNh1EYe+FXkVhbvdOwBKjpgPdwYIBlpX0NVrJ7NUP1Y="
+      "integrity": "sha256-Gqvq1oIKkPCbvdVBx968yp/gKEqZtGI2DJI1OinFkiA="
     },
     {
       "id": "positions-2050",
@@ -374,7 +924,7 @@
       "sampleCount": 367,
       "byteLength": 70528,
       "url": "./positions-2050.svep",
-      "integrity": "sha256-xLOZI/4A4QsiR1MxnMYFjc0ZJli8YVHFwN13sPE2SZE="
+      "integrity": "sha256-Innsl0+Ay7hnUydsA6BTAvYCZ9rZ55qexvk2ODfbZlY="
     }
   ],
   "orbitAsset": {
@@ -383,6 +933,6 @@
     "sampleCount": 192,
     "byteLength": 36928,
     "url": "./representative-orbits.svep",
-    "integrity": "sha256-G01Tpbqi/RkCsLF9SayeY4MZBp0DirDIuyvzYFw5ZIc="
+    "integrity": "sha256-3EIpYFS+wV8lPDID7n8J+kX86a6B4biac1uSu6GQQ9g="
   }
 }

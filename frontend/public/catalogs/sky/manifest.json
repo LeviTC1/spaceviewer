@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "format": "spaceviewer-gaia-points-v1",
+  "catalog": {
+    "id": "xhip-hp7-not-in-gaia",
+    "title": "Naked-eye stars Gaia DR3 cannot measure, from XHIP (Hp ≤ 7.0)",
+    "referenceFrame": "heliocentric-icrs-cartesian",
+    "positionUnit": "light-year",
+    "epoch": "J2000.0",
+    "provenance": {
+      "title": "XHIP: An Extended Hipparcos Compilation (Anderson & Francis 2012)",
+      "vizier": "https://cdsarc.cds.unistra.fr/viz-bin/cat/V/137D",
+      "bibcode": "2012AstL...38..331A",
+      "selection": "Hp ≤ 7.0",
+      "distances": "Hipparcos 2007 (van Leeuwen) parallaxes as compiled by XHIP; parallaxes under 2σ are placed at 1/(2σ) and flagged as lower limits",
+      "credit": "Anderson & Francis (2012), via CDS VizieR; Hipparcos: ESA",
+      "retrievedAt": "2026-11-26T14:28:37.941Z",
+      "sourceFiles": [
+        {
+          "name": "xhip-hp7.tsv",
+          "url": "https://vizier.cfa.harvard.edu/viz-bin/asu-tsv?-source=V/137D/XHIP&-out.max=unlimited&-out=HIP,RAJ2000,DEJ2000,Plx,e_Plx,pmRA,pmDE,Dist,Vmag,Hpmag,B-V,SpType,Cst,Name,HD&Hpmag=%3C%3D7.0",
+          "bytes": 2499879,
+          "sha256": "16c18188b846b91f57982e0d2edc19a4d0d4f9433edf412b14e3398256a7e3c0"
+        },
+        {
+          "name": "constellations.lines.json",
+          "url": "https://raw.githubusercontent.com/ofrohn/d3-celestial/master/data/constellations.lines.json",
+          "bytes": 27136,
+          "sha256": "294f66bef5d5cf50b1e17f16d2efa1d97a15131612c68dd935adef6e7373e13c"
+        },
+        {
+          "name": "constellations.json",
+          "url": "https://raw.githubusercontent.com/ofrohn/d3-celestial/master/data/constellations.json",
+          "bytes": 50581,
+          "sha256": "ab4ae692027cbc042c0d6791a84456a65eb7c55656107fd00c58ff6e55d4d8b2"
+        },
+        {
+          "name": "d3-celestial-LICENSE",
+          "url": "https://raw.githubusercontent.com/ofrohn/d3-celestial/master/LICENSE",
+          "bytes": 1480,
+          "sha256": "a8c79239001ad4bea243d1796b85084e1fc39309c5c5a663930a1b46320254c6"
+        },
+        {
+          "name": "IAU-CSN.txt",
+          "url": "https://www.pas.rochester.edu/~emamajek/WGSN/IAU-CSN.txt",
+          "bytes": 71800,
+          "sha256": "84fac0c90f1b19abc491c2793469e0caa7b003ad1bc93a790ca41147010d0eb0"
+        }
+      ]
+    }
+  },
+  "starCount": 1060,
+  "xhipStars": 13949,
+  "matchedToGaia": 12889,
+  "temperatureIndex": {
+    "min": 2400,
+    "max": 40000,
+    "scale": "log",
+    "from": "B−V via Ballesteros (2012)"
+  },
+  "chunks": [
+    {
+      "url": "/catalogs/sky/bright-stars.svgp",
+      "count": 1060,
+      "bytes": 15916,
+      "sha256": "81a83424750a338caa5b115480a0ef290f5274b25b1bea0b0d094134f0aa2cfb"
+    }
+  ],
+  "figures": {
+    "url": "/catalogs/sky/constellations.json",
+    "bytes": 210641,
+    "sha256": "e8fb2c0b0816bf0747148d9ded2b70fd07a0e0a25d2bbe1a3085237993c9de88"
+  }
+}

@@ -6,16 +6,17 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { gunzipSync, gzipSync } from "node:zlib";
 
-const RETRIEVED_AT = "2026-09-02T00:00:00.000Z";
-const MINIMUM_EXPECTED_PLANETS = 1_500;
-const MAXIMUM_DISTANCE_PC = 100;
+const RETRIEVED_AT = "2026-11-24T00:00:00.000Z";
+const MINIMUM_EXPECTED_PLANETS = 5_000;
+// Every confirmed planet with a published host distance (microlensing hosts reach ~8 kpc).
+const MAXIMUM_DISTANCE_PC = 20_000;
 const COLUMNS = [
   "pl_name", "hostname", "pl_letter", "gaia_dr2_id", "gaia_dr3_id", "hip_name", "hd_name", "tic_id",
   "ra", "dec", "sy_dist", "sy_disterr1", "sy_disterr2", "sy_vmag", "sy_kmag", "disc_year",
   "discoverymethod", "disc_facility", "disc_telescope", "pl_orbper", "pl_orbpererr1", "pl_orbpererr2",
   "pl_orbsmax", "pl_orbsmaxerr1", "pl_orbsmaxerr2", "pl_rade", "pl_radeerr1", "pl_radeerr2",
   "pl_bmasse", "pl_bmasseerr1", "pl_bmasseerr2", "pl_eqt", "pl_eqterr1", "pl_eqterr2",
-  "st_teff", "st_tefferr1", "st_tefferr2", "st_spectype",
+  "st_teff", "st_tefferr1", "st_tefferr2", "st_spectype", "st_lum", "st_rad", "st_mass",
 ];
 const PREDICATE = `sy_dist is not null and ra is not null and dec is not null and sy_dist <= ${MAXIMUM_DISTANCE_PC}`;
 const QUERY = `select ${COLUMNS.join(",")} from pscomppars where ${PREDICATE}`;
@@ -56,7 +57,7 @@ const validateRows = (rows) => {
 const buildReceipt = (rows, compressedData, acknowledgment) => ({
   schemaVersion: 1,
   catalog: {
-    id: "nasa-exoplanet-archive-pscomppars-nearby-100pc",
+    id: "nasa-exoplanet-archive-pscomppars-all",
     version: `pscomppars-snapshot-${RETRIEVED_AT.slice(0, 10)}`,
     title: "NASA Exoplanet Archive Planetary Systems Composite Parameters nearby confirmed planets",
     table: "pscomppars",

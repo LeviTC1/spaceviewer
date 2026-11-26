@@ -4,7 +4,9 @@ import { createHash } from "node:crypto";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import vsop87c from "vsop87/dist/vsop87c.js";
+// VSOP87A: heliocentric rectangular coordinates referred to the ecliptic and equinox J2000 (the explorer's
+// world frame). File names keep the historical "vsop87c" spelling.
+import vsop87c from "vsop87/dist/vsop87a.js";
 
 const BUILDER_VERSION = "spaceviewer-vsop87c-ephemeris-builder-v1";
 const FORMAT = "spaceviewer-vsop87c-float64-v1";
@@ -130,7 +132,7 @@ const buildFiles = async () => {
     packageManifest.version !== receipt.source.implementationVersion ||
     packageManifest.license !== receipt.source.licenceId
   ) {
-    throw new Error("VSOP87C receipt does not match the installed source package.");
+    throw new Error("VSOP87 receipt does not match the installed source package.");
   }
   const planetOrder = receipt.planets.map((planet) => planet.id);
   if (planetOrder.length !== 8 || new Set(planetOrder).size !== planetOrder.length) {

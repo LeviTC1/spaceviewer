@@ -62,7 +62,7 @@ export interface StreamedVsop87cManifest {
   };
   sampling: {
     positionStepJulianDays: 1;
-    interpolation: "linear-cartesian-between-adjacent-float64-keyframes";
+    interpolation: "cubic-hermite-cartesian-with-central-difference-tangents";
     orbitSamplesPerPlanet: number;
     orbitReferenceJulianDate: number;
     note: string;
@@ -190,7 +190,7 @@ export const validateStreamedVsop87cManifest = (value: unknown): StreamedVsop87c
     manifest.ephemeris.positionUnit !== "astronomical-unit" ||
     manifest.source?.licenceId !== "MIT" ||
     manifest.sampling?.positionStepJulianDays !== 1 ||
-    manifest.sampling.interpolation !== "linear-cartesian-between-adjacent-float64-keyframes" ||
+    manifest.sampling.interpolation !== "cubic-hermite-cartesian-with-central-difference-tangents" ||
     manifest.build?.headerBytes !== HEADER_BYTES ||
     manifest.build.byteOrder !== "little-endian" ||
     manifest.build.scalarPrecision !== "float64" ||
@@ -460,11 +460,20 @@ export const getStreamedVsop87cPosition = (
   const t = julianDate - lowerJulianDate;
   const readCoordinate = (sampleIndex: number, axis: number) =>
     chunk.positions[(sampleIndex * manifest.build.planetOrder.length + planetIndex) * 3 + axis];
+  const lastSample = chunk.definition.endJulianDate - chunk.definition.startJulianDate;
+  // Cubic Hermite between daily keyframes with central-difference tangents (one-sided at the chunk
+  // edges). Linear interpolation cut the corner of each day's arc by up to ~6,000 km for the Earth.
   const interpolate = (axis: number) => {
-    const lower = readCoordinate(lowerSample, axis);
-    if (upperSample === lowerSample) return lower;
-    const upper = readCoordinate(upperSample, axis);
-    return lower + (upper - lower) * t;
+    const p1 = readCoordinate(lowerSample, axis);
+    if (upperSample === lowerSample) return p1;
+    const p2 = readCoordinate(upperSample, axis);
+    const p0 = lowerSample > 0 ? readCoordinate(lowerSample - 1, axis) : 2 * p1 - p2;
+    const p3 = upperSample < lastSample ? readCoordinate(upperSample + 1, axis) : 2 * p2 - p1;
+    const m1 = (p2 - p0) / 2;
+    const m2 = (p3 - p1) / 2;
+    const t2 = t * t;
+    const t3 = t2 * t;
+    return (2 * t3 - 3 * t2 + 1) * p1 + (t3 - 2 * t2 + t) * m1 + (-2 * t3 + 3 * t2) * p2 + (t3 - t2) * m2;
   };
   return {
     positionAu: {

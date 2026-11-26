@@ -1,0 +1,200 @@
+{
+  "schema": "spaceviewer-moon-surface-maps-v1",
+  "projection": "equirectangular, longitude −180°…+180° (0° at centre), east to the right",
+  "sources": [
+    {
+      "id": "moon",
+      "sourceFile": "lroc_color_poles_8k.tif",
+      "sourceUrl": "https://svs.gsfc.nasa.gov/vis/a000000/a004700/a004720/lroc_color_poles_8k.tif",
+      "credit": "NASA's Scientific Visualization Studio, CGI Moon Kit (LRO LROC colour, LOLA polar fill)",
+      "colour": "measured colour",
+      "licence": "NASA media: free to use with credit to NASA's Scientific Visualization Studio",
+      "tint": null,
+      "unimagedFill": null
+    },
+    {
+      "id": "io",
+      "sourceFile": "Io_GalileoSSI-Voyager_Global_Mosaic_ClrMerge_1km.tif",
+      "sourceUrl": "https://planetarymaps.usgs.gov/mosaic/Io_GalileoSSI-Voyager_Global_Mosaic_ClrMerge_1km.tif",
+      "credit": "USGS Astrogeology / NASA–JPL Galileo SSI and Voyager colour-merge mosaic",
+      "colour": "enhanced colour from Galileo filters",
+      "licence": "US Government work (USGS / NASA): public domain",
+      "tint": null,
+      "unimagedFill": null
+    },
+    {
+      "id": "europa",
+      "sourceFile": "Europa_Voyager_GalileoSSI_global_mosaic_500m.tif",
+      "sourceUrl": "https://planetarymaps.usgs.gov/mosaic/Europa_Voyager_GalileoSSI_global_mosaic_500m.tif",
+      "credit": "USGS Astrogeology / NASA–JPL Voyager–Galileo SSI global mosaic (500 m)",
+      "colour": "monochrome, tinted",
+      "licence": "US Government work (USGS / NASA): public domain",
+      "tint": "#efe5d6",
+      "unimagedFill": "#a39a8e"
+    },
+    {
+      "id": "ganymede",
+      "sourceFile": "Ganymede_Voyager_GalileoSSI_Global_ClrMosaic_1435m.tif",
+      "sourceUrl": "https://planetarymaps.usgs.gov/mosaic/Ganymede_Voyager_GalileoSSI_Global_ClrMosaic_1435m.tif",
+      "credit": "USGS Astrogeology / NASA–JPL Voyager–Galileo SSI global colour mosaic",
+      "colour": "measured colour",
+      "licence": "US Government work (USGS / NASA): public domain",
+      "tint": null,
+      "unimagedFill": "#8a8378"
+    },
+    {
+      "id": "callisto",
+      "sourceFile": "Callisto_Voyager_GalileoSSI_global_mosaic_1km.tif",
+      "sourceUrl": "https://planetarymaps.usgs.gov/mosaic/Callisto_Voyager_GalileoSSI_global_mosaic_1km.tif",
+      "credit": "USGS Astrogeology / NASA–JPL Voyager–Galileo SSI global mosaic (1 km)",
+      "colour": "monochrome, tinted",
+      "licence": "US Government work (USGS / NASA): public domain",
+      "tint": "#b9a48c",
+      "unimagedFill": "#5d5246"
+    },
+    {
+      "id": "titan",
+      "sourceFile": "Titan_ISS_P19658_Mosaic_Global_4km.tif",
+      "sourceUrl": "https://planetarymaps.usgs.gov/mosaic/Titan_ISS_P19658_Mosaic_Global_4km.tif",
+      "credit": "USGS Astrogeology / NASA–JPL–Space Science Institute Cassini ISS 938 nm global mosaic",
+      "colour": "surface seen through the haze at 938 nm, tinted",
+      "licence": "US Government work (USGS / NASA): public domain",
+      "tint": "#d9a46a",
+      "unimagedFill": null
+    },
+    {
+      "id": "enceladus",
+      "sourceFile": "Enceladus_Cassini_mosaic_global_110m.tif",
+      "sourceUrl": "https://planetarymaps.usgs.gov/mosaic/Enceladus_Cassini_mosaic_global_110m.tif",
+      "credit": "USGS Astrogeology / NASA–JPL–Space Science Institute Cassini ISS global mosaic (110 m)",
+      "colour": "monochrome, tinted",
+      "licence": "US Government work (USGS / NASA): public domain",
+      "tint": "#f3f6fb",
+      "unimagedFill": null
+    },
+    {
+      "id": "tethys",
+      "sourceFile": "Tethys_Cassini_mosaic_global_293m.tif",
+      "sourceUrl": "https://planetarymaps.usgs.gov/mosaic/Tethys_Cassini_mosaic_global_293m.tif",
+      "credit": "USGS Astrogeology / NASA–JPL–Space Science Institute Cassini ISS global mosaic (293 m)",
+      "colour": "monochrome, tinted",
+      "licence": "US Government work (USGS / NASA): public domain",
+      "tint": "#ecebe6",
+      "unimagedFill": null
+    },
+    {
+      "id": "triton",
+      "sourceFile": "Triton_Voyager2_ClrMosaic_GlobalFill_600m.tif",
+      "sourceUrl": "https://planetarymaps.usgs.gov/mosaic/Triton_Voyager2_ClrMosaic_GlobalFill_600m.tif",
+      "credit": "USGS Astrogeology / NASA–JPL Voyager 2 colour mosaic (gaps filled)",
+      "colour": "measured colour; unimaged northern regions filled",
+      "licence": "US Government work (USGS / NASA): public domain",
+      "tint": null,
+      "unimagedFill": "#b7b49f"
+    }
+  ],
+  "outputs": [
+    {
+      "id": "moon",
+      "width": 4096,
+      "path": "public/solar-textures/moons/4k/moon.jpg",
+      "sha256": "a42fb5e74a509005f78e91ef47bd028c1416379a61290485c49b93adc89e1792"
+    },
+    {
+      "id": "moon",
+      "width": 8192,
+      "path": "public/solar-textures/moons/8k/moon.jpg",
+      "sha256": "b59aedca1a4a9886633f6c1dd6932420c14872a9afa19156c0dc518dd9d75cc4"
+    },
+    {
+      "id": "io",
+      "width": 4096,
+      "path": "public/solar-textures/moons/4k/io.jpg",
+      "sha256": "69942fade2e533ba8bf11e5dc0ad24bdc1fac1ae167b24388e784333b379b11a"
+    },
+    {
+      "id": "io",
+      "width": 8192,
+      "path": "public/solar-textures/moons/8k/io.jpg",
+      "sha256": "07df2f38b391e7e6df0083a8770a23373a7c4a1f52189df7ec26ac25e6dfc972"
+    },
+    {
+      "id": "europa",
+      "width": 4096,
+      "path": "public/solar-textures/moons/4k/europa.jpg",
+      "sha256": "e65b6e46a76f2843713bf3633585a8d48e661c0c5f2fa9d4f2074bbf89033372"
+    },
+    {
+      "id": "europa",
+      "width": 8192,
+      "path": "public/solar-textures/moons/8k/europa.jpg",
+      "sha256": "706f3631b85126930e669716573f507f54637fa7c7012980f68ccb89418dd789"
+    },
+    {
+      "id": "ganymede",
+      "width": 4096,
+      "path": "public/solar-textures/moons/4k/ganymede.jpg",
+      "sha256": "64e696e0cabe0ef29512cc1939b8a8806768bf917e8d05084bf84bbbf6a0b71d"
+    },
+    {
+      "id": "ganymede",
+      "width": 8192,
+      "path": "public/solar-textures/moons/8k/ganymede.jpg",
+      "sha256": "8ff3a8d79e915e28f3c1f09962aacfcfaa270416bf68fef227908eedaca31c76"
+    },
+    {
+      "id": "callisto",
+      "width": 4096,
+      "path": "public/solar-textures/moons/4k/callisto.jpg",
+      "sha256": "93361f1f0f9520f34072afb87b728eb601091ac4df381a78836fadef047db106"
+    },
+    {
+      "id": "callisto",
+      "width": 8192,
+      "path": "public/solar-textures/moons/8k/callisto.jpg",
+      "sha256": "95b17e31b8e9db9781d026ca9ff52f462f114525c0e4ce5f2eee7321c701dde6"
+    },
+    {
+      "id": "titan",
+      "width": 4096,
+      "path": "public/solar-textures/moons/4k/titan.jpg",
+      "sha256": "c7ced75c2ace92cd29e6fb03b784437becd0648049e38422ed7a18a1f198047a"
+    },
+    {
+      "id": "enceladus",
+      "width": 4096,
+      "path": "public/solar-textures/moons/4k/enceladus.jpg",
+      "sha256": "72d191e9ddaa34a307744241fffd7dcc6fc6493f06f40401b19fd764925407f1"
+    },
+    {
+      "id": "enceladus",
+      "width": 8192,
+      "path": "public/solar-textures/moons/8k/enceladus.jpg",
+      "sha256": "7629fa899c16deaf9852431947388a8e5937806098372934ee4ec69398248838"
+    },
+    {
+      "id": "tethys",
+      "width": 4096,
+      "path": "public/solar-textures/moons/4k/tethys.jpg",
+      "sha256": "b39c99ea6c0c1488b1fcfb6aa95ed2db16bfcae3bc992b650c9eef93d0b6541f"
+    },
+    {
+      "id": "tethys",
+      "width": 8192,
+      "path": "public/solar-textures/moons/8k/tethys.jpg",
+      "sha256": "5170410aefddf7f2ce984a210c01cf2f355e93ddc24992a6ab615cbc47c19d7a"
+    },
+    {
+      "id": "triton",
+      "width": 4096,
+      "path": "public/solar-textures/moons/4k/triton.jpg",
+      "sha256": "b15247fab2c787adbb5f72aa33bbd77be127b737604a25b0f0d2f52909f16194"
+    },
+    {
+      "id": "triton",
+      "width": 8192,
+      "path": "public/solar-textures/moons/8k/triton.jpg",
+      "sha256": "21d855a782e7b8950ae2d7e9cbe7e55a44fe9c0fa4e8e08296489eed83941dcd"
+    }
+  ]
+}

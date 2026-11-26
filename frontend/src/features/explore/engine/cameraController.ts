@@ -3,6 +3,7 @@
 // resulting pose every frame and never stores world positions in float32.
 
 import { planFlight, sampleFlight, type FlightKind, type FlightPlan } from "./flight";
+import { altAzToWorld, type HorizonFrame } from "./observer";
 import { cross3, dot3, normalize3, slerpUnit3, sub3, length3, type Vec3 } from "./units";
 
 export interface CameraTargetInfo {
@@ -72,6 +73,16 @@ export class ExplorerCamera {
   idleSpin = 0;
   listeners = new Set<(event: CameraEvent) => void>();
   private lastTargetWorld: Vec3 | null = null;
+
+  // ------------------------------------------------------------------------------------------
+  // Standing on the ground: a look-around camera at an observer on the Earth's surface. Drags turn
+  // the view (azimuth / altitude), zoom changes the field of view like a pair of binoculars.
+  ground: { latDeg: number; lonDeg: number } | null = null;
+  groundAzDeg = 180;
+  groundAltDeg = 30;
+  groundFovDeg = 70;
+  groundFovGoal = 70;
+  private groundSlew: { fromAz: number; fromAlt: number; toAz: number; toAlt: number; startedAt: number; durationMs: number } | null = null;
 
   get distance() {
     return Math.exp(this.logDistance);
@@ -161,7 +172,88 @@ export class ExplorerCamera {
     this.emit({ type: "manual" });
   }
 
+  enterGround(place: { latDeg: number; lonDeg: number }, look?: { azDeg: number; altDeg: number }) {
+    this.cancelFlight(false);
+    this.ground = place;
+    this.targetId = null;
+    this.orbitVelocity = [0, 0];
+    this.idleSpin = 0;
+    this.groundSlew = null;
+    if (look) {
+      this.groundAzDeg = look.azDeg;
+      this.groundAltDeg = look.altDeg;
+    }
+  }
+
+  leaveGround() {
+    this.ground = null;
+    this.groundSlew = null;
+    this.orbitVelocity = [0, 0];
+  }
+
+  /** Turn smoothly to face an altitude / azimuth (ground mode). */
+  lookAtAltAz(azDeg: number, altDeg: number, now: number) {
+    if (!this.ground) return;
+    this.orbitVelocity = [0, 0];
+    const delta = ((((azDeg - this.groundAzDeg) % 360) + 540) % 360) - 180;
+    const distance = Math.hypot(delta, altDeg - this.groundAltDeg);
+    this.groundSlew = {
+      fromAz: this.groundAzDeg,
+      fromAlt: this.groundAltDeg,
+      toAz: this.groundAzDeg + delta,
+      toAlt: Math.min(89, Math.max(-5, altDeg)),
+      startedAt: now,
+      durationMs: this.reducedMotion ? 0 : Math.min(1_800, 500 + distance * 9),
+    };
+  }
+
+  private applyLook(dYaw: number, dPitch: number) {
+    // A full view-height drag (≈ 0.9π of orbit input) turns the view by one field of view.
+    const scale = this.groundFovDeg / (0.9 * Math.PI);
+    this.groundAzDeg = (((this.groundAzDeg - dYaw * scale) % 360) + 360) % 360;
+    this.groundAltDeg = Math.min(89, Math.max(-5, this.groundAltDeg + dPitch * scale));
+  }
+
+  /** Advance the ground camera one frame. `eye` is the observer's world position (km). */
+  updateGround(dtSeconds: number, now: number, frame: HorizonFrame, eye: Vec3): CameraPose {
+    const dt = Math.min(0.1, Math.max(0, dtSeconds));
+    if (this.groundSlew) {
+      const slew = this.groundSlew;
+      const t = slew.durationMs <= 0 ? 1 : Math.min(1, (now - slew.startedAt) / slew.durationMs);
+      const e = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      this.groundAzDeg = (((slew.fromAz + (slew.toAz - slew.fromAz) * e) % 360) + 360) % 360;
+      this.groundAltDeg = slew.fromAlt + (slew.toAlt - slew.fromAlt) * e;
+      if (t >= 1) this.groundSlew = null;
+    } else {
+      const [vy, vp] = this.orbitVelocity;
+      if (Math.abs(vy) + Math.abs(vp) > 1e-4) {
+        this.applyLook(vy * dt, vp * dt);
+        const decay = Math.exp(-dt * 4.2);
+        this.orbitVelocity = [vy * decay, vp * decay];
+      } else this.orbitVelocity = [0, 0];
+    }
+    this.groundFovDeg += (this.groundFovGoal - this.groundFovDeg) * (1 - Math.exp(-dt * 10));
+    const look = altAzToWorld(this.groundAltDeg, this.groundAzDeg, frame);
+    // The look-at point only sets the render scale; nothing we show from the ground is nearer than the Moon.
+    const distance = 50_000;
+    return {
+      target: [eye[0] + look[0] * distance, eye[1] + look[1] * distance, eye[2] + look[2] * distance],
+      distance,
+      direction: [-look[0], -look[1], -look[2]],
+      up: frame.zenith,
+      world: eye,
+    };
+  }
+
   orbit(dYaw: number, dPitch: number, withInertia = true) {
+    if (this.ground) {
+      this.groundSlew = null;
+      this.idleSpin = 0;
+      this.emit({ type: "manual" });
+      this.applyLook(dYaw, dPitch);
+      if (withInertia) this.orbitVelocity = [this.orbitVelocity[0] * 0.4 + dYaw * 0.6 * 60, this.orbitVelocity[1] * 0.4 + dPitch * 0.6 * 60];
+      return;
+    }
     this.takeControl();
     this.applyOrbit(dYaw, dPitch);
     this.lastManualOrbitAt = performance.now();
@@ -191,6 +283,10 @@ export class ExplorerCamera {
 
   /** Zoom by a log-distance delta (positive = out). Smoothly approached in update(). */
   zoom(dLog: number) {
+    if (this.ground) {
+      this.groundFovGoal = Math.min(100, Math.max(0.5, this.groundFovGoal * Math.exp(dLog)));
+      return;
+    }
     this.takeControl();
     this.logDistanceGoal = Math.min(
       Math.log(MAX_CAMERA_DISTANCE_KM),
@@ -200,6 +296,10 @@ export class ExplorerCamera {
 
   /** Pan in screen space: dx, dy are fractions of the view height. */
   pan(dx: number, dy: number, fovY: number) {
+    if (this.ground) {
+      this.orbit(dx * Math.PI * 0.9, dy * Math.PI * 0.9, false);
+      return;
+    }
     this.takeControl();
     const scale = this.distance * Math.tan(fovY / 2) * 2;
     const forward: Vec3 = [-this.direction[0], -this.direction[1], -this.direction[2]];

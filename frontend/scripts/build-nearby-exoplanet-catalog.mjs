@@ -26,6 +26,28 @@ const receiptPath = resolve(sourceDirectory, "source-receipt.json");
 const gaiaReceiptPath = resolve(frontendRoot, "catalog-source/gaia-dr3-nearby-100pc-g9.receipt.json");
 const publicDirectory = resolve(frontendRoot, "public/catalogs/exoplanets");
 const manifestPath = resolve(publicDirectory, "manifest.json");
+// Derived, not measured: stellar luminosity from the archive (log10 L/Lsun), else from radius and
+// temperature (L = R^2 (T / 5772 K)^4); the conservative habitable zone uses the Kasting et al. (1993)
+// flux limits commonly quoted as inner = sqrt(L / 1.1) AU and outer = sqrt(L / 0.53) AU.
+const habitableZoneFor = (row) => {
+  let luminosity = Number.isFinite(row.st_lum) ? 10 ** row.st_lum : null;
+  let luminositySource = luminosity ? "archive st_lum" : null;
+  if (!luminosity && Number.isFinite(row.st_rad) && Number.isFinite(row.st_teff) && row.st_rad > 0 && row.st_teff > 0) {
+    luminosity = row.st_rad ** 2 * (row.st_teff / 5772) ** 4;
+    luminositySource = "derived from st_rad and st_teff";
+  }
+  if (!luminosity || !Number.isFinite(luminosity) || luminosity <= 0) return {};
+  return {
+    stellarLuminositySolar: Number(luminosity.toPrecision(4)),
+    stellarLuminositySource: luminositySource,
+    habitableZone: {
+      innerAu: Number(Math.sqrt(luminosity / 1.1).toPrecision(4)),
+      outerAu: Number(Math.sqrt(luminosity / 0.53).toPrecision(4)),
+      method: "Conservative habitable zone from stellar flux limits (Kasting et al. 1993): sqrt(L/1.1)–sqrt(L/0.53) AU. Derived, not measured.",
+    },
+  };
+};
+
 const checkOnly = process.argv.includes("--check");
 const sha256Hex = (content) => createHash("sha256").update(content).digest("hex");
 const stableJson = (value) => `${JSON.stringify(value, null, 2)}\n`;
@@ -146,6 +168,7 @@ const systems = Array.from(grouped.entries()).map(([hostName, hostRows]) => {
     stellarTemperatureErrorPlusK: numeric(first.st_tefferr1),
     stellarTemperatureErrorMinusK: numeric(first.st_tefferr2),
     spectralType: cleanString(first.st_spectype),
+    ...habitableZoneFor(first),
     gaiaDr3Crossmatch,
     planets,
   };
@@ -223,7 +246,7 @@ const manifest = {
     systemCount: systems.length,
     planetCount,
     distanceRangePc: { minimum: Math.min(...distances), maximum: Math.max(...distances) },
-    boundary: "Confirmed planets in PSCompPars with a published host distance no greater than 100 pc and finite ICRS RA/Dec. This is not a completeness-limited occurrence-rate sample; archive contents and published parameter availability are strongly selection-biased.",
+    boundary: "Every confirmed planet in PSCompPars with a published host distance and finite ICRS RA/Dec. This is not a completeness-limited occurrence-rate sample; archive contents and published parameter availability are strongly selection-biased.",
   },
   coordinates: {
     frame: "ICRS",

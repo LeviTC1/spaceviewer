@@ -64,3 +64,19 @@ by frontend/scripts/build-solar-texture-derivatives.mjs using xorshift32 seed
 
 Machine-verifiable per-file source hashes, output hashes and transformation
 receipts are recorded in /solar-textures/manifest.json.
+
+Moon and outer-planet moon surface maps (moons/4k, moons/8k)
+------------------------------------------------------------
+Built by scripts/build-moon-surface-maps.mjs; sources and per-map notes in moons/manifest.json.
+
+Moon: NASA's Scientific Visualization Studio, CGI Moon Kit (LRO LROC colour with LOLA polar fill).
+Source: https://svs.gsfc.nasa.gov/4720 . Free to use with credit to NASA's Scientific Visualization Studio.
+
+Io, Europa, Ganymede, Callisto (Galileo SSI / Voyager), Titan, Enceladus, Tethys (Cassini ISS) and
+Triton (Voyager 2): USGS Astrogeology Science Center global mosaics of NASA mission data.
+Source: https://planetarymaps.usgs.gov/mosaic/ . US Government works, public domain.
+
+Changes: resized to 4096 x 2048 and 8192 x 4096 equirectangular JPEGs centred on 0° longitude;
+monochrome mosaics (Europa, Callisto, Titan, Enceladus, Tethys) are tinted towards each moon's
+approximate natural colour; Callisto is brightened for display; areas no spacecraft imaged are
+filled with a neutral mean colour. These are presentation choices, disclosed in the explorer.

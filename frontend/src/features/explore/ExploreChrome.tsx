@@ -215,6 +215,19 @@ export const SearchBox: FC<{
 // ---------------------------------------------------------------------------------------------
 // Object panel
 
+/** How each moon's surface map was made (USGS / NASA mosaics; see public/solar-textures/moons/manifest.json). */
+const SURFACE_NOTES: Record<string, string> = {
+  "solar:moon:moon": "Surface: NASA LRO colour map (NASA SVS CGI Moon Kit), measured colour.",
+  "solar:moon:io": "Surface: Galileo and Voyager colour mosaic (USGS / NASA–JPL), enhanced colour.",
+  "solar:moon:europa": "Surface: Voyager–Galileo mosaic (USGS / NASA–JPL). Monochrome, tinted towards Europa's colour; unimaged polar gaps filled.",
+  "solar:moon:ganymede": "Surface: Voyager–Galileo colour mosaic (USGS / NASA–JPL); unimaged polar gaps filled.",
+  "solar:moon:callisto": "Surface: Voyager–Galileo mosaic (USGS / NASA–JPL). Monochrome, tinted and brightened for display; gaps filled.",
+  "solar:moon:titan": "Surface: Cassini 938 nm mosaic seen through the haze (USGS / NASA–JPL–SSI), tinted orange.",
+  "solar:moon:enceladus": "Surface: Cassini global mosaic (USGS / NASA–JPL–SSI). Monochrome, lightly tinted.",
+  "solar:moon:tethys": "Surface: Cassini global mosaic (USGS / NASA–JPL–SSI). Monochrome, lightly tinted.",
+  "solar:moon:triton": "Surface: Voyager 2 colour mosaic (USGS / NASA–JPL). Voyager saw only the southern hemisphere; the north is filled with a neutral colour.",
+};
+
 export const ObjectPanel: FC<{
   entity: UniverseEntity;
   facts: Fact[];
@@ -240,9 +253,7 @@ export const ObjectPanel: FC<{
   const illustrative =
     entity.kind === "galaxy" || entity.kind === "nebula" || entity.kind === "structure" || entity.kind === "black-hole" || entity.kind === "exoplanet-system"
       ? "Position and size are catalogue values; the rendered structure is an illustrative model."
-      : entity.solarId && ["solar:moon:io", "solar:moon:europa", "solar:moon:ganymede", "solar:moon:callisto", "solar:moon:titan", "solar:moon:enceladus"].includes(entity.id)
-        ? "Surface is a procedural illustration; position comes from the Astronomy Engine ephemeris."
-        : undefined;
+      : SURFACE_NOTES[entity.id];
   return (
     <aside className="ex-panel" aria-label={`${entity.name} details`}>
       <header className="ex-panel__head">

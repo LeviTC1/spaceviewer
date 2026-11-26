@@ -29,9 +29,16 @@ const QUALITY_OPTIONS: Array<{ value: AstroQualitySelection; label: string; deta
 
 const CREDITS = [
   ["Photographs", "NASA Image and Video Library · SDSS DR18 (Sloan Digital Sky Survey) · Pan-STARRS1 (STScI MAST)"],
-  ["Stars", "ESA Gaia DR3 (positions, parallaxes, photometry) · ESA/Gaia/DPAC EDR3 all-sky map"],
+  ["Sky photographs", "Digitized Sky Survey (STScI/NASA; produced under U.S. Government grant NAG W-2166) · colour HiPS by CDS Strasbourg · served by ESA ESASky"],
+  ["Stars", "ESA Gaia DR3 (positions, parallaxes, photometry; ESA Gaia Archive) · ESA/Gaia/DPAC EDR3 all-sky map · bright stars from XHIP (Anderson & Francis 2012) and Hipparcos (ESA; van Leeuwen 2007) via CDS VizieR · named nearby stars from SIMBAD (CDS)"],
+  ["Constellations", "IAU figures from d3-celestial by Olaf Frohn (BSD-3-Clause) · star names: IAU Working Group on Star Names · boundaries: IAU"],
+  ["Tonight's sky", "Your place stays on this device: a city from the tz database (public domain) or your browser's location · sidereal time and precession per IAU 1982/1976 · planet magnitudes after Mallama & Hilton 2018"],
+  ["Exoplanets", "NASA Exoplanet Archive, Planetary Systems Composite Parameters (NExScI/Caltech-IPAC) · habitable zones after Kasting et al. 1993"],
   ["Deep sky", "OpenNGC (CC-BY-SA 4.0) · McConnachie / LVDB Local Group · DESI DR1 light cone"],
-  ["Solar System", "VSOP87C · Astronomy Engine 2.1.19 · JPL Horizons & SBDB · IAU WGCCRE orientations"],
+  ["Solar System", "VSOP87A (Bretagnon & Francou) · Astronomy Engine 2.1.19 · JPL Horizons (Pluto) · IAU WGCCRE orientations"],
+  ["Spacecraft", "Trajectories: NASA/JPL Horizons · Earth orbiters: CelesTrak elements (US Space Force 18 SDS), SGP4 via satellite.js (MIT)"],
+  ["Asteroids & comets", "JPL Small-Body Database orbits · planet magnitudes after Mallama & Hilton 2018 · comet tails are a geometric model"],
+  ["Moon maps", "NASA SVS CGI Moon Kit (LRO LROC/LOLA) · USGS Astrogeology global mosaics from Galileo, Voyager and Cassini"],
   ["Milky Way", "Reid et al. 2019, ApJ 885, 131 (spiral arms)"],
   ["Live", "NASA, Sen and NASASpaceflight on YouTube · NASA SDO · ESA/NASA SOHO · NASA EPIC / NOAA DSCOVR · NOAA GOES and SWPC"],
   ["Homepage", "“Cosmic Cliffs”: NASA, ESA, CSA, STScI (CC BY 4.0)"],

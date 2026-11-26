@@ -56,6 +56,10 @@ export interface ExoplanetCatalogSystem {
   stellarTemperatureErrorPlusK?: number;
   stellarTemperatureErrorMinusK?: number;
   spectralType?: string;
+  /** Derived from stellar luminosity (Kasting et al. 1993 flux limits); not a measurement. */
+  stellarLuminositySolar?: number;
+  stellarLuminositySource?: string;
+  habitableZone?: { innerAu: number; outerAu: number; method: string };
   gaiaDr3Crossmatch?: ExoplanetGaiaDr3Crossmatch;
   planets: ExoplanetCatalogPlanet[];
 }
@@ -221,7 +225,7 @@ export const validateExoplanetCatalogChunk = (
     ids.add(system.id);
     [system.raDeg, system.decDeg, system.distancePc, system.distanceLy, system.positionLy.x, system.positionLy.y, system.positionLy.z]
       .forEach((number, index) => assertFinite(number, `${system.hostName} field ${index}`));
-    if (system.raDeg < definition.raMinDeg || system.raDeg >= definition.raMaxDeg || system.distancePc <= 0 || system.distancePc > 100) {
+    if (system.raDeg < definition.raMinDeg || system.raDeg >= definition.raMaxDeg || system.distancePc <= 0 || system.distancePc > 20_000) {
       throw new Error(`Exoplanet system ${system.hostName} is outside its declared selection or chunk.`);
     }
     const match = system.gaiaDr3Crossmatch;

@@ -26,6 +26,7 @@ import {
   type Mesh,
 } from "three";
 import type { DecodedStarCatalogChunk } from "../../../lib/catalog/starCatalogTypes";
+import type { GalaxyStarChunk } from "../galaxyStars";
 import { blackbodyColor } from "../engine/universeModel";
 import { KM_PER_LY, galacticToWorld, icrsToWorld } from "../engine/units";
 import { MAGNITUDE_POINT_GLSL, useEngine } from "./EngineContext";
@@ -148,6 +149,68 @@ export const StarField: FC<{ chunks: DecodedStarCatalogChunk[] }> = ({ chunks })
 };
 
 // ---------------------------------------------------------------------------------------------
+// The Gaia "galaxy" layer: ~1M more stars streamed brightest-first. Same shader and PSF as the nearby
+// field, one draw call per chunk so each arriving chunk is uploaded once and never rebuilt.
+
+const GalaxyChunkPoints: FC<{ chunk: GalaxyStarChunk; material: ShaderMaterial }> = ({ chunk, material }) => {
+  const geometry = useMemo(() => {
+    const g = new BufferGeometry();
+    g.setAttribute("position", new BufferAttribute(chunk.positions, 3));
+    g.setAttribute("aAbsMag", new BufferAttribute(chunk.absMag, 1));
+    g.setAttribute("aColor", new BufferAttribute(chunk.colors, 3));
+    return g;
+  }, [chunk]);
+  useEffect(() => () => geometry.dispose(), [geometry]);
+  return <points geometry={geometry} material={material} frustumCulled={false} renderOrder={-21} />;
+};
+
+export const GalaxyStars: FC<{ chunks: GalaxyStarChunk[] }> = ({ chunks }) => {
+  const engine = useEngine();
+  const material = useMemo(
+    () =>
+      new ShaderMaterial({
+        vertexShader: STAR_VERTEX,
+        fragmentShader: STAR_FRAGMENT,
+        uniforms: {
+          uCamLy: { value: [0, 0, 0] },
+          uLyToRender: { value: 1 },
+          uCompress: { value: 1e6 },
+          uLimitMag: { value: 6.5 },
+          uPixelRatio: { value: 1 },
+          uGain: { value: 1 },
+        },
+        transparent: true,
+        depthWrite: false,
+        depthTest: true,
+        blending: AdditiveBlending,
+      }),
+    [],
+  );
+  useEffect(() => () => material.dispose(), [material]);
+  useFrame(() => {
+    const u = material.uniforms;
+    u.uCamLy.value = [engine.cameraWorld[0] / KM_PER_LY, engine.cameraWorld[1] / KM_PER_LY, engine.cameraWorld[2] / KM_PER_LY];
+    u.uLyToRender.value = KM_PER_LY / engine.unitKm;
+    u.uCompress.value = engine.compressRadius;
+    // At home these stars are naked-eye faint and the sky photograph already carries their light, so
+    // they share the nearby field's exposure. Out among them (where that photograph no longer applies)
+    // they are the only measured view there is: expose up to 3 magnitudes deeper, like binoculars.
+    const fromSunLy = Math.hypot(engine.cameraWorld[0], engine.cameraWorld[1], engine.cameraWorld[2]) / KM_PER_LY;
+    const t = Math.min(1, Math.max(0, (Math.log10(Math.max(1, fromSunLy)) - 2) / (Math.log10(1_500) - 2)));
+    u.uLimitMag.value = 6.8 + engine.exposure + 3 * t * t * (3 - 2 * t);
+    u.uPixelRatio.value = engine.pixelRatio;
+    u.uGain.value = 1;
+  });
+  return (
+    <>
+      {chunks.map((chunk, index) => (
+        <GalaxyChunkPoints key={index} chunk={chunk} material={material} />
+      ))}
+    </>
+  );
+};
+
+// ---------------------------------------------------------------------------------------------
 
 const PANORAMA_VERTEX = /* glsl */ `
 varying vec3 vDir;
@@ -225,7 +288,9 @@ export const SkyPanorama: FC = () => {
     const mesh = meshRef.current;
     if (!mesh) return;
     // Exposure: dim the sky when sunlit bodies or the Sun dominate the frame.
-    const gain = engine.panoramaWeight * Math.pow(10, 0.4 * Math.min(0, engine.exposure)) ;
+    // From the ground, the Milky Way only appears once twilight has gone (Sun ≈ 15° or more below the horizon).
+    const twilight = engine.groundFrame ? Math.min(1, Math.max(0, (engine.sunAltitudeDeg + 11) / -6)) : 1;
+    const gain = engine.panoramaWeight * Math.pow(10, 0.4 * Math.min(0, engine.exposure)) * twilight * twilight * (3 - 2 * twilight);
     material.uniforms.uGain.value = gain;
     mesh.visible = gain > 0.002;
   });

@@ -16,12 +16,22 @@ import { bindCameraInput, ExplorerCamera, type CameraEvent, type CameraTargetInf
 import { createEngineState, pixelRadiusOf, type EngineState } from "./engine/engineState";
 import { frameDistanceForRadius } from "./engine/flight";
 import { createLabelLayer, type LabelLayer } from "./engine/labels";
-import { getEntityWorld, type UniverseEntity, type UniverseIndex } from "./engine/universeModel";
+import { getEntityRenderWorld, getEntityWorld, type UniverseEntity, type UniverseIndex } from "./engine/universeModel";
 import { GALACTIC_CENTRE_WORLD, GALACTIC_NORTH_WORLD, KM_PER_LY, cross3, dot3, normalize3, type Vec3 } from "./engine/units";
 import { EngineContext } from "./render/EngineContext";
 import { DeepSkyMarkers, GalaxyLayer } from "./render/GalaxyLayer";
 import { NebulaClusterLayer } from "./render/NebulaClusterLayer";
-import { SkyPanorama, StarField } from "./render/SkyLayers";
+import { GalaxyStars, SkyPanorama, StarField } from "./render/SkyLayers";
+import { ConstellationLayer } from "./render/ConstellationLayer";
+import { GroundLayer } from "./render/GroundLayer";
+import { SpacecraftLayer } from "./render/SpacecraftLayer";
+import { MinorBodyLayer } from "./render/MinorBodyLayer";
+import { CometTails } from "./render/CometTails";
+import type { MinorBodyOrbits } from "./minorBodies";
+import { altAz, horizonFrame, observerWorld, skyExposureStops } from "./engine/observer";
+import type { SkyCulture } from "./skyCulture";
+import { SkyPhotoLayer } from "./render/SkyPhotoLayer";
+import type { GalaxyStarChunk } from "./galaxyStars";
 import { SolarBodies } from "./render/SolarBodies";
 import { BlackHole, ExoplanetSystem, OrbitLines, StarBody } from "./render/SystemLayers";
 
@@ -36,6 +46,8 @@ export interface CameraSnapshot {
   simTimeMs: number;
   rate: number;
   paused: boolean;
+  /** Standing on the Earth: the Sun's altitude above the horizon (degrees), else null. */
+  sunAltitudeDeg?: number | null;
 }
 
 export interface UniverseViewportHandle {
@@ -48,12 +60,18 @@ export interface UniverseViewportHandle {
   setPaused: (paused: boolean) => void;
   getSnapshot: () => CameraSnapshot;
   restore: (snapshot: { targetId: string | null; distanceKm: number; direction: Vec3 }) => void;
-  setToggles: (toggles: { orbits?: boolean; labels?: boolean }) => void;
+  setToggles: (toggles: { orbits?: boolean; labels?: boolean; constellations?: boolean; minorBodies?: boolean }) => void;
   setIdleSpin: (radPerSecond: number) => void;
   /** Place the camera around a target at an explicit pose (opening scene, shared links). */
   placeAt: (id: string, distanceKm: number, direction: Vec3, animate: boolean) => void;
   /** Render the current view and copy it into a new 2D canvas (postcards, saved-view thumbnails). */
   capture: () => HTMLCanvasElement | null;
+  /** Stand on the Earth at a place and look around (null leaves the ground). */
+  setGround: (place: { latDeg: number; lonDeg: number } | null, look?: { azDeg: number; altDeg: number }) => void;
+  /** Ground mode: turn to face an object. Returns where it is in the sky, or null if it has no position. */
+  lookAtObject: (id: string) => { altDeg: number; azDeg: number } | null;
+  /** Ground mode: altitude / azimuth of an object at a given instant (default now). */
+  skyPosition: (id: string, timeMs?: number) => { altDeg: number; azDeg: number } | null;
   /** Lens: vertical field of view in degrees (50 normal; a few degrees or less is a telescope view). */
   setFov: (degrees: number) => void;
   engine: EngineState;
@@ -82,6 +100,14 @@ function CaptureBridge({ target }: { target: { current: (() => HTMLCanvasElement
 interface UniverseViewportProps {
   index: UniverseIndex;
   starChunks: DecodedStarCatalogChunk[];
+  /** The streamed Gaia galaxy layer (brightest first). */
+  galaxyChunks?: GalaxyStarChunk[];
+  /** Naked-eye stars Gaia cannot measure (Hipparcos / XHIP). */
+  brightChunks?: GalaxyStarChunk[];
+  /** IAU constellation figures joined between real stars. */
+  skyCulture?: SkyCulture | null;
+  /** Asteroid belt, Trojans, centaurs and Kuiper Belt (JPL SBDB). */
+  minorOrbits?: MinorBodyOrbits | null;
   selectedId: string | null;
   hoveredId: string | null;
   contextId?: string | null;
@@ -145,7 +171,8 @@ export const framingRadiusFor = (entity: UniverseEntity, framing: "auto" | "clos
     case "comet":
       return entity.radiusKm * 6;
     case "spacecraft":
-      return 0.009; // ~9 m: the 3.7 m dish and 13 m boom fill the frame
+      // Frame the whole craft: Voyager's 13 m boom, the ISS's 109 m truss.
+      return Math.max(0.009, entity.radiusKm * 1.15);
     case "star":
       return framing === "context" ? KM_PER_LY * 1.5 : entity.radiusKm * 3;
     case "exoplanet-system":
@@ -180,6 +207,10 @@ const Driver = ({
   const lastWorld = useRef<Vec3 | null>(null);
   const basis = useMemo(() => new Matrix4(), []);
   const exposureRef = useRef(0);
+  useEffect(() => {
+    const hook = (window as unknown as { __svExplorer?: Record<string, unknown> }).__svExplorer;
+    if (import.meta.env.DEV && hook) hook.scene = three.scene;
+  }, [three.scene]);
 
   useFrame((_, delta) => {
     const now = performance.now();
@@ -203,7 +234,22 @@ const Driver = ({
       if (!world) return null;
       return { id, world, minDistance: minDistanceFor(entity), up: targetUpFor(entity) };
     };
-    const pose = camera.update(delta, now, resolve);
+    let pose;
+    const earthEntity = camera.ground ? engine.index.byId.get("solar:planet:earth") : undefined;
+    const earthWorld = earthEntity ? getEntityWorld(earthEntity, engine.simTimeMs) : null;
+    if (camera.ground && earthWorld) {
+      // Standing on the Earth: the horizon frame turns with the planet.
+      const frame = horizonFrame(camera.ground.latDeg, camera.ground.lonDeg, engine.simTimeMs);
+      const eye = observerWorld(earthWorld, frame);
+      pose = camera.updateGround(delta, now, frame, eye);
+      engine.groundFrame = frame;
+      const sunUp = dot3(normalize3([-eye[0], -eye[1], -eye[2]]), frame.zenith);
+      engine.sunAltitudeDeg = (Math.asin(Math.min(1, Math.max(-1, sunUp))) * 180) / Math.PI;
+      engine.fovY = (camera.groundFovDeg * Math.PI) / 180;
+    } else {
+      engine.groundFrame = null;
+      pose = camera.update(delta, now, resolve);
+    }
     engine.trackedId = camera.flight?.toId ?? camera.targetId;
     engine.cameraWorld = pose.world;
     engine.cameraTarget = pose.target;
@@ -235,6 +281,8 @@ const Driver = ({
       const isSolar = Boolean(entity.solarId) || entity.kind === "sun";
       if (!isSolar && entity.kind !== "star" && entity.kind !== "black-hole") continue;
       if (entity.kind === "star" && entity.id !== engine.selectedId && entity.id !== engine.trackedId) continue;
+      // From the ground the Earth is underfoot, not a body in view.
+      if (engine.groundFrame && entity.id === "solar:planet:earth") continue;
       const world = getEntityWorld(entity, engine.simTimeMs);
       if (!world) continue;
       const d = Math.hypot(world[0] - pose.world[0], world[1] - pose.world[1], world[2] - pose.world[2]);
@@ -258,6 +306,8 @@ const Driver = ({
         }
       }
     }
+    // From the ground, satellites pass a few hundred km overhead: keep the near plane close.
+    if (engine.groundFrame) nearestSurface = Math.min(nearestSurface, 50);
     const nearUnits = Math.min(0.5, Math.max(1e-9, (nearestSurface * 0.35) / engine.unitKm));
     const reversed = three.gl.capabilities.reversedDepthBuffer === true;
     engine.near = nearUnits;
@@ -266,7 +316,11 @@ const Driver = ({
     // Exposure (stops): bright resolved bodies push the sky down; the Sun pushes harder.
     const planetStops = litCoverage > 6 ? -Math.min(4.2, Math.log2(litCoverage / 6) * 0.95) : 0;
     const sunStops = sunPixels > 0.5 ? -Math.min(6, 2.5 + Math.log2(1 + sunPixels) * 0.7) : 0;
-    const targetExposure = Math.min(planetStops, sunStops);
+    let targetExposure = Math.min(planetStops, sunStops);
+    if (engine.groundFrame) {
+      // From the ground the sky itself sets the exposure: daylight, then twilight, then night.
+      targetExposure = Math.min(targetExposure, skyExposureStops(engine.sunAltitudeDeg));
+    }
     const k = 1 - Math.exp(-delta * 2.2);
     exposureRef.current += (targetExposure - exposureRef.current) * k;
     engine.exposure = exposureRef.current;
@@ -316,6 +370,7 @@ const Driver = ({
         simTimeMs: engine.simTimeMs,
         rate: engine.rate,
         paused: engine.paused,
+        sunAltitudeDeg: engine.groundFrame ? engine.sunAltitudeDeg : null,
       });
     }
   }, -10);
@@ -338,6 +393,10 @@ const UniverseViewport = forwardRef<UniverseViewportHandle, UniverseViewportProp
   const {
     index,
     starChunks,
+    galaxyChunks = [],
+    brightChunks = [],
+    skyCulture = null,
+    minorOrbits = null,
     selectedId,
     hoveredId,
     contextId = null,
@@ -376,8 +435,13 @@ const UniverseViewport = forwardRef<UniverseViewportHandle, UniverseViewportProp
   engine.reducedMotion = reducedMotion;
   const camera = useMemo(() => new ExplorerCamera(), []);
   camera.reducedMotion = reducedMotion;
+  useEffect(() => {
+    // Development only: lets headless checks inspect the engine and camera.
+    if (import.meta.env.DEV) (window as unknown as { __svExplorer?: unknown }).__svExplorer = { engine, camera };
+  }, [camera, engine]);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const labelsRef = useRef<HTMLDivElement | null>(null);
+  const figureLabelsRef = useRef<HTMLDivElement | null>(null);
   const labelLayer = useRef<LabelLayer | null>(null);
   const callbacks = useRef({ onSelect, onHover, onFlyRequest, onCameraEvent, onReport });
   useLayoutEffect(() => {
@@ -504,11 +568,11 @@ const UniverseViewport = forwardRef<UniverseViewportHandle, UniverseViewportProp
         (toSun[2] * Math.cos(a) + side[2] * Math.sin(a)) * Math.cos(e) + up[2] * Math.sin(e),
       ]);
     } else if (entity.kind === "galaxy" && entity.galaxy) {
-      // Arrive along our own line of sight, slightly offset: the galaxy as we know it from Earth
-      // (Andromeda inclined, the Sombrero edge-on). Orbiting from there reveals the rest.
+      // Arrive along our own line of sight, ~5° off: the galaxy as we know it from Earth (Andromeda
+      // inclined, the Sombrero edge-on), where its survey photograph lines up. Orbiting reveals the rest.
       const fromSun = normalize3(world);
       const side = normalize3(cross3(up, fromSun));
-      direction = normalize3([-fromSun[0] * 0.97 + side[0] * 0.2 + up[0] * 0.12, -fromSun[1] * 0.97 + side[1] * 0.2 + up[1] * 0.12, -fromSun[2] * 0.97 + side[2] * 0.2 + up[2] * 0.12]);
+      direction = normalize3([-fromSun[0] + side[0] * 0.075 + up[0] * 0.045, -fromSun[1] + side[1] * 0.075 + up[1] * 0.045, -fromSun[2] + side[2] * 0.075 + up[2] * 0.045]);
     } else if (entity.kind === "galaxy" || entity.kind === "structure") {
       // Show the disk at ~55° so arms and thickness both read; approach from our side of the sky.
       const fromSun = normalize3(world);
@@ -532,10 +596,11 @@ const UniverseViewport = forwardRef<UniverseViewportHandle, UniverseViewportProp
         direction = normalize3([sunSide[0] * 0.55 + n[0] * 0.83, sunSide[1] * 0.55 + n[1] * 0.83, sunSide[2] * 0.55 + n[2] * 0.83]);
       }
     } else {
-      // Approach along our line of sight from the Sun, slightly offset: what we see from Earth, enlarged.
+      // Approach along our line of sight from the Sun, ~5° off: what we see from Earth, enlarged, with
+      // its survey photograph in register. Orbiting away hands over to the 3-D model.
       const fromSun = normalize3(world);
       const side = normalize3(cross3(up, fromSun));
-      direction = normalize3([-fromSun[0] * 0.92 + side[0] * 0.3 + up[0] * 0.18, -fromSun[1] * 0.92 + side[1] * 0.3 + up[1] * 0.18, -fromSun[2] * 0.92 + side[2] * 0.3 + up[2] * 0.18]);
+      direction = normalize3([-fromSun[0] + side[0] * 0.075 + up[0] * 0.045, -fromSun[1] + side[1] * 0.075 + up[1] * 0.045, -fromSun[2] + side[2] * 0.075 + up[2] * 0.045]);
     }
     return { world, distance: Math.max(minDistanceFor(entity), distance), direction, up };
   };
@@ -611,7 +676,52 @@ const UniverseViewport = forwardRef<UniverseViewportHandle, UniverseViewportProp
       camera.idleSpin = radPerSecond;
     },
     setFov: (degrees) => {
+      if (camera.ground) {
+        camera.groundFovGoal = Math.min(100, Math.max(0.5, degrees));
+        return;
+      }
       engine.fovY = (Math.min(80, Math.max(0.05, degrees)) * Math.PI) / 180;
+    },
+    setGround: (place, look) => {
+      if (place) {
+        camera.enterGround(place, look);
+        camera.groundFovDeg = camera.groundFovGoal = 70;
+        engine.fovY = (70 * Math.PI) / 180;
+        return;
+      }
+      if (!camera.ground) return;
+      camera.leaveGround();
+      engine.groundFrame = null;
+      engine.fovY = (50 * Math.PI) / 180;
+      const earth = index.byId.get("solar:planet:earth");
+      const arrival = earth ? computeArrival(earth, "system", false) : null;
+      if (earth && arrival) camera.setPose({ id: earth.id, world: arrival.world, minDistance: minDistanceFor(earth), up: arrival.up }, arrival.distance, arrival.direction);
+    },
+    skyPosition: (id, timeMs) => {
+      const entity = index.byId.get(id);
+      const earth = index.byId.get("solar:planet:earth");
+      if (!entity || !earth || !camera.ground) return null;
+      const t = timeMs ?? engine.simTimeMs;
+      const earthWorld = getEntityWorld(earth, t);
+      if (!earthWorld) return null;
+      const frame = horizonFrame(camera.ground.latDeg, camera.ground.lonDeg, t);
+      const eye = observerWorld(earthWorld, frame);
+      const world = getEntityRenderWorld(entity, t, eye);
+      return altAz([world[0] - eye[0], world[1] - eye[1], world[2] - eye[2]], frame);
+    },
+    lookAtObject: (id) => {
+      const entity = index.byId.get(id);
+      const earth = index.byId.get("solar:planet:earth");
+      if (!entity || !earth || !camera.ground) return null;
+      const earthWorld = getEntityWorld(earth, engine.simTimeMs);
+      if (!earthWorld) return null;
+      const frame = horizonFrame(camera.ground.latDeg, camera.ground.lonDeg, engine.simTimeMs);
+      const eye = observerWorld(earthWorld, frame);
+      const world = getEntityRenderWorld(entity, engine.simTimeMs, eye);
+      const where = altAz([world[0] - eye[0], world[1] - eye[1], world[2] - eye[2]], frame);
+      // Below the horizon: face its compass direction just above the ground.
+      camera.lookAtAltAz(where.azDeg, Math.max(where.altDeg, 12), performance.now());
+      return where;
     },
     placeAt: (id, distanceKm, direction, animate) => {
       const entity = index.byId.get(id);
@@ -625,8 +735,24 @@ const UniverseViewport = forwardRef<UniverseViewportHandle, UniverseViewportProp
     setToggles: (toggles) => {
       if (toggles.orbits !== undefined) engine.showOrbits = toggles.orbits;
       if (toggles.labels !== undefined) engine.showLabels = toggles.labels;
+      if (toggles.constellations !== undefined) engine.showConstellations = toggles.constellations;
+      if (toggles.minorBodies !== undefined) engine.showMinorBodies = toggles.minorBodies;
     },
   }));
+
+  // The figure a selected star belongs to is drawn brighter.
+  const highlightFigure = useMemo(() => {
+    if (!skyCulture || !selectedId) return null;
+    const entity = index.byId.get(selectedId);
+    if (!entity || entity.kind !== "star") return null;
+    let hip = selectedId.startsWith("hip:") ? Number(selectedId.slice(4)) : NaN;
+    if (!Number.isFinite(hip)) {
+      const alias = entity.aliases.find((value) => /^HIP \d+$/.test(value));
+      hip = alias ? Number(alias.slice(4)) : NaN;
+    }
+    const star = Number.isFinite(hip) ? skyCulture.starsByHip.get(hip) : undefined;
+    return skyCulture.constellations.find((figure) => figure.id === star?.constellation)?.name ?? null;
+  }, [index, selectedId, skyCulture]);
 
   const deepSkyMarkers = useMemo(
     () => index.entities.filter((entity) => entity.kind === "galaxy" || entity.kind === "nebula" || entity.kind === "cluster" || entity.kind === "structure"),
@@ -657,14 +783,23 @@ const UniverseViewport = forwardRef<UniverseViewportHandle, UniverseViewportProp
             <SkyPanorama />
           </Suspense>
           <StarField chunks={starChunks} />
+          <GalaxyStars chunks={galaxyChunks} />
+          {brightChunks.length ? <GalaxyStars chunks={brightChunks} /> : null}
+          {skyCulture ? <ConstellationLayer culture={skyCulture} labelsRoot={figureLabelsRef} highlight={highlightFigure} /> : null}
           <DeepSkyMarkers entities={deepSkyMarkers} />
           <GalaxyLayer />
           <NebulaClusterLayer />
+          <SkyPhotoLayer selectedId={selectedId} />
           <OrbitLines />
+          {minorOrbits ? <MinorBodyLayer orbits={minorOrbits} /> : null}
           <SolarBodies />
+          <SpacecraftLayer selectedId={selectedId} />
+          <CometTails />
           <SelectedExtras engine={engine} selectedId={selectedId} />
+          <GroundLayer labelsRoot={figureLabelsRef} />
         </EngineContext.Provider>
       </Canvas>
+      <div ref={figureLabelsRef} className="ex-figure-labels" />
       <div ref={labelsRef} className="ex-labels" />
     </div>
   );

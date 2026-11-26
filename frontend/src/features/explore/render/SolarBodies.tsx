@@ -38,7 +38,20 @@ import { MAGNITUDE_POINT_GLSL, magnitudeToPoint, useEngine } from "./EngineConte
 import { NOISE_GLSL } from "./glsl";
 
 const BASE = "/solar-textures/high";
-const TEXTURES: Record<string, { map?: string; night?: string; clouds?: string; spec?: string; ring?: string }> = {
+const MOONS_4K = "/solar-textures/moons/4k";
+const MOONS_8K = "/solar-textures/moons/8k";
+
+// Real global mosaics (public domain, USGS Astrogeology / NASA–JPL; Moon: NASA SVS LRO colour).
+// `mapHigh` is streamed only when the body fills a large part of the screen on High/Ultra quality.
+const TEXTURES: Record<string, { map?: string; mapHigh?: string; night?: string; clouds?: string; spec?: string; ring?: string }> = {
+  "solar:moon:io": { map: `${MOONS_4K}/io.jpg`, mapHigh: `${MOONS_8K}/io.jpg` },
+  "solar:moon:europa": { map: `${MOONS_4K}/europa.jpg`, mapHigh: `${MOONS_8K}/europa.jpg` },
+  "solar:moon:ganymede": { map: `${MOONS_4K}/ganymede.jpg`, mapHigh: `${MOONS_8K}/ganymede.jpg` },
+  "solar:moon:callisto": { map: `${MOONS_4K}/callisto.jpg`, mapHigh: `${MOONS_8K}/callisto.jpg` },
+  "solar:moon:titan": { map: `${MOONS_4K}/titan.jpg` },
+  "solar:moon:enceladus": { map: `${MOONS_4K}/enceladus.jpg`, mapHigh: `${MOONS_8K}/enceladus.jpg` },
+  "solar:moon:tethys": { map: `${MOONS_4K}/tethys.jpg`, mapHigh: `${MOONS_8K}/tethys.jpg` },
+  "solar:moon:triton": { map: `${MOONS_4K}/triton.jpg`, mapHigh: `${MOONS_8K}/triton.jpg` },
   "solar:planet:mercury": { map: `${BASE}/2k_mercury.jpg` },
   "solar:planet:venus": { map: `${BASE}/2k_venus_surface.jpg` },
   "solar:planet:earth": {
@@ -53,7 +66,7 @@ const TEXTURES: Record<string, { map?: string; night?: string; clouds?: string; 
   "solar:planet:uranus": { map: `${BASE}/2k_uranus.jpg` },
   "solar:planet:neptune": { map: `${BASE}/2k_neptune.jpg` },
   "solar:planet:pluto": { map: `${BASE}/2k_pluto.jpg` },
-  "solar:moon:moon": { map: `${BASE}/moon_1024.jpg` },
+  "solar:moon:moon": { map: `${MOONS_4K}/moon.jpg`, mapHigh: `${MOONS_8K}/moon.jpg` },
   "solar:sun": { map: `${BASE}/2k_sun.jpg` },
 };
 const DETAIL_TEXTURE = `${BASE}/moon_1024.jpg`;
@@ -78,13 +91,8 @@ const ATMOSPHERES: Record<string, { color: [number, number, number]; thickness: 
 };
 
 // Surface style for bodies without a measured global map (procedural, disclosed as illustrative).
+// The Galilean moons, Titan and Enceladus now use real mosaics; only Venus's cloud deck stays procedural.
 const SURFACE_STYLE: Record<string, number> = {
-  "solar:moon:io": 1,
-  "solar:moon:europa": 2,
-  "solar:moon:ganymede": 3,
-  "solar:moon:callisto": 4,
-  "solar:moon:titan": 5,
-  "solar:moon:enceladus": 2,
   "solar:planet:venus": 6,
 };
 
@@ -563,6 +571,7 @@ const Body: FC<{ entity: UniverseEntity }> = ({ entity }) => {
   const style = SURFACE_STYLE[entity.id] ?? 0;
   const mapUrl = textures.map ?? (entity.kind === "moon" || entity.kind === "dwarf-planet" || entity.kind === "comet" ? DETAIL_TEXTURE : undefined);
   const mapTex = useLazyTexture(mapUrl, true);
+  const mapHighTex = useLazyTexture(textures.mapHigh, true);
   const nightTex = useLazyTexture(textures.night, true);
   const cloudTex = useLazyTexture(textures.clouds, true, false);
   const specTex = useLazyTexture(textures.spec, true, false);
@@ -680,7 +689,8 @@ const Body: FC<{ entity: UniverseEntity }> = ({ entity }) => {
     const mesh = meshRef.current;
     if (!group || !mesh) return;
     const world = getEntityWorld(entity, engine.simTimeMs);
-    if (!world) {
+    // Standing on the Earth, the planet is the ground underfoot (drawn by the ground layer).
+    if (!world || (engine.groundFrame && entity.id === "solar:planet:earth")) {
       group.visible = false;
       return;
     }
@@ -709,7 +719,9 @@ const Body: FC<{ entity: UniverseEntity }> = ({ entity }) => {
     u.uBodyCenter.value.copy(centerVec);
     u.uBodyRadius.value = entity.radiusKm * kmToRender;
     const near = bodyPixels > 3;
-    const map = near ? mapTex.get() : null;
+    // Stream the 8K map only when the body is big on screen and the quality tier can afford it.
+    const wantsHigh = Boolean(textures.mapHigh) && bodyPixels > 520 && (engine.quality === "high" || engine.quality === "ultra");
+    const map = (wantsHigh ? mapHighTex.get() : null) ?? (near ? mapTex.get() : null);
     if (map) {
       u.uMap.value = map;
       u.uHasMap.value = 1;
@@ -993,89 +1005,10 @@ const BodyMarkers: FC<{ entities: UniverseEntity[] }> = ({ entities }) => {
   return <points ref={pointsRef} geometry={geometry} material={material} frustumCulled={false} renderOrder={20} />;
 };
 
-// ---------------------------------------------------------------------------------------------
-// Voyager: simplified silhouette from published dimensions — 3.66 m high-gain antenna, decagonal bus
-// (1.78 m across, 0.47 m tall), 13 m magnetometer boom, RTG boom. Appears once it resolves.
-
-const CRAFT_VERTEX = BODY_VERTEX;
-const CRAFT_FRAGMENT = /* glsl */ `
-uniform vec3 uColor;
-uniform vec3 uSunDir;
-varying vec3 vNormalW;
-varying vec3 vPosW;
-varying vec2 vUv;
-varying vec3 vLocal;
-void main() {
-  vec3 n = normalize(vNormalW);
-  vec3 v = normalize(cameraPosition - vPosW);
-  if (dot(n, v) < 0.0) n = -n;
-  float d = max(dot(n, uSunDir), 0.0);
-  vec3 h = normalize(uSunDir + v);
-  float spec = pow(max(dot(n, h), 0.0), 40.0) * 0.6;
-  gl_FragColor = vec4(uColor * (0.03 + d * 1.1) + vec3(spec), 1.0);
-  #include <tonemapping_fragment>
-  #include <colorspace_fragment>
-}
-`;
-
-const craftMaterial = (color: [number, number, number]) =>
-  new ShaderMaterial({
-    vertexShader: CRAFT_VERTEX,
-    fragmentShader: CRAFT_FRAGMENT,
-    uniforms: { uColor: { value: new Vector3(...color) }, uSunDir: { value: new Vector3(1, 0, 0) } },
-    side: DoubleSide,
-  });
-
-const SpacecraftModel: FC<{ entity: UniverseEntity }> = ({ entity }) => {
-  const engine = useEngine();
-  const groupRef = useRef<Group | null>(null);
-  const materials = useMemo(() => ({ dish: craftMaterial([0.9, 0.9, 0.88]), bus: craftMaterial([0.55, 0.5, 0.4]), boom: craftMaterial([0.6, 0.6, 0.62]), gold: craftMaterial([0.85, 0.66, 0.3]) }), []);
-  useEffect(() => () => Object.values(materials).forEach((m) => m.dispose()), [materials]);
-  useFrame(() => {
-    const group = groupRef.current;
-    if (!group) return;
-    const world = getEntityWorld(entity, engine.simTimeMs);
-    if (!world) return;
-    const kmToRender = placeRelative(engine, world, group.position);
-    group.scale.setScalar(0.001 * kmToRender); // model built in metres
-    const distance = Math.hypot(world[0] - engine.cameraWorld[0], world[1] - engine.cameraWorld[1], world[2] - engine.cameraWorld[2]);
-    group.visible = pixelRadiusOf(engine, 0.008, distance) > 2;
-    // High-gain antenna points back at Earth (≈ the Sun from this distance).
-    const toSun = normalize3([-world[0], -world[1], -world[2]]);
-    group.quaternion.setFromUnitVectors(new Vector3(0, 1, 0), new Vector3(...toSun));
-    Object.values(materials).forEach((m) => m.uniforms.uSunDir.value.set(toSun[0], toSun[1], toSun[2]));
-  });
-  return (
-    <group ref={groupRef}>
-      <mesh material={materials.dish} position={[0, 1.2, 0]} rotation={[Math.PI, 0, 0]}>
-        <sphereGeometry args={[2.6, 40, 12, 0, Math.PI * 2, 0, 0.78]} />
-      </mesh>
-      <mesh material={materials.bus} position={[0, 0, 0]}>
-        <cylinderGeometry args={[0.89, 0.89, 0.47, 10]} />
-      </mesh>
-      <mesh material={materials.gold} position={[0, -0.32, 0]}>
-        <cylinderGeometry args={[0.15, 0.15, 0.2, 16]} />
-      </mesh>
-      <mesh material={materials.boom} position={[6.6, -0.2, 0]} rotation={[0, 0, Math.PI / 2]}>
-        <cylinderGeometry args={[0.04, 0.04, 13, 6]} />
-      </mesh>
-      <mesh material={materials.boom} position={[-1.8, -0.3, 1.2]} rotation={[0.6, 0, Math.PI / 2.4]}>
-        <cylinderGeometry args={[0.05, 0.05, 2.6, 6]} />
-      </mesh>
-      <mesh material={materials.gold} position={[-2.9, -0.7, 1.9]} rotation={[0.6, 0, Math.PI / 2.4]}>
-        <cylinderGeometry args={[0.2, 0.2, 1.1, 10]} />
-      </mesh>
-      <mesh material={materials.boom} position={[-0.6, -0.5, -2.2]} rotation={[Math.PI / 2.3, 0, 0]}>
-        <cylinderGeometry args={[0.05, 0.05, 2.4, 6]} />
-      </mesh>
-    </group>
-  );
-};
-
 export const SolarBodies: FC = () => {
   const engine = useEngine();
   const entities = useMemo(
-    () => engine.index.entities.filter((entity) => entity.solarId || entity.kind === "spacecraft" || entity.kind === "sun"),
+    () => engine.index.entities.filter((entity) => entity.solarId || entity.trajectory || entity.kind === "spacecraft" || entity.kind === "sun"),
     [engine.index],
   );
   const sun = entities.find((entity) => entity.kind === "sun");
@@ -1091,9 +1024,6 @@ export const SolarBodies: FC = () => {
       {sun ? <Sun entity={sun} occluders={occluders} /> : null}
       {bodies.map((entity) => (
         <Body key={entity.id} entity={entity} />
-      ))}
-      {entities.filter((entity) => entity.kind === "spacecraft").map((entity) => (
-        <SpacecraftModel key={`craft-${entity.id}`} entity={entity} />
       ))}
       <BodyMarkers entities={markerEntities} />
     </group>

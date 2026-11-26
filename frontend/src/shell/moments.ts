@@ -7,7 +7,9 @@ export type MomentCamera =
   /** Stand at Earth and look at the subject, as an observer here would have. */
   | { mode: "from-earth" }
   /** Stand inside the Moon's shadow just above Earth, looking back at the Moon (eclipses). */
-  | { mode: "in-shadow" };
+  | { mode: "in-shadow" }
+  /** Ride with a spacecraft: the camera follows it, `distanceKm` behind, looking past it at `look`. */
+  | { mode: "ride-along"; look: string; distanceKm: number };
 
 export interface Moment {
   id: string;
@@ -44,14 +46,75 @@ export const MOMENTS: Moment[] = [
   {
     id: "new-horizons-pluto",
     title: "New Horizons reaches Pluto",
-    at: "2015-07-14T11:49:57Z",
-    subject: "solar:planet:pluto",
-    camera: { mode: "arrive" },
+    at: "2015-07-14T10:20:00Z",
+    subject: "spacecraft:new-horizons",
+    camera: { mode: "ride-along", look: "solar:planet:pluto", distanceKm: 0.02 },
+    rate: 60,
+    story:
+      "After nine and a half years and almost five billion kilometres, New Horizons passed 12,500 km above Pluto at 11:50 UTC. Ride along for the last ninety minutes: its photographs revealed a heart-shaped plain of nitrogen ice and mountains of water ice.",
+    note: "New Horizons follows its JPL Horizons trajectory and Pluto JPL's ephemeris for the encounter; the clock runs a minute a second. The spacecraft model is simplified.",
+    imageQuery: "Pluto New Horizons",
+  },
+  {
+    id: "juno-perijove-1",
+    title: "Juno's first close pass over Jupiter",
+    at: "2016-08-27T12:20:00Z",
+    subject: "spacecraft:juno",
+    camera: { mode: "ride-along", look: "solar:planet:jupiter", distanceKm: 0.06 },
+    rate: 30,
+    story:
+      "On 27 August 2016 Juno swept from pole to pole 4,200 km above Jupiter's cloud tops at 208,000 km/h, the closest any spacecraft had come. Every 53 days it dives in again, then swings out beyond the moons.",
+    note: "Juno and Jupiter are both positioned for the pass (JPL Horizons and VSOP87A agree to about a thousand kilometres); the clock runs thirty seconds a second.",
+    imageQuery: "Juno Jupiter",
+  },
+  {
+    id: "parker-closest",
+    title: "Parker Solar Probe touches the Sun",
+    at: "2024-12-24T09:30:00Z",
+    subject: "spacecraft:parker-solar-probe",
+    camera: { mode: "ride-along", look: "solar:sun", distanceKm: 0.012 },
+    rate: 300,
+    story:
+      "On Christmas Eve 2024 Parker Solar Probe passed 6.1 million km above the Sun's surface at 692,000 km/h, the fastest any human-made object has travelled, its heat shield facing temperatures near 1,000 °C.",
+    note: "Positions from JPL Horizons. The clock runs five minutes a second so you can watch it whip round the Sun.",
+    imageQuery: "Parker Solar Probe",
+  },
+  {
+    id: "jwst-arrives",
+    title: "Webb arrives at L2",
+    at: "2022-01-24T12:00:00Z",
+    subject: "spacecraft:jwst",
+    camera: { mode: "ride-along", look: "solar:planet:earth", distanceKm: 0.06 },
+    rate: 0,
+    story:
+      "A month after launch, the James Webb Space Telescope fired its thrusters for the last time on its outbound trip and settled into a halo orbit around the Sun–Earth L2 point, 1.5 million km from Earth, its sunshield always between it and the Sun, Earth and Moon.",
+    note: "Webb's position is its JPL Horizons trajectory. Look back past the sunshield to find the Earth and Moon.",
+    imageQuery: "James Webb Space Telescope",
+  },
+  {
+    id: "voyager-2-neptune",
+    title: "Voyager 2 at Neptune",
+    at: "1989-08-25T02:00:00Z",
+    subject: "spacecraft:voyager-2",
+    camera: { mode: "ride-along", look: "solar:planet:neptune", distanceKm: 0.05 },
+    rate: 120,
+    story:
+      "Twelve years after launch, Voyager 2 skimmed 4,950 km over Neptune's north pole, the last stop of its Grand Tour. It found the Great Dark Spot, the fastest winds in the Solar System and geysers on Triton.",
+    note: "Voyager 2 follows its JPL Horizons trajectory and Neptune VSOP87A; they agree to within a few thousand kilometres here.",
+    imageQuery: "Voyager 2 Neptune",
+  },
+  {
+    id: "halley-1986",
+    title: "Halley's Comet returns",
+    at: "1986-03-10T00:00:00Z",
+    subject: "solar:small-body:halley",
+    camera: { mode: "from-earth" },
+    lensDeg: 36,
     rate: 3_600,
     story:
-      "After nine and a half years and almost five billion kilometres, New Horizons passed 12,500 km above Pluto. Its photographs revealed a heart-shaped plain of nitrogen ice and mountains of water ice.",
-    note: "Pluto and Charon are positioned for 14 July 2015. The spacecraft itself is not modelled.",
-    imageQuery: "Pluto New Horizons",
+      "In March 1986 a fleet of spacecraft met Halley's Comet. ESA's Giotto flew 596 km from its nucleus, a dark peanut 15 km long, jetting gas and dust as it rounded the Sun. Here you see it from Earth, tails streaming away from the Sun. It next returns in 2061.",
+    note: "Halley is positioned from JPL's orbital elements. The tails are a model: the blue ion tail points straight away from the Sun, the dust tail curves back along the orbit, and their length follows the distance from the Sun.",
+    imageQuery: "Halley's Comet 1986",
   },
   {
     id: "cassini-finale",
@@ -102,18 +165,6 @@ export const MOMENTS: Moment[] = [
       "Around 25 August 2012, about 121 AU from the Sun, Voyager 1 crossed the heliopause. It became the first human-made object to reach interstellar space, 35 years after launch.",
     note: "Voyager's position is propagated from JPL Horizons vectors. The heliopause boundary itself is not drawn.",
     imageQuery: "Voyager 1",
-  },
-  {
-    id: "halley-1986",
-    title: "Halley's Comet at perihelion",
-    at: "1986-02-09T00:00:00Z",
-    subject: "solar:small-body:halley",
-    camera: { mode: "arrive" },
-    rate: 86_400,
-    story:
-      "Halley's Comet swung closest to the Sun on 9 February 1986. Five spacecraft flew out to meet it, and Giotto photographed its nucleus. Its next return is in 2061.",
-    note: "Orbit from JPL Small-Body Database elements. Time runs at one day per second so you can watch it round the Sun.",
-    imageQuery: "Halley's Comet 1986",
   },
 ];
 

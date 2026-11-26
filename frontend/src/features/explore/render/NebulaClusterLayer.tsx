@@ -25,7 +25,7 @@ import {
   type Mesh,
   type Points,
 } from "three";
-import { pixelRadiusOf, placeRelative } from "../engine/engineState";
+import { photoDimming, pixelRadiusOf, placeRelative } from "../engine/engineState";
 import { blackbodyColor, getEntityWorld, hashString, type UniverseEntity } from "../engine/universeModel";
 import { useEngine } from "./EngineContext";
 import { NOISE_GLSL } from "./glsl";
@@ -182,7 +182,7 @@ const NebulaVolume: FC<{ entity: UniverseEntity }> = ({ entity }) => {
     const distance = Math.hypot(world[0] - engine.cameraWorld[0], world[1] - engine.cameraWorld[1], world[2] - engine.cameraWorld[2]);
     const px = pixelRadiusOf(engine, entity.extentKm, distance);
     const fade = Math.min(1, Math.max(0, (px - 3) / 10));
-    material.uniforms.uFade.value = fade * Math.pow(10, 0.4 * Math.min(0, engine.exposure));
+    material.uniforms.uFade.value = fade * Math.pow(10, 0.4 * Math.min(0, engine.exposure)) * photoDimming(engine, entity.id);
     material.uniforms.uSteps.value = engine.quality === "low" ? 12 : engine.quality === "balanced" ? 20 : 28;
     mesh.visible = fade > 0.004;
   });
@@ -285,7 +285,7 @@ const ClusterStars: FC<{ entity: UniverseEntity }> = ({ entity }) => {
     const distance = Math.hypot(world[0] - engine.cameraWorld[0], world[1] - engine.cameraWorld[1], world[2] - engine.cameraWorld[2]);
     const px = pixelRadiusOf(engine, entity.extentKm, distance);
     const fade = Math.min(1, Math.max(0, (px - 4) / 12));
-    material.uniforms.uFade.value = fade;
+    material.uniforms.uFade.value = fade * photoDimming(engine, entity.id);
     material.uniforms.uPixelRatio.value = engine.pixelRatio;
     points.visible = fade > 0.004;
   });

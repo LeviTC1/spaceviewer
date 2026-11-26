@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "format": "spaceviewer-minor-bodies-v1",
+  "source": {
+    "name": "JPL Small-Body Database (NASA/JPL Solar System Dynamics)",
+    "url": "https://ssd-api.jpl.nasa.gov/doc/sbdb_query.html",
+    "retrievedAt": "2026-11-26T16:28:39.367Z",
+    "credit": "Orbits: JPL Small-Body Database"
+  },
+  "frame": "heliocentric ecliptic J2000; osculating elements propagated as two-body orbits",
+  "referenceJulianDate": 2461041.5,
+  "accuracy": "Two-body propagation from each object's osculating epoch: fine for showing the belts' shape and motion, drifting by up to a few degrees over decades for objects perturbed by Jupiter. Not for finding a particular asteroid in a telescope.",
+  "groups": [
+    {
+      "id": 0,
+      "key": "main-belt",
+      "label": "Main belt",
+      "absoluteMagnitudeBelow": 15,
+      "count": 58464
+    },
+    {
+      "id": 1,
+      "key": "belt-edges",
+      "label": "Inner, outer belt and Mars-crossers",
+      "absoluteMagnitudeBelow": 16,
+      "count": 14883
+    },
+    {
+      "id": 2,
+      "key": "trojans",
+      "label": "Jupiter Trojans",
+      "absoluteMagnitudeBelow": 16,
+      "count": 15683
+    },
+    {
+      "id": 3,
+      "key": "near-earth",
+      "label": "Near-Earth asteroids",
+      "absoluteMagnitudeBelow": 20,
+      "count": 4811
+    },
+    {
+      "id": 4,
+      "key": "centaurs",
+      "label": "Centaurs",
+      "absoluteMagnitudeBelow": null,
+      "count": 1114
+    },
+    {
+      "id": 5,
+      "key": "kuiper",
+      "label": "Kuiper Belt and beyond",
+      "absoluteMagnitudeBelow": null,
+      "count": 8423
+    }
+  ],
+  "count": 103378,
+  "orbits": {
+    "url": "/catalogs/minor-bodies/orbits.svmb",
+    "bytes": 2687860,
+    "sha256": "9ec1543ab397397d490fb549a7d7fdeb2c5465452a2b49a0d8e6b6101fc0088f"
+  },
+  "named": {
+    "url": "/catalogs/minor-bodies/named.json",
+    "count": 68,
+    "sha256": "170ced14fb99913b432b80583f2096281285a420fd1911686206bf1f532eed76"
+  }
+}

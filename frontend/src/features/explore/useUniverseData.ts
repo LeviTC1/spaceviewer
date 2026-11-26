@@ -22,6 +22,9 @@ import { useOpenNgcCatalog } from "../skymap/useOpenNgcCatalog";
 import { useStreamedSolarEphemeris } from "../../domain/solar";
 import { dateToJulianYear, quantizeGaiaPropagationJulianYear } from "../../lib/catalog/starCatalogPropagation";
 import { buildUniverseIndex } from "./engine/universeModel";
+import { brightStarEntities, useSkyCulture } from "./skyCulture";
+import { spacecraftEntities, useSpacecraft } from "./spacecraft";
+import { namedMinorBodyEntities, useMinorBodies } from "./minorBodies";
 
 export interface CatalogueStatus {
   id: string;
@@ -36,6 +39,9 @@ export const useUniverseData = (epochDateIso: string, eager: boolean) => {
   const starsReady = stars.status === "ready" || stars.status === "fallback";
   const exoplanets = useNearbyExoplanets(starsReady || eager, eager ? 0 : 1_200);
   const openNgc = useOpenNgcCatalog(starsReady || eager, eager ? 0 : 2_400);
+  const sky = useSkyCulture(starsReady || eager);
+  const spacecraft = useSpacecraft(true);
+  const minor = useMinorBodies(starsReady || eager);
   const solarEphemeris = useStreamedSolarEphemeris(epochDateIso, { includeOrbits: false });
   const registry = useMemo(() => createSkyLayerRegistry(SKYMAP_LAYER_DEFINITIONS), []);
   const layerStates = useMemo(() => createInitialSkyMapState(registry.definitions).layers, [registry.definitions]);
@@ -88,7 +94,16 @@ export const useUniverseData = (epochDateIso: string, eager: boolean) => {
     return skyRegistry.records.map((record) => record.object);
   }, [layerData, layerStates, registry, timeState]);
 
-  const index = useMemo(() => buildUniverseIndex(objects), [objects]);
+  const culture = sky.culture;
+  const index = useMemo(
+    () =>
+      buildUniverseIndex(objects, (entities) => [
+        ...(culture ? brightStarEntities(culture, entities) : []),
+        ...(spacecraft ? spacecraftEntities(spacecraft, entities) : []),
+        ...namedMinorBodyEntities(minor.named),
+      ]),
+    [culture, minor.named, objects, spacecraft],
+  );
 
   const statuses: CatalogueStatus[] = [
     {
@@ -110,6 +125,24 @@ export const useUniverseData = (epochDateIso: string, eager: boolean) => {
       detail: `${openNgc.objects.length.toLocaleString("en-GB")} objects`,
     },
     {
+      id: "bright-stars",
+      label: "Hipparcos bright stars & IAU figures",
+      status: sky.culture ? "ready" : "loading",
+      detail: sky.culture ? `${(sky.bright[0]?.count ?? 0).toLocaleString("en-GB")} stars Gaia cannot measure · ${sky.culture.constellations.length} constellations` : "After the nearby stars",
+    },
+    {
+      id: "minor-bodies",
+      label: "JPL Small-Body Database orbits",
+      status: minor.orbits ? "ready" : "loading",
+      detail: minor.orbits ? `${minor.orbits.count.toLocaleString("en-GB")} asteroids, Trojans, centaurs and Kuiper Belt objects` : "After the nearby stars",
+    },
+    {
+      id: "spacecraft",
+      label: "JPL Horizons spacecraft & CelesTrak orbits",
+      status: spacecraft ? "ready" : "loading",
+      detail: spacecraft ? `${spacecraft.missions.length} missions · ${spacecraft.orbiters.length} Earth orbiters${spacecraft.orbiters.some((orbiter) => orbiter.live) ? " (live elements)" : ""}` : "Loading trajectories",
+    },
+    {
       id: "ephemeris",
       label: "VSOP87 planetary positions",
       status: solarEphemeris.positionsReady ? "ready" : solarEphemeris.status === "fallback" ? "fallback" : "loading",
@@ -117,7 +150,7 @@ export const useUniverseData = (epochDateIso: string, eager: boolean) => {
     },
   ];
 
-  return { index, starChunks: stars.chunks, statuses, starsStatus: stars.status };
+  return { index, starChunks: stars.chunks, statuses, starsStatus: stars.status, brightChunks: sky.bright, skyCulture: sky.culture, minorOrbits: minor.orbits };
 };
 
 export const useReducedMotion = () => {

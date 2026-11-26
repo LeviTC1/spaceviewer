@@ -4,6 +4,8 @@ import type { FC } from "react";
 export const Icon: FC<{ name: string; size?: number }> = ({ name, size = 18 }) => {
   const common = { width: size, height: size, viewBox: "0 0 24 24", fill: "none", stroke: "currentColor", strokeWidth: 1.6, strokeLinecap: "round" as const, strokeLinejoin: "round" as const, "aria-hidden": true };
   switch (name) {
+    case "tonight":
+      return <svg {...common}><path d="M15.5 4.5a6 6 0 1 0 4 10.2A6.5 6.5 0 0 1 15.5 4.5z" /><path d="M2.5 20.5h19" /><path d="M5.5 17.5h4" opacity=".55" /></svg>;
     case "search":
       return <svg {...common}><circle cx="11" cy="11" r="6.5" /><path d="m20 20-4.2-4.2" /></svg>;
     case "time":

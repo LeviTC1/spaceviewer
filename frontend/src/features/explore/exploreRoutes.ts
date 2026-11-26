@@ -18,7 +18,7 @@ export interface ExploreLocation {
   camera: { distanceKm: number; direction: Vec3 } | null;
 }
 
-export const isExplorePath = (pathname: string) => pathname === "/" || pathname === "/explore" || pathname.startsWith("/explore/") || pathname === "/skymap";
+export const isExplorePath = (pathname: string) => pathname === "/" || pathname === "/explore" || pathname === "/tonight" || pathname.startsWith("/explore/") || pathname === "/skymap";
 
 export const parseExploreLocation = (pathname: string, search: string): ExploreLocation => {
   const params = new URLSearchParams(search);

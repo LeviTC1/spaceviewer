@@ -2,8 +2,8 @@
   "schemaVersion": 1,
   "ephemeris": {
     "id": "vsop87c-heliocentric-2025-2050",
-    "version": "vsop87c-2025-2050-v1",
-    "title": "VSOP87C streamed heliocentric planet ephemeris",
+    "version": "vsop87a-1975-2050-v2",
+    "title": "VSOP87A streamed heliocentric planet ephemeris (ecliptic and equinox J2000)",
     "referenceFrame": "heliocentric-ecliptic-j2000",
     "positionUnit": "astronomical-unit",
     "timeScale": "julian-date-input-to-pinned-solver"
@@ -14,31 +14,55 @@
     "implementation": "vsop87 npm package",
     "implementationVersion": "1.0.5",
     "implementationUrl": "https://www.npmjs.com/package/vsop87",
-    "implementationPath": "node_modules/vsop87/dist/vsop87c.js",
+    "implementationPath": "node_modules/vsop87/dist/vsop87a.js",
     "licenceId": "MIT",
     "credit": "VSOP87 theory by Pierre Bretagnon and Gerard Francou; JavaScript implementation by G.C. Marty"
   },
   "validity": {
-    "minimumUtcDate": "2025-01-01",
+    "minimumUtcDate": "1975-01-01",
     "maximumUtcDate": "2050-12-31",
     "runtimeClampRequired": true
   },
   "sampling": {
     "positionStepJulianDays": 1,
-    "interpolation": "linear-cartesian-between-adjacent-float64-keyframes",
+    "interpolation": "cubic-hermite-cartesian-with-central-difference-tangents",
     "orbitSamplesPerPlanet": 192,
     "orbitReferenceJulianDate": 2451545,
-    "note": "The runtime already used one-Julian-day VSOP87C keyframes. This build preserves that interpolation contract while moving evaluation offline. Orbit paths are representative display guides sampled across one nominal period about J2000 and are not osculating elements."
+    "note": "One-Julian-day keyframes from VSOP87A (heliocentric rectangular, ecliptic and equinox J2000; the earlier build used VSOP87C, which is referred to the ecliptic of date and drifted about 50 arcseconds a year from the J2000 star frame). The runtime interpolates with cubic Hermite segments whose tangents are central differences, removing the up-to-6,000 km chord error of linear interpolation. Orbit paths are representative display guides sampled across one nominal period about J2000 and are not osculating elements."
   },
   "planets": [
-    { "id": "mercury", "orbitalPeriodDays": 88 },
-    { "id": "venus", "orbitalPeriodDays": 225 },
-    { "id": "earth", "orbitalPeriodDays": 365 },
-    { "id": "mars", "orbitalPeriodDays": 687 },
-    { "id": "jupiter", "orbitalPeriodDays": 4333 },
-    { "id": "saturn", "orbitalPeriodDays": 10759 },
-    { "id": "uranus", "orbitalPeriodDays": 30687 },
-    { "id": "neptune", "orbitalPeriodDays": 60190 }
+    {
+      "id": "mercury",
+      "orbitalPeriodDays": 88
+    },
+    {
+      "id": "venus",
+      "orbitalPeriodDays": 225
+    },
+    {
+      "id": "earth",
+      "orbitalPeriodDays": 365
+    },
+    {
+      "id": "mars",
+      "orbitalPeriodDays": 687
+    },
+    {
+      "id": "jupiter",
+      "orbitalPeriodDays": 4333
+    },
+    {
+      "id": "saturn",
+      "orbitalPeriodDays": 10759
+    },
+    {
+      "id": "uranus",
+      "orbitalPeriodDays": 30687
+    },
+    {
+      "id": "neptune",
+      "orbitalPeriodDays": 60190
+    }
   ],
-  "limitations": "This browser asset is a bounded visualization ephemeris, not an operational navigation product. It preserves the pinned package's VSOP87C output and one-day Cartesian interpolation, omits Pluto, does not include covariance, light-time, relativity corrections beyond the source theory, Earth orientation or current JPL/INPOP fitting. Pluto continues to use the separately disclosed Keplerian fallback."
+  "limitations": "This browser asset is a bounded visualization ephemeris, not an operational navigation product. It samples VSOP87A daily from 1975 to 2050, omits Pluto, and does not include covariance, light-time, relativity corrections beyond the source theory, Earth orientation or current JPL/INPOP fitting. Pluto uses Astronomy Engine. File and format names keep their original 'vsop87c' spelling for compatibility."
 }

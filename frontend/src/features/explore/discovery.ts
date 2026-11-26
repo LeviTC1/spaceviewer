@@ -286,6 +286,21 @@ export interface OnwardRoute {
 
 const distanceBetween = (a: Vec3, b: Vec3) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
 
+/** Where each mission has been or is going (route suggestions in its panel). */
+const MISSION_VISITS: Record<string, Array<[string, string]>> = {
+  "spacecraft:voyager-1": [["solar:planet:jupiter", "Flyby, 1979"], ["solar:planet:saturn", "Flyby, 1980"]],
+  "spacecraft:voyager-2": [["solar:planet:jupiter", "Flyby, 1979"], ["solar:planet:saturn", "Flyby, 1981"], ["solar:planet:uranus", "Flyby, 1986"], ["solar:planet:neptune", "Flyby, 1989"]],
+  "spacecraft:new-horizons": [["solar:planet:jupiter", "Gravity assist, 2007"], ["solar:planet:pluto", "Flyby, July 2015"]],
+  "spacecraft:juno": [["solar:planet:jupiter", "In orbit since 2016"]],
+  "spacecraft:parker-solar-probe": [["solar:sun", "Closest pass 6.1 million km above the surface"], ["solar:planet:venus", "Seven Venus flybys"]],
+  "spacecraft:jwst": [["solar:planet:earth", "1.5 million km away, at L2"]],
+  "spacecraft:europa-clipper": [["solar:planet:mars", "Flyby, March 2025"], ["solar:moon:europa", "Arrives at Jupiter 2030"]],
+  "spacecraft:lucy": [["solar:planet:jupiter", "Visits its Trojan asteroids"]],
+  "spacecraft:bepicolombo": [["solar:planet:mercury", "Orbit insertion, late 2026"]],
+  "spacecraft:juice": [["solar:moon:ganymede", "Arrives at Jupiter 2031"]],
+  "spacecraft:psyche": [["solar:planet:mars", "Flyby, 2026"]],
+};
+
 export const getOnwardRoutes = (entity: UniverseEntity, index: UniverseIndex, timeMs: number): OnwardRoute[] => {
   const routes: OnwardRoute[] = [];
   const seen = new Set<string>([entity.id]);
@@ -355,9 +370,13 @@ export const getOnwardRoutes = (entity: UniverseEntity, index: UniverseIndex, ti
     }
   }
   if (entity.kind === "spacecraft") {
-    push({ id: "solar:sun", label: "Look back at the Sun", reason: "From the edge of the heliosphere", framing: "context" });
-    push({ id: "solar:planet:jupiter", label: "Jupiter", reason: "Flyby, 1979" });
-    push({ id: "solar:planet:saturn", label: "Saturn", reason: "Flyby, 1980–81" });
+    const visits = MISSION_VISITS[entity.id] ?? [];
+    for (const [id, reason] of visits) {
+      const target = index.byId.get(id);
+      if (target) push({ id, label: target.name, reason });
+    }
+    if (entity.parentId === "solar:planet:earth") push({ id: "solar:planet:earth", label: "Earth", reason: "The planet it circles", framing: "close" });
+    else if (entity.id.startsWith("spacecraft:voyager")) push({ id: "solar:sun", label: "Look back at the Sun", reason: "From the edge of the heliosphere", framing: "context" });
   }
   return routes.slice(0, 7);
 };
@@ -437,8 +456,23 @@ export const getFacts = (entity: UniverseEntity, index: UniverseIndex, timeMs: n
     }
     case "spacecraft": {
       const craft = sci as { status?: string; velocityRelativeToSunKmS?: number; mission?: string } | undefined;
-      add("Distance from the Sun", fromSun !== undefined ? `${(fromSun / KM_PER_AU).toFixed(1)} AU` : undefined, fromSun ? `${formatLightTime(fromSun)} of light` : undefined, "derived");
-      add("Speed", craft?.velocityRelativeToSunKmS ? `${craft.velocityRelativeToSunKmS.toFixed(1)} km/s` : undefined, "relative to the Sun");
+      const geocentric = entity.trajectory?.geocentric?.(timeMs);
+      // Speed from the trajectory itself (a minute either side), relative to the Sun or, for orbiters, the Earth.
+      const earth = index.byId.get("solar:planet:earth");
+      const relativeTo = geocentric && earth ? (t: number) => getEntityWorld(earth, t) : () => [0, 0, 0] as Vec3;
+      const a = getEntityWorld(entity, timeMs - 60_000);
+      const b = getEntityWorld(entity, timeMs + 60_000);
+      const ra = relativeTo(timeMs - 60_000);
+      const rb = relativeTo(timeMs + 60_000);
+      const speed = a && b && ra && rb ? Math.hypot(b[0] - rb[0] - (a[0] - ra[0]), b[1] - rb[1] - (a[1] - ra[1]), b[2] - rb[2] - (a[2] - ra[2])) / 120 : craft?.velocityRelativeToSunKmS;
+      if (geocentric) add("Altitude", `${Math.round(Math.hypot(...geocentric) - 6_371).toLocaleString("en-GB")} km`, "above the Earth's mean radius", "derived");
+      else add("Distance from the Sun", fromSun !== undefined ? `${(fromSun / KM_PER_AU).toFixed(fromSun / KM_PER_AU < 10 ? 2 : 1)} AU` : undefined, fromSun ? `${formatLightTime(fromSun)} of light` : undefined, "derived");
+      add("Speed", speed ? `${speed.toFixed(speed < 10 ? 2 : 1)} km/s` : undefined, geocentric ? "relative to the Earth" : "relative to the Sun", "derived");
+      if (entity.distanceNote) add("Mission", entity.distanceNote);
+      if (entity.trajectory) {
+        const age = entity.trajectory.elementsEpochMs !== undefined ? Math.round((timeMs - entity.trajectory.elementsEpochMs) / 86_400_000) : null;
+        add("Positions", entity.trajectory.source, age !== null ? `elements ${Math.abs(age)} day${Math.abs(age) === 1 ? "" : "s"} ${age >= 0 ? "old" : "ahead"}` : undefined);
+      }
       add("Status", craft?.status);
       break;
     }
@@ -458,6 +492,13 @@ export const getFacts = (entity: UniverseEntity, index: UniverseIndex, timeMs: n
       add("Host star", exo?.spectralType ?? (exo?.stellarTemperatureK ? `${Math.round(exo.stellarTemperatureK)} K` : undefined));
       const first = exo?.planets?.[0];
       add("Discovered", first?.discoveryYear ? `${first.discoveryYear} · ${first.discoveryMethod ?? ""}`.trim() : undefined);
+      if (exo?.stellarLuminositySolar) add("Star's luminosity", `${fmt(exo.stellarLuminositySolar, 3)} × Sun`, exo.stellarLuminositySource === "archive st_lum" ? "archive value" : "from radius and temperature", exo.stellarLuminositySource === "archive st_lum" ? "measured" : "derived");
+      if (exo?.habitableZone) {
+        const { innerAu, outerAu } = exo.habitableZone;
+        const inside = (exo.planets ?? []).filter((planet) => planet.semiMajorAxisAu !== undefined && planet.semiMajorAxisAu >= innerAu && planet.semiMajorAxisAu <= outerAu);
+        add("Habitable zone", `${fmt(innerAu, 2)}–${fmt(outerAu, 2)} AU`, "conservative, from luminosity (Kasting 1993)", "derived");
+        add("Planets in the zone", inside.length ? inside.map((planet) => planet.name.replace(`${exo.hostName} `, "")).join(", ") : "None known", inside.length ? "orbit within the band" : undefined, "derived");
+      }
       break;
     }
     case "galaxy":
@@ -486,6 +527,9 @@ export const getFacts = (entity: UniverseEntity, index: UniverseIndex, timeMs: n
     default:
       break;
   }
+  // Notes the catalogues carry: where a Hipparcos star's distance comes from, a minor body's size and orbit.
+  if (entity.distanceNote && entity.kind === "star") add("Distance from", entity.distanceNote);
+  if (entity.distanceNote && entity.kind === "dwarf-planet" && entity.trajectory) add("Size and orbit", entity.distanceNote, entity.trajectory.source);
   if (fromCamera !== undefined && entity.kind !== "structure") add("From your view", formatDistanceKm(Math.max(0, fromCamera - entity.radiusKm)), undefined, "derived");
   return facts;
 };

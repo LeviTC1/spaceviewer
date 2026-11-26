@@ -2,6 +2,7 @@
 // read by every render layer inside useFrame. Nothing here triggers React renders.
 
 import type { Group, Object3D } from "three";
+import type { HorizonFrame } from "./observer";
 import type { UniverseEntity, UniverseIndex } from "./universeModel";
 import { KM_PER_LY, type Vec3 } from "./units";
 
@@ -63,10 +64,18 @@ export interface EngineState {
   candidates: ProjectedCandidate[];
   frame: number;
   reducedMotion: boolean;
+  /** A survey photograph registered on the selected object; its volume dims by `photoWeight` so the two do not double up. */
+  photoId: string | null;
+  photoWeight: number;
+  /** Standing on the Earth: the local horizon frame, or null in space. */
+  groundFrame: HorizonFrame | null;
+  /** Altitude of the Sun above the observer's horizon (degrees; ground mode only). */
+  sunAltitudeDeg: number;
   /** Toggles exposed to the UI. */
   showOrbits: boolean;
   showLabels: boolean;
   showConstellations: boolean;
+  showMinorBodies: boolean;
 }
 
 export const createEngineState = (index: UniverseIndex): EngineState => ({
@@ -95,6 +104,10 @@ export const createEngineState = (index: UniverseIndex): EngineState => ({
   hoveredId: null,
   trackedId: null,
   contextId: null,
+  photoId: null,
+  photoWeight: 0,
+  groundFrame: null,
+  sunAltitudeDeg: 0,
   exposure: 0,
   panoramaWeight: 1,
   cameraSpeedKmS: 0,
@@ -106,6 +119,7 @@ export const createEngineState = (index: UniverseIndex): EngineState => ({
   showOrbits: true,
   showLabels: true,
   showConstellations: false,
+  showMinorBodies: true,
 });
 
 /**
@@ -149,6 +163,9 @@ export const projectToScreen = (state: EngineState, world: Vec3): { x: number; y
     depth,
   };
 };
+
+/** How much an object's volume dims while its survey photograph is showing (the photo carries the light). */
+export const photoDimming = (state: EngineState, id: string) => (state.photoId === id ? 1 - 0.75 * state.photoWeight : 1);
 
 /** Projected radius in CSS pixels of a sphere of radius r (km) at distance d (km). */
 export const pixelRadiusOf = (state: EngineState, radiusKm: number, distanceKm: number) => {

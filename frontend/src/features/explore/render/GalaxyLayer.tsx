@@ -32,7 +32,7 @@ import {
   Vector3,
   type Mesh,
 } from "three";
-import { pixelRadiusOf, placeRelative } from "../engine/engineState";
+import { photoDimming, pixelRadiusOf, placeRelative } from "../engine/engineState";
 import { getEntityRenderWorld, getEntityWorld, hashString, type UniverseEntity } from "../engine/universeModel";
 import { KM_PER_KPC, KM_PER_LY, cross3, galacticToWorld, normalize3, type Vec3 } from "../engine/units";
 import { magnitudeToPoint, useEngine } from "./EngineContext";
@@ -437,7 +437,7 @@ const GalaxyVolume: FC<{ entity: UniverseEntity }> = ({ entity }) => {
     u.uSteps.value = Math.round(baseSteps * coverage);
     // Deep inside a bulge the integrated light would saturate: expose for it like a camera would.
     const inside = Math.max(0, 1 - distance / (entity.extentKm * 0.35));
-    u.uBrightness.value = (isMilkyWay ? 0.75 : 0.85) * Math.pow(10, 0.4 * Math.min(0, engine.exposure)) / (1 + inside * 14);
+    u.uBrightness.value = ((isMilkyWay ? 0.75 : 0.85) * Math.pow(10, 0.4 * Math.min(0, engine.exposure)) * photoDimming(engine, entity.id)) / (1 + inside * 14);
     mesh.visible = fade > 0.004;
   });
 

@@ -469,6 +469,7 @@ const pushImagesPath = (params?: { q?: string; source?: string; wander?: boolean
 const isExploreRoute = (pathname: string, search: string) =>
   (pathname === "/" && /[?&](object|moment)=/.test(search)) ||
   pathname === "/explore" ||
+  pathname === "/tonight" ||
   pathname.startsWith("/explore/") ||
   (pathname === "/skymap" && !search.includes("classic=1"));
 

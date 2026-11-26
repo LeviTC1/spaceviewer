@@ -20,6 +20,8 @@ import {
   composePostcard,
   imageQueryFor,
   LightStoryLine,
+  SkyPhotoLine,
+  FigureLine,
   MomentCard,
   pickSurprise,
   ShareMenu,
@@ -35,6 +37,9 @@ import type { CameraEvent } from "./engine/cameraController";
 import { getEntityWorld, type UniverseEntity } from "./engine/universeModel";
 import { cross3, normalize3, type Vec3 } from "./engine/units";
 import { useReducedMotion, useUniverseData } from "./useUniverseData";
+import { useGalaxyStars } from "./galaxyStars";
+import { TonightPanel } from "./TonightPanel";
+import { nightTimes, type ObserverPlace, readPlace, writePlace } from "./tonight";
 import "./explore.css";
 
 interface ExplorePageProps {
@@ -51,6 +56,7 @@ interface ExplorePageProps {
 const QUALITY_KEY = "spaceviewer.explore.quality.v1";
 const SEEN_KEY = "spaceviewer.explore.seen.v1";
 const SURPRISE_SEEN_KEY = "spaceviewer.explore.surprises.v1";
+const CONSTELLATIONS_KEY = "spaceviewer.explore.constellations.v1";
 
 const detectQuality = (): ExplorerQuality => {
   try {
@@ -91,7 +97,7 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
   const [initialTime] = useState(() => (initialMoment ? Date.parse(initialMoment.at) : initialLocation.timeMs ?? Date.now()));
   const [epochDay, setEpochDay] = useState(() => new Date(initialTime).toISOString().slice(0, 10));
   const deepLinkPending = Boolean(initialLocation.slug || initialLocation.legacyObjectId);
-  const { index, starChunks, statuses } = useUniverseData(`${epochDay}T00:00:00.000Z`, deepLinkPending);
+  const { index, starChunks, statuses, brightChunks, skyCulture, minorOrbits } = useUniverseData(`${epochDay}T00:00:00.000Z`, deepLinkPending);
   const searchIndex = useMemo(() => createSearchIndex(index), [index]);
   const slugs = useMemo(() => createSlugIndex(index), [index]);
   const reducedMotion = useReducedMotion();
@@ -99,6 +105,11 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
   const rootRef = useRef<HTMLDivElement | null>(null);
 
   const [quality, setQuality] = useState<ExplorerQuality>(detectQuality);
+  // A Milky Way of real stars: ~1M Gaia DR3 stars stream in after the nearby catalogue, brightest
+  // first. Lighter devices take fewer chunks.
+  const nearbyReady = statuses.some((item) => item.id === "gaia" && (item.status === "ready" || item.status === "fallback")) || starChunks.length > 0;
+  const galaxyChunkBudget = quality === "low" ? 1 : quality === "balanced" ? 3 : 8;
+  const galaxy = useGalaxyStars(nearbyReady, galaxyChunkBudget);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [hoveredId, setHoveredId] = useState<string | null>(null);
   const [contextId, setContextId] = useState<string | null>(null);
@@ -109,7 +120,33 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
   const [shareOpen, setShareOpen] = useState(false);
   const [showOrbits, setShowOrbits] = useState(true);
   const [showLabels, setShowLabels] = useState(true);
+  const [showMinorBodies, setShowMinorBodies] = useState(true);
+  const [showConstellations, setShowConstellations] = useState(() => {
+    try {
+      return window.localStorage.getItem(CONSTELLATIONS_KEY) === "1";
+    } catch {
+      return false;
+    }
+  });
+  // The viewport mounts with figures off; keep it in step with the choice (remembered, or ground mode).
+  useEffect(() => {
+    viewportRef.current?.setToggles({ constellations: showConstellations });
+  }, [showConstellations]);
+  const toggleConstellations = useCallback((on: boolean) => {
+    setShowConstellations(on);
+    viewportRef.current?.setToggles({ constellations: on });
+    try {
+      window.localStorage.setItem(CONSTELLATIONS_KEY, on ? "1" : "0");
+    } catch {
+      // ignore
+    }
+  }, []);
   const [flight, setFlight] = useState<{ label: string; kind: string } | null>(null);
+  // Standing on the Earth ("Tonight's sky"): the observer's place, or null in space.
+  const [ground, setGround] = useState<ObserverPlace | null>(null);
+  const [tonightHidden, setTonightHidden] = useState(false);
+  const groundRef = useRef<ObserverPlace | null>(null);
+  const constellationsBeforeGround = useRef<boolean | null>(null);
   const [journey, setJourney] = useState<{ journey: Journey; step: number } | null>(null);
   const [moment, setMoment] = useState<Moment | null>(null);
   const [lensDeg, setLensDeg] = useState(50);
@@ -174,7 +211,8 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
 
   const compact = viewport.width < 760;
   const selected = selectedId ? index.byId.get(selectedId) ?? null : null;
-  const panelOpen = Boolean((selected && !panelHidden) || startOpen);
+  const tonightOpen = Boolean(ground && !tonightHidden && !startOpen && !(selected && !panelHidden));
+  const panelOpen = Boolean((selected && !panelHidden) || startOpen || tonightOpen);
   const occludedLeft = !compact && panelOpen ? 392 : 0;
   const occludedBottom = compact && panelOpen ? Math.round(viewport.height * 0.5) : 0;
 
@@ -197,12 +235,20 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
       if (!handle || !index.byId.has(id)) return;
       setSelectedId(id);
       setPanelHidden(false);
+      if (groundRef.current) {
+        // On the ground we turn to face things rather than fly to them.
+        const where = handle.lookAtObject(id);
+        const entity = index.byId.get(id);
+        if (where && entity && where.altDeg < 0) showToast(`${entity.name} is ${Math.round(-where.altDeg)}° below your horizon right now.`);
+        markSeen();
+        return;
+      }
       handle.setFov(50);
       setLensDeg(50);
       handle.flyTo(id, { framing });
       markSeen();
     },
-    [index, markSeen],
+    [index, markSeen, showToast],
   );
 
   const pushObjectUrl = useCallback(
@@ -243,6 +289,12 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
       const subject = index.byId.get(next.subject);
       if (!handle || !subject) return false;
       const at = Date.parse(next.at);
+      if (groundRef.current) {
+        // Moments happen out in space: step off the ground first.
+        groundRef.current = null;
+        setGround(null);
+        handle.setGround(null);
+      }
       handle.setTime(at);
       handle.setRate(next.rate || 1);
       handle.setPaused(next.rate === 0);
@@ -266,6 +318,17 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
         const fromSun = normalize3(target);
         const earthMoon = Math.hypot(earthWorld[0] - target[0], earthWorld[1] - target[1], earthWorld[2] - target[2]);
         handle.placeAt(subject.id, earthMoon - 6_371 * 1.05, fromSun, animate && !reducedMotion);
+      } else if (next.camera.mode === "ride-along" && target) {
+        // Sit just behind the spacecraft, looking past it at what it is flying to; the camera then follows it.
+        const look = index.byId.get(next.camera.look);
+        const lookWorld = look ? getEntityWorld(look, at) : null;
+        const away = lookWorld ? normalize3([target[0] - lookWorld[0], target[1] - lookWorld[1], target[2] - lookWorld[2]]) : normalize3(target);
+        // Swing a little towards the Sun so the craft is lit, keeping its destination in the background.
+        const sunward = normalize3([-target[0], -target[1], -target[2]]);
+        const along = sunward[0] * away[0] + sunward[1] * away[1] + sunward[2] * away[2];
+        const side = normalize3([sunward[0] - away[0] * along, sunward[1] - away[1] * along, sunward[2] - away[2] * along]);
+        const chase = Number.isFinite(side[0]) ? normalize3([away[0] + side[0] * 0.55, away[1] + side[1] * 0.55, away[2] + side[2] * 0.55]) : away;
+        handle.placeAt(subject.id, next.camera.distanceKm, chase, animate && !reducedMotion);
       } else {
         handle.flyTo(subject.id, { instant: !animate || reducedMotion });
       }
@@ -300,6 +363,89 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
     viewportRef.current?.setFov(50);
     setLensDeg(50);
   }, []);
+
+  // ------------------------------------------------------------------------------------------
+  // Tonight's sky: stand on the Earth where you are
+
+  const enterTonight = useCallback(
+    (placeOverride?: ObserverPlace) => {
+      const handle = viewportRef.current;
+      if (!handle) return;
+      const place = placeOverride ?? groundRef.current ?? readPlace();
+      groundRef.current = place;
+      setGround(place);
+      setTonightHidden(false);
+      setStartOpen(false);
+      setJourney(null);
+      setMoment(null);
+      setSelectedId(null);
+      setLensDeg(70);
+      // Face the part of the sky that rises highest: south from the north, north from the south.
+      handle.setGround(place, { azDeg: place.latDeg >= 0 ? 180 : 0, altDeg: 32 });
+      if (constellationsBeforeGround.current === null) constellationsBeforeGround.current = handle.engine.showConstellations;
+      setShowConstellations(true);
+      // In daylight, jump to this evening once it is dark (the panel's "Now" goes back).
+      const sun = handle.skyPosition("solar:sun", Date.now());
+      if (!sun || sun.altDeg > -6) {
+        handle.setTime(nightTimes(index, place, Date.now()).bestLookMs);
+        handle.setRate(1);
+        handle.setPaused(false);
+      }
+      if (window.location.pathname !== "/tonight") window.history.pushState({ view: "explore" }, "", "/tonight");
+      markSeen();
+    },
+    [index, markSeen],
+  );
+
+  const leaveTonight = useCallback(() => {
+    const handle = viewportRef.current;
+    groundRef.current = null;
+    setGround(null);
+    setLensDeg(50);
+    if (!handle) return;
+    handle.setGround(null);
+    const before = constellationsBeforeGround.current;
+    constellationsBeforeGround.current = null;
+    if (before !== null) setShowConstellations(before);
+    if (window.location.pathname === "/tonight") window.history.pushState({ view: "explore" }, "", buildExplorePath(selectedRef.current ? slugs.slugFor(selectedRef.current) : "earth"));
+  }, [slugs]);
+
+  const changePlace = useCallback(
+    (place: ObserverPlace) => {
+      writePlace(place);
+      groundRef.current = place;
+      setGround(place);
+      viewportRef.current?.setGround(place);
+    },
+    [],
+  );
+
+  // Stand at the Sun looking at a constellation star with the figure drawn, then fly sideways: the
+  // figure distorts and breaks up because its stars are at very different distances.
+  const watchFigureComeApart = useCallback(
+    (id: string) => {
+      const handle = viewportRef.current;
+      const entity = index.byId.get(id);
+      const world = entity ? getEntityWorld(entity, handle?.engine.simTimeMs ?? Date.now()) : null;
+      if (!handle || !entity || !world) return;
+      if (groundRef.current) leaveTonight();
+      toggleConstellations(true);
+      setSelectedId(id);
+      setPanelHidden(compact);
+      const d = Math.hypot(...world);
+      const toSun = normalize3([-world[0], -world[1], -world[2]]);
+      handle.setFov(60);
+      setLensDeg(60);
+      handle.placeAt(id, d * 0.999, toSun, false);
+      // Swing 35° round the star: a sideways trip of a few hundred light-years.
+      const side = normalize3(cross3(toSun, [0, 1, 0]));
+      const a = (35 * Math.PI) / 180;
+      const swung = normalize3([toSun[0] * Math.cos(a) + side[0] * Math.sin(a), toSun[1] * Math.cos(a) + side[1] * Math.sin(a), toSun[2] * Math.cos(a) + side[2] * Math.sin(a)]);
+      window.setTimeout(() => viewportRef.current?.placeAt(id, d, swung, true), 1_600);
+      showToast(`From the Sun, ${entity.name}'s constellation looks the way it does from Earth. Now watch what happens when we move.`, undefined, 5_000);
+    },
+    [compact, index, leaveTonight, showToast, toggleConstellations],
+  );
 
   // ------------------------------------------------------------------------------------------
   // Show me something incredible
@@ -341,6 +487,10 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
       setPendingTarget({ id: initialMoment.subject, slug: null, camera: null, animate: false, moment: initialMoment, since: Date.now() });
       return;
     }
+    if (window.location.pathname === "/tonight") {
+      enterTonight();
+      return;
+    }
     if (initialLocation.rate !== null) handle.setRate(initialLocation.rate);
     if (initialLocation.paused) handle.setPaused(true);
     const targetId = resolveLocationTarget(initialLocation);
@@ -377,7 +527,7 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
       handle.setIdleSpin(reducedMotion ? 0 : 0.012);
       if (!compact) setStartOpen(true);
     }
-  }, [compact, index, initialLocation, initialMoment, initialTime, reducedMotion, resolveLocationTarget, showToast]);
+  }, [compact, enterTonight, index, initialLocation, initialMoment, initialTime, reducedMotion, resolveLocationTarget, showToast]);
 
   // Apply a pending deep link (or moment) once its catalogue has streamed in, or say we couldn't.
   useEffect(() => {
@@ -459,7 +609,7 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
       const day = new Date(snapshot.simTimeMs).toISOString().slice(0, 10);
       setEpochDay((current) => (current === day ? current : day));
       const now = performance.now();
-      if (now - lastUrlWrite.current > 1_500 && !pendingTarget && active) {
+      if (now - lastUrlWrite.current > 1_500 && !pendingTarget && active && !groundRef.current) {
         lastUrlWrite.current = now;
         const id = selectedRef.current;
         const path = buildExplorePath(id ? slugs.slugFor(id) : null, {
@@ -737,6 +887,16 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
         <Icon name="sparkle" size={15} />
         <span>Start here</span>
       </button>
+      <button
+        type="button"
+        className={`sv-btn sv-btn--small ex-tonight-btn${ground ? " is-on" : ""}`}
+        onClick={() => (ground ? (tonightHidden ? setTonightHidden(false) : leaveTonight()) : enterTonight())}
+        aria-pressed={Boolean(ground)}
+        title={ground ? "Leave the ground and return to space" : "See tonight's sky from where you are"}
+      >
+        <Icon name="tonight" size={15} />
+        <span>{ground ? (tonightHidden ? "Tonight" : "Leave ground") : "Tonight"}</span>
+      </button>
       <button type="button" className={`sv-icon-btn${optionsOpen ? " is-on" : ""}`} onClick={() => setOptionsOpen((value) => !value)} aria-label="View options" aria-expanded={optionsOpen}>
         <Icon name="layers" size={18} />
       </button>
@@ -770,6 +930,10 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
         ref={viewportRef}
         index={index}
         starChunks={starChunks}
+        galaxyChunks={galaxy.chunks}
+        brightChunks={brightChunks}
+        skyCulture={skyCulture}
+        minorOrbits={minorOrbits}
         selectedId={selectedId}
         hoveredId={hoveredId}
         contextId={contextId}
@@ -813,6 +977,21 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
             />
             Labels
           </label>
+          <label>
+            <input type="checkbox" checked={showConstellations} onChange={(event) => toggleConstellations(event.target.checked)} />
+            Constellations
+          </label>
+          <label>
+            <input
+              type="checkbox"
+              checked={showMinorBodies}
+              onChange={(event) => {
+                setShowMinorBodies(event.target.checked);
+                viewportRef.current?.setToggles({ minorBodies: event.target.checked });
+              }}
+            />
+            Asteroids &amp; Kuiper Belt
+          </label>
           <fieldset>
             <legend>Graphics</legend>
             {(["low", "balanced", "high", "ultra"] as ExplorerQuality[]).map((tier) => (
@@ -829,9 +1008,18 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
         <StartPanel
           journeys={JOURNEYS}
           index={index}
-          catalogues={statuses}
+          catalogues={[
+            ...statuses,
+            {
+              id: "gaia-galaxy",
+              label: "Gaia galaxy stars",
+              status: galaxy.status === "streaming" ? "streaming" : galaxy.status === "ready" ? "ready" : galaxy.status === "error" ? "error" : "idle",
+              detail: galaxy.total ? `${galaxy.loaded.toLocaleString("en-GB")} of ${galaxy.total.toLocaleString("en-GB")}` : "after nearby stars",
+            },
+          ]}
           resume={resume && resume.id !== selectedId ? resume : null}
           onSurprise={surprise}
+          onTonight={() => enterTonight()}
           onMoment={playMoment}
           onStartJourney={startJourney}
           onPick={(id) => {
@@ -843,6 +1031,31 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
             if (resume) select(resume.id, { fly: true });
           }}
           onClose={() => setStartOpen(false)}
+        />
+      ) : tonightOpen && ground ? (
+        <TonightPanel
+          index={index}
+          culture={skyCulture}
+          place={ground}
+          simTimeMs={simTimeMs}
+          sunAltitudeDeg={report?.sunAltitudeDeg ?? 0}
+          onPlace={changePlace}
+          onLook={(id) => {
+            setSelectedId(id);
+            setPanelHidden(compact);
+            const where = viewportRef.current?.lookAtObject(id);
+            const entity = index.byId.get(id);
+            if (where && entity && where.altDeg < 0) showToast(`${entity.name} is below your horizon right now. Try "Tonight, once dark" or "Watch the night".`);
+          }}
+          onTime={(ms, rate = 1) => {
+            const handle = viewportRef.current;
+            if (!handle) return;
+            handle.setTime(ms);
+            handle.setRate(rate);
+            handle.setPaused(false);
+          }}
+          onLeave={leaveTonight}
+          onClose={() => setTonightHidden(true)}
         />
       ) : selected && !panelHidden ? (
         <ObjectPanel
@@ -857,6 +1070,14 @@ const ExplorePage: FC<ExplorePageProps> = ({ locationToken, active, onOpenImager
           extras={
             <>
               <LightStoryLine entity={selected} distanceKm={selected.solarId || selected.kind === "sun" ? null : selectedFromSun} />
+              <SkyPhotoLine entity={selected} />
+              <FigureLine
+                entity={selected}
+                culture={skyCulture}
+                figuresOn={showConstellations}
+                onShowFigure={() => toggleConstellations(true)}
+                onComeApart={() => watchFigureComeApart(selected.id)}
+              />
               <WatchLive entityId={selected.id} onOpen={onOpenLive} />
               <TelescopeStrip entity={selected} onOpen={onOpenImage} onMore={() => onOpenImagery(imageQueryFor(selected))} />
             </>

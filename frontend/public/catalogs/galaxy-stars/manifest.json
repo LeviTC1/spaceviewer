@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "format": "spaceviewer-gaia-points-v1",
+  "catalog": {
+    "id": "gaia-dr3-galaxy-g105-poe5",
+    "title": "Gaia DR3 stars with G ≤ 10.5 and parallax / error ≥ 5",
+    "referenceFrame": "heliocentric-icrs-cartesian",
+    "positionUnit": "light-year",
+    "epoch": "J2016.0",
+    "provenance": {
+      "sourceName": "Gaia Data Release 3, gaiadr3.gaia_source",
+      "retrievedFrom": "https://gea.esac.esa.int/tap-server/tap",
+      "retrievedAt": "2026-11-24T23:11:12.402Z",
+      "sourceCsvSha256": "25bdc771ca12ab656222c1520634fbe0509a3974f0275da61e682165839f451e",
+      "sourceRows": 768052,
+      "credit": "ESA/Gaia/DPAC",
+      "licence": "Gaia DR3 open data, free to use with ESA/Gaia/DPAC credit",
+      "creditsUrl": "https://gea.esac.esa.int/archive/documentation/GDR3/Miscellaneous/sec_credit_and_citation_instructions/"
+    }
+  },
+  "query": {
+    "language": "ADQL",
+    "text": "SELECT source_id, ra, dec, parallax, parallax_error, phot_g_mean_mag, bp_rp FROM gaiadr3.gaia_source WHERE phot_g_mean_mag <= 10.5 AND parallax > 0 AND parallax_over_error >= 5",
+    "interpretation": "Distances are the naive inverse of parallax (no zero-point correction or prior); colours are an approximate BP-RP → temperature tint (Mucciarelli & Bellazzini 2020). Stars already in the receipted nearby subset are excluded. This is a brightness-limited visualisation sample, not a complete volume."
+  },
+  "starCount": 752604,
+  "excludedNearbyDuplicates": 15448,
+  "rejectedRows": 0,
+  "temperatureIndex": {
+    "min": 2400,
+    "max": 40000,
+    "scale": "log"
+  },
+  "chunks": [
+    {
+      "url": "/catalogs/galaxy-stars/chunk-00.svgp",
+      "count": 40000,
+      "bytes": 600016,
+      "sha256": "72590a3f299197dbcf52f10a78a879933810741a1f2557f49efab8d3c6958295",
+      "magnitudeRangeG": [
+        2.083,
+        7.746
+      ]
+    },
+    {
+      "url": "/catalogs/galaxy-stars/chunk-01.svgp",
+      "count": 80000,
+      "bytes": 1200016,
+      "sha256": "2dfd9040f421aa373224fa4635616d0b3f4e1367d78ded95d2064b10cdc0e074",
+      "magnitudeRangeG": [
+        7.746,
+        8.732
+      ]
+    },
+    {
+      "url": "/catalogs/galaxy-stars/chunk-02.svgp",
+      "count": 160000,
+      "bytes": 2400016,
+      "sha256": "335d2815e5f5cdadf14dac6f44a51a9d66f4a6d3493a6151384b04f8d563f930",
+      "magnitudeRangeG": [
+        8.732,
+        9.517
+      ]
+    },
+    {
+      "url": "/catalogs/galaxy-stars/chunk-03.svgp",
+      "count": 240000,
+      "bytes": 3600016,
+      "sha256": "d3e780c06617c2a1071483c13f514dc3ccfbe1987f07f5aeb62ecdfd4be82b0e",
+      "magnitudeRangeG": [
+        9.517,
+        10.122
+      ]
+    },
+    {
+      "url": "/catalogs/galaxy-stars/chunk-04.svgp",
+      "count": 232604,
+      "bytes": 3489076,
+      "sha256": "f73711e5a7c3537f14acdc632457178bb81df9679d584432fbe7b08920353f4d",
+      "magnitudeRangeG": [
+        10.122,
+        10.5
+      ]
+    }
+  ]
+}

@@ -67,7 +67,16 @@ export const projectCandidates = (state: EngineState): ProjectedCandidate[] => {
       const m = (entity.absoluteMagnitude ?? 5) + 5 * (Math.log10(Math.max(1e-12, d / (KM_PER_LY * 3.2615638))) - 1);
       if (m > limit - 0.75) continue;
     }
+    if (state.groundFrame && entity.id === "solar:planet:earth") continue;
     const world = getEntityRenderWorld(entity, state.simTimeMs, state.cameraWorld);
+    // From the ground, nothing below the horizon can be seen or picked.
+    if (state.groundFrame) {
+      const z = state.groundFrame.zenith;
+      const rx = world[0] - cam[0];
+      const ry = world[1] - cam[1];
+      const rz = world[2] - cam[2];
+      if (rx * z[0] + ry * z[1] + rz * z[2] < -0.004 * Math.hypot(rx, ry, rz)) continue;
+    }
     const screen = projectToScreen(state, world);
     const dx = world[0] - state.cameraWorld[0];
     const dy = world[1] - state.cameraWorld[1];
@@ -96,16 +105,20 @@ export const projectCandidates = (state: EngineState): ProjectedCandidate[] => {
     const focus = entity.id === state.selectedId || entity.id === state.hoveredId || entity.id === state.trackedId || entity.id === state.contextId;
     const starLike = entity.kind === "star" || entity.kind === "exoplanet-system";
     const visible = pixelRadius > 1.5 || (starLike ? flux > (entity.importance >= 60 ? 1.5 : 6) : flux > 0.6);
-    const alwaysFindable = entity.kind === "planet" || entity.kind === "spacecraft" || entity.kind === "sun" || entity.kind === "structure" || (entity.kind === "moon" && entity.radiusKm > 1_000);
+    // Spacecraft are findable nearby (within ~1 AU) or, for the far probes, from anywhere.
+    const craftFindable = entity.kind === "spacecraft" && (distanceKm < 1.5e8 || (entity.importance >= 80 && entity.parentId === "solar:sun"));
+    const alwaysFindable = entity.kind === "planet" || craftFindable || entity.kind === "sun" || entity.kind === "structure" || (entity.kind === "moon" && entity.radiusKm > 1_000);
     if (!visible && !focus && !alwaysFindable) score -= 120;
     // Inside the Solar System, the sky beyond is backdrop: only the brightest stars keep labels.
-    if (inSolarSystem && !entity.solarId && entity.kind !== "spacecraft" && !focus) {
-      if (!(entity.kind === "star" && flux > 40)) score -= 140;
+    if (inSolarSystem && !entity.solarId && !entity.trajectory && entity.kind !== "spacecraft" && !focus) {
+      // From the ground, named naked-eye stars are what you navigate by: label the bright ones.
+      const groundStar = state.groundFrame && entity.kind === "star" && entity.importance >= 30 && flux > 6;
+      if (!(entity.kind === "star" && flux > 40) && !groundStar) score -= 140;
     }
     // Sky-sphere objects without distances stay quiet unless notable.
     if (entity.direction && entity.importance < 70 && !focus) score -= 25;
     out.push({ entity, x: screen.x, y: screen.y, pixelRadius, distanceKm, prominence, score, onScreen, occluded: false });
-    if (pixelRadius > 3 && (entity.solarId || entity.kind === "star" || entity.kind === "sun")) {
+    if (pixelRadius > 3 && (entity.solarId || entity.trajectory || entity.kind === "star" || entity.kind === "sun")) {
       occluders.push({ x: screen.x, y: screen.y, r: pixelRadius, depth: distanceKm - entity.radiusKm, id: entity.id });
     }
   }
@@ -117,6 +130,39 @@ export const projectCandidates = (state: EngineState): ProjectedCandidate[] => {
         if (candidate.distanceKm <= occluder.depth) continue;
         const d = Math.hypot(candidate.x - occluder.x, candidate.y - occluder.y);
         if (d < occluder.r * 0.98) {
+          candidate.occluded = true;
+          break;
+        }
+      }
+    }
+  }
+  // Big nearby bodies can hide things even when their centre is off-screen or behind the camera (standing
+  // in low orbit, the Earth fills half the view): test the line of sight against each sphere directly.
+  const spheres: Array<{ id: string; c: [number, number, number]; r: number; d: number }> = [];
+  for (const entity of state.index.entities) {
+    if (!(entity.solarId || entity.kind === "sun") || entity.radiusKm < 500) continue;
+    if (state.groundFrame && entity.id === "solar:planet:earth") continue;
+    const w = getEntityRenderWorld(entity, state.simTimeMs, cam);
+    const c: [number, number, number] = [w[0] - cam[0], w[1] - cam[1], w[2] - cam[2]];
+    const d = Math.hypot(c[0], c[1], c[2]);
+    // Only bodies that subtend a noticeable angle can hide anything worth labelling.
+    if (d > 0 && entity.radiusKm / d > 1e-4) spheres.push({ id: entity.id, c, r: entity.radiusKm, d });
+  }
+  if (spheres.length) {
+    for (const candidate of out) {
+      if (candidate.occluded) continue;
+      const w = getEntityRenderWorld(candidate.entity, state.simTimeMs, cam);
+      const v: [number, number, number] = [w[0] - cam[0], w[1] - cam[1], w[2] - cam[2]];
+      const len = Math.hypot(v[0], v[1], v[2]);
+      if (!(len > 0)) continue;
+      for (const sphere of spheres) {
+        if (sphere.id === candidate.entity.id || sphere.id === candidate.entity.parentId && candidate.entity.kind === "spacecraft" && len < sphere.r) continue;
+        if (sphere.d - sphere.r > len) continue;
+        // Closest approach of the sight line to the sphere's centre, in front of the target.
+        const along = (v[0] * sphere.c[0] + v[1] * sphere.c[1] + v[2] * sphere.c[2]) / len;
+        if (along <= 0 || along >= len) continue;
+        const miss = Math.sqrt(Math.max(0, sphere.d * sphere.d - along * along));
+        if (miss < sphere.r * 0.995) {
           candidate.occluded = true;
           break;
         }

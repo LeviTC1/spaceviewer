@@ -22,17 +22,29 @@ const chunks = manifest.chunks.map((definition) =>
   validateExoplanetCatalogChunk(readJson(`public${definition.url}`), definition, manifest.catalog.id));
 const systems = chunks.flatMap((chunk) => chunk.systems);
 
-describe("NASA Exoplanet Archive nearby-system catalogue", () => {
-  it("pins a complete 100 pc snapshot and preserves deterministic chunk totals", () => {
+describe("NASA Exoplanet Archive catalogue (every confirmed planet)", () => {
+  it("pins the all-distance snapshot and preserves deterministic chunk totals", () => {
     expect(manifest.catalog.table).toBe("pscomppars");
-    expect(manifest.selection.maximumDistancePc).toBe(100);
-    expect(manifest.selection.planetCount).toBe(1_568);
-    expect(manifest.selection.systemCount).toBe(1_056);
+    expect(manifest.selection.maximumDistancePc).toBe(20_000);
+    expect(manifest.selection.planetCount).toBe(6_445);
+    expect(manifest.selection.systemCount).toBe(4_837);
     expect(manifest.chunks).toHaveLength(12);
-    expect(systems).toHaveLength(1_056);
-    expect(systems.reduce((sum, system) => sum + system.planets.length, 0)).toBe(1_568);
+    expect(systems).toHaveLength(4_837);
+    expect(systems.reduce((sum, system) => sum + system.planets.length, 0)).toBe(6_445);
     expect(manifest.selection.boundary).toMatch(/not a completeness-limited occurrence-rate sample/i);
     expect(manifest.parameters.boundary).toMatch(/not guaranteed to form one self-consistent physical solution/i);
+  });
+
+  it("derives habitable zones from stellar luminosity and labels them as derived", () => {
+    const sunLike = systems.find((system) => system.hostName === "Kepler-452");
+    const zone = (sunLike as unknown as { habitableZone?: { innerAu: number; outerAu: number; method: string } })?.habitableZone;
+    expect(zone).toBeDefined();
+    expect(zone!.innerAu).toBeLessThan(zone!.outerAu);
+    expect(zone!.innerAu).toBeGreaterThan(0.8);
+    expect(zone!.outerAu).toBeLessThan(2.2);
+    expect(zone!.method).toMatch(/Derived, not measured/);
+    const withZone = systems.filter((system) => (system as unknown as { habitableZone?: unknown }).habitableZone).length;
+    expect(withZone / systems.length).toBeGreaterThan(0.9);
   });
 
   it("uses one physical host position while retaining every confirmed planet as searchable metadata", () => {

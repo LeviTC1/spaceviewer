@@ -25,6 +25,15 @@
     "catalog:desi-lightcone:fetch:check": "node scripts/fetch-desi-dr1-lightcone.mjs --check",
     "catalog:desi-lightcone:build": "node scripts/build-desi-dr1-lightcone.mjs",
     "catalog:desi-lightcone:check": "node scripts/build-desi-dr1-lightcone.mjs --check",
+    "catalog:galaxy:fetch": "node scripts/fetch-gaia-dr3-galaxy.mjs",
+    "catalog:galaxy:build": "node scripts/build-galaxy-star-catalog.mjs ../tmp/catalog-raw/gaia-dr3-g105-poe5.csv",
+    "catalog:spacecraft:build": "node scripts/build-spacecraft-trajectories.mjs",
+    "catalog:spacecraft:tle": "node scripts/fetch-earth-orbiter-tles.mjs",
+    "catalog:minor-bodies:build": "node scripts/build-minor-bodies.mjs",
+    "catalog:sky:fetch": "node scripts/fetch-bright-stars-and-figures.mjs",
+    "catalog:sky:build": "node scripts/build-bright-stars.mjs",
+    "catalog:nearby-seed:fix": "node scripts/fix-nearby-seed-positions.mjs",
+    "places:timezones": "node scripts/build-timezone-places.mjs",
     "catalog:exoplanets:fetch": "node scripts/fetch-nasa-exoplanet-archive.mjs",
     "catalog:exoplanets:fetch:check": "node scripts/fetch-nasa-exoplanet-archive.mjs --check",
     "catalog:exoplanets:build": "node scripts/build-nearby-exoplanet-catalog.mjs",
@@ -58,6 +67,7 @@
     "astronomy-engine": "2.1.19",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "satellite.js": "^6.0.2",
     "three": "^0.182.0"
   },
   "devDependencies": {

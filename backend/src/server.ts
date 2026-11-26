@@ -3,6 +3,7 @@ import cors from "cors";
 import searchRoute from "./routes/searchRoute";
 import imageRoute from "./routes/imageRoute";
 import healthRoute from "./routes/healthRoute";
+import tleRoute from "./routes/tleRoute";
 import log from "./utils/logger";
 
 const app = express();
@@ -16,6 +17,7 @@ app.use(express.json());
 app.use("/api/health", healthRoute);
 app.use("/api/search", searchRoute);
 app.use("/api/image", imageRoute);
+app.use("/api/tle", tleRoute);
 
 app.get("/", (_req, res) => {
   res.json({ status: "SpaceViewer API is running" });

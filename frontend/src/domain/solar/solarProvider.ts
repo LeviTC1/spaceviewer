@@ -14,7 +14,9 @@ import {
   sampleKeplerianOrbit,
   solveKeplerianElementsAtSolarTime,
 } from "./solarEphemeris";
+import { AstroTime, Body, HelioVector, MakeTime, RotateVector, Rotation_EQJ_ECL } from "astronomy-engine";
 import {
+  getJulianDateForSolarTime,
   getStreamedVsop87cOrbit,
   getStreamedVsop87cPosition,
 } from "./ephemeris/streamedVsop87c";
@@ -36,6 +38,35 @@ import type {
   SolarTimeInput,
   SolarVector3Au,
 } from "./solarTypes";
+
+
+// Pluto is not part of VSOP87: Astronomy Engine's Pluto model (an integration fitted to JPL's ephemeris)
+// gives its heliocentric position, rotated from J2000 equatorial to J2000 ecliptic. The explorer's clock is
+// used as dynamical time, like the VSOP87 planets and the Horizons spacecraft, so New Horizons meets Pluto.
+const PLUTO_EQJ_TO_ECL = Rotation_EQJ_ECL();
+
+/**
+ * JPL Horizons tables for Pluto (loaded with the spacecraft trajectories): heliocentric ecliptic J2000 km,
+ * in priority order (Pluto's own centre around the New Horizons encounter, then the system barycentre).
+ */
+let plutoTables: Array<(timeMs: number) => [number, number, number] | null> = [];
+export const setPlutoTables = (tables: Array<(timeMs: number) => [number, number, number] | null>) => {
+  plutoTables = tables;
+};
+
+const getPlutoPosition = (time: SolarTimeInput): { positionAu: SolarVector3Au; julianDate: number } | null => {
+  const julianDate = getJulianDateForSolarTime(time);
+  const timeMs = (julianDate - 2_440_587.5) * 86_400_000;
+  for (const table of plutoTables) {
+    const km = table(timeMs);
+    if (km) return { positionAu: { x: km[0] / SOLAR_AU_KM, y: km[1] / SOLAR_AU_KM, z: km[2] / SOLAR_AU_KM, unit: "au", frame: "heliocentric-ecliptic" }, julianDate };
+  }
+  const tt = julianDate - 2_451_545.0;
+  if (!Number.isFinite(tt)) return null;
+  const astroTime = MakeTime(tt);
+  const vector = RotateVector(PLUTO_EQJ_TO_ECL, HelioVector(Body.Pluto, new AstroTime(astroTime.ut - (astroTime.tt - astroTime.ut))));
+  return { positionAu: { x: vector.x, y: vector.y, z: vector.z, unit: "au", frame: "heliocentric-ecliptic" }, julianDate };
+};
 
 const PLANET_BY_ID = new Map<PlanetId, PlanetDef>(PLANETS.map((planet) => [planet.id, planet]));
 const MOON_BY_ID = new Map<string, MoonDef>(MOONS.map((moon) => [moon.id, moon]));
@@ -144,7 +175,7 @@ export const getSolarObjectState = (
     const planet = PLANET_BY_ID.get(normalizedId);
     const elements = ORBITAL_ELEMENTS[normalizedId];
     if (!planet || !elements) return null;
-    const streamed = normalizedId === "pluto" ? null : getStreamedVsop87cPosition(normalizedId, time);
+    const streamed = normalizedId === "pluto" ? getPlutoPosition(time) : getStreamedVsop87cPosition(normalizedId, time);
     if (streamed) {
       const radiusAu = vectorMagnitude(streamed.positionAu);
       return {

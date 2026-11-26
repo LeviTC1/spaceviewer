@@ -8,11 +8,14 @@ import {
   BufferAttribute,
   BufferGeometry,
   CustomBlending,
+  DoubleSide,
   LineBasicMaterial,
   LineSegments,
   Matrix3,
+  MeshBasicMaterial,
   OneFactor,
   OneMinusSrcAlphaFactor,
+  RingGeometry,
   ShaderMaterial,
   SphereGeometry,
   Vector3,
@@ -61,9 +64,9 @@ export const OrbitLines: FC = () => {
   const tracks = useMemo<OrbitTrack[]>(() => {
     const list: OrbitTrack[] = [];
     for (const entity of engine.index.entities) {
-      if (!entity.solarId) continue;
+      if (!entity.solarId && !(entity.trajectory && entity.kind === "dwarf-planet")) continue;
       if (entity.kind === "planet" || entity.id === "solar:planet:pluto") {
-        list.push({ entity, parent: null, samples: [], periodDays: PERIOD_DAYS[entity.solarId] ?? entity.periodDays ?? 365, sampledAt: NaN, normal: [0, 1, 0] });
+        list.push({ entity, parent: null, samples: [], periodDays: (entity.solarId ? PERIOD_DAYS[entity.solarId] : undefined) ?? entity.periodDays ?? 365, sampledAt: NaN, normal: [0, 1, 0] });
       } else if (entity.kind === "moon" && entity.parentId) {
         const parent = engine.index.byId.get(entity.parentId) ?? null;
         const moonObject = entity.object?.scientific as { orbitalPeriodDays?: number } | undefined;
@@ -92,14 +95,16 @@ export const OrbitLines: FC = () => {
   const tmp2 = useMemo(() => ({ x: 0, y: 0, z: 0 }), []);
 
   useFrame(() => {
-    line.visible = engine.showOrbits;
-    if (!engine.showOrbits) return;
+    line.visible = engine.showOrbits && !engine.groundFrame;
+    if (!line.visible) return;
     const positions = geometry.getAttribute("position") as BufferAttribute;
     const colors = geometry.getAttribute("color") as BufferAttribute;
     let v = 0;
     const selected = engine.selectedId;
     const selectedEntity = selected ? engine.index.byId.get(selected) : undefined;
     for (const track of tracks) {
+      // Named asteroids and Kuiper Belt objects would crowd the view: show their orbits only when chosen.
+      if (track.entity.trajectory && track.entity.id !== selected) continue;
       // Resample when time has moved by more than 2 % of the period (keeps the line under the body).
       const periodMs = track.periodDays * 86_400_000;
       if (!Number.isFinite(track.sampledAt) || Math.abs(engine.simTimeMs - track.sampledAt) > periodMs * 0.02) {
@@ -256,6 +261,14 @@ export const ExoplanetSystem: FC<{ entity: UniverseEntity }> = ({ entity }) => {
     return g;
   }, [planets]);
   const lineMaterial = useMemo(() => new LineBasicMaterial({ color: 0x8fb8ff, transparent: true, opacity: 0.45, depthWrite: false }), []);
+  // Conservative habitable zone (derived from stellar luminosity), drawn as a soft green band in the
+  // orbital plane so you can see which planets sit where liquid water could exist on a surface.
+  const zone = sci?.habitableZone;
+  const zoneGeometry = useMemo(() => (zone ? new RingGeometry(zone.innerAu, zone.outerAu, 160, 1).rotateX(-Math.PI / 2) : null), [zone]);
+  const zoneMaterial = useMemo(
+    () => new MeshBasicMaterial({ color: 0x5fd38a, transparent: true, opacity: 0.13, side: DoubleSide, depthWrite: false }),
+    [],
+  );
   const planetMaterial = useMemo(
     () => new ShaderMaterial({
       vertexShader: STAR_VERTEX,
@@ -275,7 +288,9 @@ export const ExoplanetSystem: FC<{ entity: UniverseEntity }> = ({ entity }) => {
     geometry.dispose();
     lineMaterial.dispose();
     planetMaterial.dispose();
-  }, [geometry, lineMaterial, planetMaterial]);
+    zoneGeometry?.dispose();
+    zoneMaterial.dispose();
+  }, [geometry, lineMaterial, planetMaterial, zoneGeometry, zoneMaterial]);
   useFrame(() => {
     const group = groupRef.current;
     if (!group) return;
@@ -304,6 +319,7 @@ export const ExoplanetSystem: FC<{ entity: UniverseEntity }> = ({ entity }) => {
   });
   return (
     <group ref={groupRef}>
+      {zoneGeometry ? <mesh geometry={zoneGeometry} material={zoneMaterial} renderOrder={5} /> : null}
       <lineSegments geometry={geometry} material={lineMaterial} renderOrder={6} />
       {planets.map((planet, i) => (
         <mesh
